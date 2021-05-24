@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/nav_meditation"
+        android:icon="@drawable/ic_meditation"
+        android:title="Meditation" />
+
+    <item
+        android:id="@+id/nav_wetter"
+        android:icon="@drawable/ic_wetter"
+        android:title="Wetter" />
+
+    <item
+        android:id="@+id/nav_home"
+        android:icon="@drawable/ic_home"
+        android:title="Übersicht" />
+
+    <item
+        android:id="@+id/nav_optimierung"
+        android:icon="@drawable/ic_optimierung"
+        android:title="Optimierung" />
+
+    <item
+        android:id="@+id/nav_rezepte"
+        android:icon="@drawable/ic_rezepte"
+        android:title="Rezepte" />
+
+</menu>
