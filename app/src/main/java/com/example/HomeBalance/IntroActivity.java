@@ -17,15 +17,9 @@ public class IntroActivity extends AppIntro2 {
         super.onCreate(savedInstanceState);
 
 
-        addSlide(AppIntroFragment.newInstance("Willkommen bei HomeBalance!",
-                "HomeBalance trägt zur Balance deiner Arbeits- Lebens- Schlaf- und Aktivitätszeiten bei",
-                R.drawable.intro1, Color.BLACK));
+        addSlide(AppIntroFragment.newInstance(getString(R.string.introTitle1), getString(R.string.introDescr1), R.drawable.intro1, Color.BLACK));
 
-        addSlide(AppIntroFragment.newInstance(
-                "Daten eingeben und Unterstützung erhalten",
-                "Durch unser intelligentes System erhälst du täglich an dich angepasste Vorschläge, um deinen Alltag zu strukturieren, auszugleichen und vieles Mehr",
-                R.drawable.intro2, Color.BLACK
-        ));
+        addSlide(AppIntroFragment.newInstance(getString(R.string.introTitle2), getString(R.string.introDescr2), R.drawable.intro2, Color.BLACK));
 
         setImmersiveMode();
     }
