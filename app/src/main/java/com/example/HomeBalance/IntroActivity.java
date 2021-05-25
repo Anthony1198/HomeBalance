@@ -33,7 +33,7 @@ public class IntroActivity extends AppIntro2 {
     @Override
     protected void onSkipPressed(Fragment currentFragment) {
         super.onSkipPressed(currentFragment);
-        Intent intent = new Intent(getApplicationContext(),MainActivity.class);
+        Intent intent = new Intent(getApplicationContext(),DatenEingabe.class);
         startActivity(intent);
     }
 
