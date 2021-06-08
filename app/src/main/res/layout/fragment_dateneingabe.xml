@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="120dp">
+
+
+        <EditText
+            android:id="@+id/vorname"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:text="Vorname" />
+
+        <EditText
+            android:id="@+id/alter"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="number"
+            android:text="Alter" />
+
+        <Switch
+            android:id="@+id/nap"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Power Napst du?"/>
+
+        <Switch
+            android:id="@+id/fruehstueck"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Frühstückst du?" />
+
+        <EditText
+            android:id="@+id/aufstehzeit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="time"
+            android:text="Aufstehzeit" />
+
+        <EditText
+            android:id="@+id/routine"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="time"
+            android:text="Dauer der Morgenroutine" />
+
+        <EditText
+            android:id="@+id/arbeitszeit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="time"
+            android:text="Dauer der Arbeitszeit" />
+
+
+    </LinearLayout>
+
+</RelativeLayout>
