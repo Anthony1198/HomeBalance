@@ -8,11 +8,14 @@
     <LinearLayout
         android:id="@+id/linearLayout"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
+        android:layout_height="386dp"
+        android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="120dp">
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="124dp"
+        android:layout_marginEnd="20dp"
+        android:orientation="vertical">
 
 
         <EditText
@@ -20,22 +23,22 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:inputType="textPersonName"
-            android:text="Vorname" />
+            android:hint="Vorname"
+            android:inputType="textPersonName" />
 
         <EditText
             android:id="@+id/alter"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:inputType="number"
-            android:text="Alter" />
+            android:hint="Alter"
+            android:inputType="number" />
 
         <Switch
             android:id="@+id/nap"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Power Napst du?"/>
+            android:text="Power Napst du?" />
 
         <Switch
             android:id="@+id/fruehstueck"
@@ -48,24 +51,34 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:inputType="time"
-            android:text="Aufstehzeit" />
+            android:hint="Aufstehzeit"
+            android:inputType="time" />
 
         <EditText
             android:id="@+id/routine"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:inputType="time"
-            android:text="Dauer der Morgenroutine" />
+            android:hint="Dauer der Morgenroutine"
+            android:inputType="time" />
 
         <EditText
             android:id="@+id/arbeitszeit"
-            android:layout_width="match_parent"
+            android:layout_width="225dp"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:inputType="time"
-            android:text="Dauer der Arbeitszeit" />
+            android:hint="Dauer der Arbeitszeit"
+            android:inputType="time" />
+
+        <Button
+            android:id="@+id/abschicken"
+            android:layout_width="136dp"
+            android:layout_height="83dp"
+            android:layout_marginStart="144dp"
+            android:layout_marginTop="29dp"
+            android:layout_marginEnd="157dp"
+            android:layout_marginBottom="250dp"
+            android:text="Abschicken" />
 
 
     </LinearLayout>
