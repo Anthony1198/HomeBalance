@@ -7,14 +7,14 @@
 
     <LinearLayout
         android:id="@+id/linearLayout"
-        android:layout_width="wrap_content"
-        android:layout_height="386dp"
+        android:layout_width="377dp"
+        android:layout_height="651dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="124dp"
-        android:layout_marginEnd="20dp"
+        android:layout_marginStart="13dp"
+        android:layout_marginTop="37dp"
+        android:layout_marginEnd="21dp"
         android:orientation="vertical">
 
 
@@ -46,29 +46,53 @@
             android:layout_height="wrap_content"
             android:text="Frühstückst du?" />
 
-        <EditText
+        <TextView
             android:id="@+id/aufstehzeit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:hint="Aufstehzeit"
+            android:hint="Aufstehzeit:"
             android:inputType="time" />
 
-        <EditText
+        <Button
+            android:id="@+id/aufstehzeitButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Zeit wählen" />
+
+        <TextView
             android:id="@+id/routine"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:hint="Dauer der Morgenroutine"
+            android:hint="Dauer der Morgenroutine:"
             android:inputType="time" />
 
-        <EditText
+        <Button
+            android:id="@+id/routineButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Zeit wählen" />
+
+        <TextView
             android:id="@+id/arbeitszeit"
-            android:layout_width="225dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:hint="Dauer der Arbeitszeit"
+            android:hint="Dauer der Arbeitszeit:"
             android:inputType="time" />
+
+        <Button
+            android:id="@+id/arbeitszeitButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Zeit wählen" />
+
+        <TextView
+            android:id="@+id/testtest"
+            android:layout_width="match_parent"
+            android:layout_height="151dp"
+            android:text="TextView" />
 
         <Button
             android:id="@+id/abschicken"
