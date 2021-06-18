@@ -44,7 +44,20 @@ public class DatenEingabeActivity extends AppCompatActivity implements TimePicke
     TextView ausgewaehlt;
 
 
-    DatenbankActivity1 datenbank;
+    String wakeup = null;
+    String morningWork = null;
+    String afternoonWork = null;
+    String eveningWork = null;
+    String lunch = null;
+    String naping = null;
+    String freetime = null;
+    String dinner = null;
+    String sleep = null;
+
+
+    DatenbankEingabeActivity datenbankEingabe;
+    DatenbankOptimierungActivity datenbankOptimierung;
+
     private Button abschicken, aufstehzeitButton, routineButton, arbeitszeitButton;
     private TextView vorname, alter, aufstehzeit, routine, arbeitszeit, textView;
     private Switch nap, fruehstueck;
@@ -66,7 +79,8 @@ public class DatenEingabeActivity extends AppCompatActivity implements TimePicke
         arbeitszeitButton = (Button) findViewById(R.id.arbeitszeitButton);
         nap = (Switch) findViewById(R.id.nap);
         fruehstueck = (Switch) findViewById(R.id.fruehstueck);
-        datenbank = new DatenbankActivity1(this);
+        datenbankEingabe = new DatenbankEingabeActivity(this);
+        datenbankOptimierung = new DatenbankOptimierungActivity(this);
 
         textView = (TextView) findViewById(R.id.testtest);
 
@@ -112,7 +126,7 @@ public class DatenEingabeActivity extends AppCompatActivity implements TimePicke
                     napInhalt = nap.isChecked();
                     fruehstueckInhalt = fruehstueck.isChecked();
 
-                    AddData(vornameInhalt, alterInhalt, aufstehzeitInhalt, routineInhalt, arbneitszeitInhalt, napInhalt, fruehstueckInhalt);
+                    AddDataEingabe(vornameInhalt, alterInhalt, aufstehzeitInhalt, routineInhalt, arbneitszeitInhalt, napInhalt, fruehstueckInhalt);
 
                     if (isOnline() == false) {
                         toastMessage("Keine Internetverbindung!");
@@ -158,8 +172,21 @@ public class DatenEingabeActivity extends AppCompatActivity implements TimePicke
     /**
      * Daten werden für Speicherung an die Datenbank weitergeleitet
      */
-    private void AddData(String newEntry, int newEntry2, String newEntry3, String newEntry4, String newEntry5, Boolean newEntry6, Boolean newEntry7) {
-        boolean insertData = datenbank.addData(newEntry, newEntry2, newEntry3, newEntry4, newEntry5, newEntry6, newEntry7);
+    private void AddDataEingabe(String newEntry, int newEntry2, String newEntry3, String newEntry4, String newEntry5, Boolean newEntry6, Boolean newEntry7) {
+        boolean insertData = datenbankEingabe.addData(newEntry, newEntry2, newEntry3, newEntry4, newEntry5, newEntry6, newEntry7);
+
+        if (insertData) {
+            //toastMessage("Daten wurden erfolgreich gespeichert!");
+        } else {
+            toastMessage("Etwas ist schief gelaufen :(");
+        }
+    }
+
+    /**
+     * Daten werden für Speicherung an die Datenbank weitergeleitet
+     */
+    private void AddDataEOptimierung(String newEntry, String newEntry2, String newEntry3, String newEntry4, String newEntry5, String newEntry6, String newEntry7, String newEntry8, String newEntry9) {
+        boolean insertData = datenbankOptimierung.addData(newEntry, newEntry2, newEntry3, newEntry4, newEntry5, newEntry6, newEntry7, newEntry8, newEntry9);
 
         if (insertData) {
             //toastMessage("Daten wurden erfolgreich gespeichert!");
@@ -221,6 +248,8 @@ public class DatenEingabeActivity extends AppCompatActivity implements TimePicke
             try {
                 String jsonDocument = holeOptimierungsDaten();
                 parseJSON(jsonDocument);
+                AddDataEOptimierung(wakeup, morningWork, afternoonWork, eveningWork, lunch, naping, freetime, dinner, sleep);
+                //textView.setText(datenbankOptimierung.getData());
 
 
             } catch (Exception ex) {
@@ -248,15 +277,6 @@ public class DatenEingabeActivity extends AppCompatActivity implements TimePicke
         JSONArray schedule = jsonObject.getJSONArray("schedule");
         String a = null;
 
-        String wakeup = null;
-        String morningWork = null;
-        String afternoonWork = null;
-        String eveningWork = null;
-        String lunch = null;
-        String nap = null;
-        String freetime = null;
-        String dinner = null;
-        String sleep = null;
 
         for (int i = 0; i < schedule.length(); i++) {
             JSONObject abs = schedule.getJSONObject(i);
@@ -280,7 +300,7 @@ public class DatenEingabeActivity extends AppCompatActivity implements TimePicke
                     lunch = abs.getString("lunch");
                     break;
                 case "nap":
-                    nap = abs.getString("nap");
+                    naping = abs.getString("nap");
                     break;
                 case "freetime":
                     freetime = abs.getString("freetime");
@@ -295,6 +315,9 @@ public class DatenEingabeActivity extends AppCompatActivity implements TimePicke
                     textView.setText("Unbekannter Parameter zurückgegeben worden!");
             }
         }
-        textView.setText(wakeup + " " + morningWork + " " + afternoonWork + " "+ eveningWork + " " + lunch + " " + nap+ " " + freetime + " " + dinner+ " " + sleep);
+
+
+
+        //textView.setText(wakeup + " " + morningWork + " " + afternoonWork + " "+ eveningWork + " " + lunch + " " + naping+ " " + freetime + " " + dinner+ " " + sleep);
     }
 }
