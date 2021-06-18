@@ -24,6 +24,7 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:hint="Vorname"
+            android:text="Anthony"
             android:inputType="textPersonName" />
 
         <EditText
@@ -32,6 +33,7 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:hint="Alter"
+            android:text="22"
             android:inputType="number" />
 
         <Switch
@@ -52,6 +54,7 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:hint="Aufstehzeit:"
+            android:text="08:00"
             android:inputType="time" />
 
         <Button
@@ -66,6 +69,7 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:hint="Dauer der Morgenroutine:"
+            android:text="01:00"
             android:inputType="time" />
 
         <Button
@@ -80,6 +84,7 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:hint="Dauer der Arbeitszeit:"
+            android:text="08:00"
             android:inputType="time" />
 
         <Button

@@ -17,15 +17,19 @@ public class DatenbankActivity2 extends SQLiteOpenHelper {
      * Variablen Deklaration
      */
 
-    private static final String TABLE_NAME = "Nutzerwerte";
+    private static final String TABLE_NAME = "Optimierungswerte";
     private static final String COL1 = "ID";
-    private static final String COL2 = "vorname";
-    private static final String COL3 = "altern";
-    private static final String COL4 = "aufstehzeit";
-    private static final String COL5 = "routine";
-    private static final String COL6 = "arbeitszeit";
+    private static final String COL2 = "wakeup";
+    private static final String COL3 = "morningWork";
+    private static final String COL4 = "afternoonWork";
+    private static final String COL5 = "eveningWork";
+    private static final String COL6 = "lunch";
     private static final String COL7 = "nap";
-    private static final String COL8 = "fruehstueck";
+    private static final String COL8 = "freetime";
+    private static final String COL9 = "dinner";
+    private static final String COL10 = "sleep";
+
+
 
     private static final String TAG = "Datenbank";
 
@@ -37,7 +41,7 @@ public class DatenbankActivity2 extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         String createTable = "CREATE TABLE " + TABLE_NAME + " (ID INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                COL2 + " TEXT," + COL3 + " INTEGER," + COL4 + " TEXT," + COL5 + " TEXT," + COL6 + " TEXT," + COL7 + " BOOLEAN," + COL8 + " BOOLEAN)";
+                COL2 + " TEXT," + COL3 + " TEXT," + COL4 + " TEXT," + COL5 + " TEXT," + COL6 + " TEXT,"  + COL7 + " TEXT,"+ COL8 + " TEXT,"+ COL9 + " TEXT,"+ COL10 + " TEXT)";
         db.execSQL(createTable);
     }
 
@@ -62,6 +66,8 @@ public class DatenbankActivity2 extends SQLiteOpenHelper {
         contentValues.put(COL6, item5);
         contentValues.put(COL7, item6);
         contentValues.put(COL8, item7);
+        contentValues.put(COL9, item7);
+        contentValues.put(COL10, item7);
 
         Log.d(TAG, "addData: Adding " + item + " to " + TABLE_NAME);
 
