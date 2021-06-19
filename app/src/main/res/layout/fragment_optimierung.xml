@@ -3,12 +3,82 @@
     android:layout_width="match_parent" android:layout_height="match_parent"
     android:background="@android:color/background_light">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Optimierung"
-        android:textSize="30sp"
-        android:layout_centerInParent="true"/>
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="377dp"
+        android:layout_height="651dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="13dp"
+        android:layout_marginTop="37dp"
+        android:layout_marginEnd="21dp"
+        android:orientation="vertical">
 
 
+        <TextView
+            android:id="@+id/aufstehzeit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="Aufstehzeit:" />
+
+        <TextView
+            android:id="@+id/arbeitsbeginn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="Arbeitsbeginn:" />
+
+
+        <TextView
+            android:id="@+id/pause"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="Pause:" />
+
+        <TextView
+            android:id="@+id/arbeitfortsetzung"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="Arbeitsfortsetzung:" />
+
+        <TextView
+            android:id="@+id/naping"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="Nap:" />
+
+        <TextView
+            android:id="@+id/freizeit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="Freizeit:" />
+
+        <TextView
+            android:id="@+id/abendessen"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="Abendessen:" />
+
+        <TextView
+            android:id="@+id/schlafen"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="Schlafenszeit:" />
+
+        <TextView
+            android:id="@+id/arbeitfortsetzung2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="Arbeitsfortsetzung Abend:" />
+
+    </LinearLayout>
 </RelativeLayout>

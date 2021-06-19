@@ -16,7 +16,7 @@ public class IntroActivity extends AppIntro2 {
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
-        //checkFirstOpen();
+        checkFirstOpen();
 
         super.onCreate(savedInstanceState);
 

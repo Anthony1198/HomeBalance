@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -43,6 +42,8 @@ public class DatenEingabeActivity extends AppCompatActivity implements TimePicke
 
     TextView ausgewaehlt;
 
+    private int selectedID;
+
 
     String wakeup = null;
     String morningWork = null;
@@ -59,7 +60,7 @@ public class DatenEingabeActivity extends AppCompatActivity implements TimePicke
     DatenbankOptimierungActivity datenbankOptimierung;
 
     private Button abschicken, aufstehzeitButton, routineButton, arbeitszeitButton;
-    private TextView vorname, alter, aufstehzeit, routine, arbeitszeit, textView;
+    private TextView vorname, alter, aufstehzeit, routine, arbeitszeit;
     private Switch nap, fruehstueck;
 
     @Override
@@ -81,8 +82,6 @@ public class DatenEingabeActivity extends AppCompatActivity implements TimePicke
         fruehstueck = (Switch) findViewById(R.id.fruehstueck);
         datenbankEingabe = new DatenbankEingabeActivity(this);
         datenbankOptimierung = new DatenbankOptimierungActivity(this);
-
-        textView = (TextView) findViewById(R.id.testtest);
 
 
         aufstehzeitButton.setOnClickListener(new View.OnClickListener() {
@@ -114,46 +113,47 @@ public class DatenEingabeActivity extends AppCompatActivity implements TimePicke
 
 
         abschicken.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (vorname.getText().length() != 0 && alter.getText().length() != 0 && aufstehzeit.getText().length() != 0 && routine.getText().length() != 0 && arbeitszeit.getText().length() != 0) {
-                    vornameInhalt = vorname.getText().toString();
-                    alterInhalt = Integer.parseInt(alter.getText().toString());
-                    aufstehzeitInhalt = aufstehzeit.getText().toString();
-                    routineInhalt = routine.getText().toString();
-                    arbneitszeitInhalt = arbeitszeit.getText().toString();
+        @Override
+        public void onClick(View v) {
+            if (vorname.getText().length() != 0 && alter.getText().length() != 0 && aufstehzeit.getText().length() != 0 && routine.getText().length() != 0 && arbeitszeit.getText().length() != 0) {
+                vornameInhalt = vorname.getText().toString();
+                alterInhalt = Integer.parseInt(alter.getText().toString());
+                aufstehzeitInhalt = aufstehzeit.getText().toString();
+                routineInhalt = routine.getText().toString();
+                arbneitszeitInhalt = arbeitszeit.getText().toString();
 
-                    napInhalt = nap.isChecked();
-                    fruehstueckInhalt = fruehstueck.isChecked();
+                napInhalt = nap.isChecked();
+                fruehstueckInhalt = fruehstueck.isChecked();
 
-                    AddDataEingabe(vornameInhalt, alterInhalt, aufstehzeitInhalt, routineInhalt, arbneitszeitInhalt, napInhalt, fruehstueckInhalt);
+                AddDataEingabe(vornameInhalt, alterInhalt, aufstehzeitInhalt, routineInhalt, arbneitszeitInhalt, napInhalt, fruehstueckInhalt);
 
-                    if (isOnline() == false) {
-                        toastMessage("Keine Internetverbindung!");
-                    } else {
-                        urlMitName = "http://192.168.178.64:8080/api/schedule?" + "nap=" + napInhalt + "&age=" + alterInhalt + "&breakfast=" + fruehstueckInhalt + "&wakeUpTime=" + aufstehzeitInhalt + "&getReadyDuration=" + routineInhalt + "&workingHours=" + arbneitszeitInhalt;
-
-                        // Button deaktivieren während ein HTTP-Request läuft
-                        abschicken.setEnabled(false);
-
-                        toastMessage("Daten werden verarbeitet!");
-
-
-                        // Ausführung des Hintergrund-Thread mit HTTP-Request
-                        MeinHintergrundThread mht = new MeinHintergrundThread();
-                        mht.start();
-
-                        //Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                        //startActivity(intent);
-
-                    }
-
+                if (isOnline() == false) {
+                    toastMessage("Keine Internetverbindung!");
                 } else {
-                    toastMessage("Daten nicht vollständig!");
+                    urlMitName = "http://192.168.178.62:8080/api/schedule?" + "nap=" + napInhalt + "&age=" + alterInhalt + "&breakfast=" + fruehstueckInhalt + "&wakeUpTime=" + aufstehzeitInhalt + "&getReadyDuration=" + routineInhalt + "&workingHours=" + arbneitszeitInhalt;
+
+                    // Button deaktivieren während ein HTTP-Request läuft
+                    abschicken.setEnabled(false);
+
+                    toastMessage("Daten werden verarbeitet!");
+
+
+                    // Ausführung des Hintergrund-Thread mit HTTP-Request
+                    MeinHintergrundThread mht = new MeinHintergrundThread();
+                    mht.start();
+
+                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                    startActivity(intent);
+
+
                 }
+
+            } else {
+                toastMessage("Daten nicht vollständig!");
             }
-        });
-    }
+        }
+    });
+}
 
     @Override
     public void onTimeSet(TimePicker view, int stunden, int minuten) {
@@ -249,7 +249,6 @@ public class DatenEingabeActivity extends AppCompatActivity implements TimePicke
                 String jsonDocument = holeOptimierungsDaten();
                 parseJSON(jsonDocument);
                 AddDataEOptimierung(wakeup, morningWork, afternoonWork, eveningWork, lunch, naping, freetime, dinner, sleep);
-                //textView.setText(datenbankOptimierung.getData());
 
 
             } catch (Exception ex) {
@@ -278,10 +277,9 @@ public class DatenEingabeActivity extends AppCompatActivity implements TimePicke
         String a = null;
 
 
-        for (int i = 0; i < schedule.length(); i++) {
+        for (int i = 0; i < schedule.length()-1; i++) {
             JSONObject abs = schedule.getJSONObject(i);
             a = abs.keys().next();
-            textView.setText(a);
 
             switch(a){
                 case "wakeup":
@@ -312,12 +310,9 @@ public class DatenEingabeActivity extends AppCompatActivity implements TimePicke
                     sleep = abs.getString("sleep");
                     break;
                 default:
-                    textView.setText("Unbekannter Parameter zurückgegeben worden!");
             }
         }
 
 
-
-        //textView.setText(wakeup + " " + morningWork + " " + afternoonWork + " "+ eveningWork + " " + lunch + " " + naping+ " " + freetime + " " + dinner+ " " + sleep);
     }
 }

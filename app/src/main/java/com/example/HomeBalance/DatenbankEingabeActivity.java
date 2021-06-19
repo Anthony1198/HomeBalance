@@ -98,7 +98,7 @@ public class DatenbankEingabeActivity extends SQLiteOpenHelper {
         cursor.close();
         return count;
     }
-    
+
 
     /**
      * Datenbank wird gelöscht
