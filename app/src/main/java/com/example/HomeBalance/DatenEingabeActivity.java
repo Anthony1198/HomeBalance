@@ -42,8 +42,6 @@ public class DatenEingabeActivity extends AppCompatActivity implements TimePicke
 
     TextView ausgewaehlt;
 
-    private int selectedID;
-
 
     String wakeup = null;
     String morningWork = null;
@@ -277,7 +275,7 @@ public class DatenEingabeActivity extends AppCompatActivity implements TimePicke
         String a = null;
 
 
-        for (int i = 0; i < schedule.length()-1; i++) {
+        for (int i = 0; i < schedule.length(); i++) {
             JSONObject abs = schedule.getJSONObject(i);
             a = abs.keys().next();
 
@@ -312,7 +310,5 @@ public class DatenEingabeActivity extends AppCompatActivity implements TimePicke
                 default:
             }
         }
-
-
     }
 }

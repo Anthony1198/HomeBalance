@@ -64,9 +64,6 @@ public class MainActivity extends AppCompatActivity {
                         case R.id.nav_wetter:
                             selectedFragment = new WetterFragment();
                             break;
-                        case R.id.nav_optimierung:
-                            selectedFragment = new OptimierungFragment();
-                            break;
                         case R.id.nav_rezepte:
                             selectedFragment = new RezepteFragment();
                             break;
