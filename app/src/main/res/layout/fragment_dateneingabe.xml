@@ -11,9 +11,9 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginStart="13dp"
-        android:layout_marginTop="37dp"
-        android:layout_marginEnd="21dp"
+        android:layout_marginStart="17dp"
+        android:layout_marginTop="34dp"
+        android:layout_marginEnd="16dp"
         android:orientation="vertical">
 
 
@@ -23,8 +23,8 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:hint="Vorname"
-            android:text="Anthony"
-            android:inputType="textPersonName" />
+            android:inputType="textPersonName"
+            android:text="Anthony" />
 
         <EditText
             android:id="@+id/alter"
@@ -32,8 +32,8 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:hint="Alter"
-            android:text="22"
-            android:inputType="number" />
+            android:inputType="number"
+            android:text="22" />
 
         <Switch
             android:id="@+id/nap"
@@ -53,14 +53,19 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:hint="Aufstehzeit:"
-            android:text="08:00"
-            android:inputType="time" />
+            android:inputType="time"
+            android:text="08:00" />
 
         <Button
             android:id="@+id/aufstehzeitButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Zeit wählen" />
+            android:background="@drawable/buttonshape"
+            android:shadowColor="#A8A8A8"
+            android:text="Zeit wählen"
+            android:textAlignment="center"
+            android:layout_gravity="center_vertical|center_horizontal"
+            android:textColor="#FFFFFFFF" />
 
         <TextView
             android:id="@+id/routine"
@@ -68,14 +73,19 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:hint="Dauer der Morgenroutine:"
-            android:text="01:00"
-            android:inputType="time" />
+            android:inputType="time"
+            android:text="01:00" />
 
         <Button
             android:id="@+id/routineButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Zeit wählen" />
+            android:background="@drawable/buttonshape"
+            android:shadowColor="#A8A8A8"
+            android:text="Zeit wählen"
+            android:textAlignment="center"
+            android:layout_gravity="center_vertical|center_horizontal"
+            android:textColor="#FFFFFFFF" />
 
         <TextView
             android:id="@+id/arbeitszeit"
@@ -83,30 +93,33 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:hint="Dauer der Arbeitszeit:"
-            android:text="08:00"
-            android:inputType="time" />
+            android:inputType="time"
+            android:text="08:00" />
 
         <Button
             android:id="@+id/arbeitszeitButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Zeit wählen" />
-
-        <TextView
-            android:id="@+id/testtest"
-            android:layout_width="match_parent"
-            android:layout_height="151dp"
-            android:text="TextView" />
+            android:background="@drawable/buttonshape"
+            android:shadowColor="#A8A8A8"
+            android:text="Zeit wählen"
+            android:textAlignment="center"
+            android:layout_gravity="center_vertical|center_horizontal"
+            android:textColor="#FFFFFFFF" />
 
         <Button
             android:id="@+id/abschicken"
-            android:layout_width="136dp"
+            android:layout_width="198dp"
             android:layout_height="83dp"
+            android:layout_gravity="center_vertical|center_horizontal"
             android:layout_marginStart="144dp"
             android:layout_marginTop="29dp"
             android:layout_marginEnd="157dp"
             android:layout_marginBottom="250dp"
-            android:text="Abschicken" />
+            android:background="@drawable/buttonshape"
+            android:shadowColor="#A8A8A8"
+            android:text="Abschicken"
+            android:textColor="#FFFFFFFF" />
 
 
     </LinearLayout>

@@ -13,14 +13,11 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
-
-import java.util.Calendar;
 
 public class HomeFragment extends Fragment {
     private TextView name;
-    private Button wakeup, morningWork, afternoonWork, eveningWork, lunch, naping, freetime, dinner, sleep;
+    private Button wakeup, morningWork, afternoonWork, eveningWork, lunch, naping, freetime, dinner, sleep, hilfe;
     private int hour, minuten;
     private String zeit, testNull;
 
@@ -46,6 +43,7 @@ public class HomeFragment extends Fragment {
         freetime = (Button) view.findViewById(R.id.freizeitButton);
         dinner = (Button) view.findViewById(R.id.abendessenButton);
         sleep = (Button) view.findViewById(R.id.schlafenButton);
+        hilfe = (Button) view.findViewById(R.id.hilfeButton);
 
 
         Cursor dataEingabe = datenbankEingabe.getData();
@@ -165,14 +163,24 @@ public class HomeFragment extends Fragment {
                 weckerStellen(zeit);
             }
         });
+
+        hilfe.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Fragment mFragment = new HilfeFragment();
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, mFragment).commit();
+            }
+        });
+
+
         return view;
     }
 
     private void weckerStellen(String zeit) {
         hour = Integer.parseInt(zeit.substring(0, 2));
         minuten = Integer.parseInt(zeit.substring(3));
-
         Intent intent = new Intent(AlarmClock.ACTION_SET_ALARM);
+
         intent.putExtra(AlarmClock.EXTRA_HOUR, hour);
         intent.putExtra(AlarmClock.EXTRA_MINUTES, minuten);
         startActivity(intent);
@@ -181,4 +189,5 @@ public class HomeFragment extends Fragment {
     private void toastMessage(String message) {
         Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
     }
+
 }
