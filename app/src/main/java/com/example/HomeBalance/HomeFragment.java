@@ -15,24 +15,45 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+/**
+ * Controller für die Anzeige der Tagesstruktur, welche durch die eingegebenen Daten mit der API brechnet wurde
+ */
 public class HomeFragment extends Fragment {
+
+    /**
+     * Deklaration nötiger Varibalen
+     */
     private TextView name;
     private Button wakeup, morningWork, afternoonWork, eveningWork, lunch, naping, freetime, dinner, sleep, hilfe;
     private int hour, minuten;
     private String zeit, testNull;
 
+    /**
+     * Deklaration der SQLite-Datenbanken
+     */
+    DatenbankHelferOptimierung datenbankOptimierung;
+    DatenbankHelferEingabe datenbankEingabe;
 
-    DatenbankOptimierungActivity datenbankOptimierung;
-    DatenbankEingabeActivity datenbankEingabe;
-
+    /**
+     * onCreate-Methode wird bei erstmaligem Aufruf der Activity ausgeführt
+     *
+     * @return Gibt die fertige view an fragment_home zurück
+     */
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
-        datenbankEingabe = new DatenbankEingabeActivity(getActivity());
-        datenbankOptimierung = new DatenbankOptimierungActivity(getActivity());
+        /**
+         * Initialisierung der Datenbanken
+         */
+        datenbankEingabe = new DatenbankHelferEingabe(getActivity());
+        datenbankOptimierung = new DatenbankHelferOptimierung(getActivity());
 
+
+        /**
+         * Initialisierung der View-Komponenten
+         */
         name = (TextView) view.findViewById(R.id.name);
         wakeup = (Button) view.findViewById(R.id.aufstehzeitButton);
         morningWork = (Button) view.findViewById(R.id.arbeitsbeginnButton);
@@ -46,10 +67,17 @@ public class HomeFragment extends Fragment {
         hilfe = (Button) view.findViewById(R.id.hilfeButton);
 
 
+        /**
+         * Auslesen der Eingabe-Datenbank für den User-Namen
+         */
         Cursor dataEingabe = datenbankEingabe.getData();
         dataEingabe.moveToLast();
         name.setText("Hallo " + dataEingabe.getString(1) + "!");
 
+
+        /**
+         * Auslesen der Optimierungs-Datenbank für den Tagesablaufplan
+         */
         final Cursor dataOptimierung = datenbankOptimierung.getData();
         dataOptimierung.moveToLast();
 
@@ -60,7 +88,9 @@ public class HomeFragment extends Fragment {
         dinner.setText(dataOptimierung.getString(8));
         sleep.setText(dataOptimierung.getString(9));
 
-
+        /**
+         * IF-Bedingungen bei nicht vorhandenen Werten
+         */
        testNull = dataOptimierung.getString(4);
         if (testNull == null) {
             eveningWork.setText("Nicht notwendig");
@@ -83,7 +113,9 @@ public class HomeFragment extends Fragment {
         }
 
 
-
+        /**
+         * Bei Click auf einen Zeit-Button wird eine Methode zum setzen eines Alarms in der Uhren-App durchgeführt
+         */
         wakeup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -176,6 +208,9 @@ public class HomeFragment extends Fragment {
         return view;
     }
 
+    /**
+     * Alarm für mitgegebne Zeit wird in Uhren-App gesetzt
+     */
     private void weckerStellen(String zeit) {
         hour = Integer.parseInt(zeit.substring(0, 2));
         minuten = Integer.parseInt(zeit.substring(3));
@@ -186,6 +221,9 @@ public class HomeFragment extends Fragment {
         startActivity(intent);
     }
 
+    /**
+     * Methode zum Ausführen von Toast Messages
+     */
     private void toastMessage(String message) {
         Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
     }

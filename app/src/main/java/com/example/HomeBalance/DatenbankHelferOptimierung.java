@@ -11,7 +11,7 @@ import android.util.Log;
  * Datenbankklasse für die Daten der Frau
  */
 
-public class DatenbankOptimierungActivity extends SQLiteOpenHelper {
+public class DatenbankHelferOptimierung extends SQLiteOpenHelper {
 
     /**
      * Variablen Deklaration
@@ -34,7 +34,7 @@ public class DatenbankOptimierungActivity extends SQLiteOpenHelper {
     private static final String TAG = "DatenbankOptimierung";
 
 
-    public DatenbankOptimierungActivity(Context context) {
+    public DatenbankHelferOptimierung(Context context) {
         super(context, TABLE_NAME, null, 1);
     }
 

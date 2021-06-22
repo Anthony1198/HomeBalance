@@ -11,7 +11,7 @@ import android.util.Log;
  * Datenbankklasse für die Daten der Frau
  */
 
-public class DatenbankEingabeActivity extends SQLiteOpenHelper {
+public class DatenbankHelferEingabe extends SQLiteOpenHelper {
 
     /**
      * Variablen Deklaration
@@ -30,7 +30,7 @@ public class DatenbankEingabeActivity extends SQLiteOpenHelper {
     private static final String TAG = "DatenbankEingabe";
 
 
-    public DatenbankEingabeActivity(Context context) {
+    public DatenbankHelferEingabe(Context context) {
         super(context, TABLE_NAME, null, 1);
     }
 

@@ -27,21 +27,19 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 
-
+/**
+ * Controller für die Eingabeseite der Nutzerdaten
+ */
 public class DatenEingabeActivity extends AppCompatActivity implements TimePickerDialog.OnTimeSetListener {
 
-    private String urlMitName;
+    /**
+     * Deklaration aller notwendigen Variablen
+     */
+    private String urlMitName, vornameInhalt, aufstehzeitInhalt, routineInhalt, arbneitszeitInhalt;
 
-    String vornameInhalt;
-    String aufstehzeitInhalt;
-    String routineInhalt;
-    String arbneitszeitInhalt;
     int alterInhalt;
-    Boolean napInhalt;
-    Boolean fruehstueckInhalt;
 
-    TextView ausgewaehlt;
-
+    Boolean napInhalt, fruehstueckInhalt;
 
     String wakeup = null;
     String morningWork = null;
@@ -53,20 +51,38 @@ public class DatenEingabeActivity extends AppCompatActivity implements TimePicke
     String dinner = null;
     String sleep = null;
 
+    /**
+     * Deklaration der SQLite-Datenbanken
+     */
+    DatenbankHelferEingabe datenbankEingabe;
+    DatenbankHelferOptimierung datenbankOptimierung;
 
-    DatenbankEingabeActivity datenbankEingabe;
-    DatenbankOptimierungActivity datenbankOptimierung;
-
+    /**
+     * Deklaration der View-Komponenten
+     */
     private Button abschicken, aufstehzeitButton, routineButton, arbeitszeitButton;
-    private TextView vorname, alter, aufstehzeit, routine, arbeitszeit;
+    private TextView vorname, alter, aufstehzeit, routine, arbeitszeit, ausgewaehlt;
     private Switch nap, fruehstueck;
 
+    /**
+     * onCreate-Methode wird bei erstmaligem Aufruf der Activity ausgeführt
+     *
+     * @return Gibt die fertige view an fragment_home zurück
+     */
     @Override
-
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.fragment_dateneingabe);
+        setContentView(R.layout.activity_dateneingabe);
 
+        /**
+         * Initialisierung der Datenbanken
+         */
+        datenbankEingabe = new DatenbankHelferEingabe(this);
+        datenbankOptimierung = new DatenbankHelferOptimierung(this);
+
+        /**
+         * Initialisierung der View-Komponenten
+         */
         vorname = (EditText) findViewById(R.id.vorname);
         alter = (EditText) findViewById(R.id.alter);
         aufstehzeit = (TextView) findViewById(R.id.aufstehzeit);
@@ -78,10 +94,11 @@ public class DatenEingabeActivity extends AppCompatActivity implements TimePicke
         arbeitszeitButton = (Button) findViewById(R.id.arbeitszeitButton);
         nap = (Switch) findViewById(R.id.nap);
         fruehstueck = (Switch) findViewById(R.id.fruehstueck);
-        datenbankEingabe = new DatenbankEingabeActivity(this);
-        datenbankOptimierung = new DatenbankOptimierungActivity(this);
 
 
+        /**
+         * Bei Click auf einen Zeit-Auswahl Button wird der TimePicker aufgerufen und auf der View angezeigt
+         */
         aufstehzeitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -110,6 +127,10 @@ public class DatenEingabeActivity extends AppCompatActivity implements TimePicke
         });
 
 
+        /**
+         * Bei Click auf dem Abschick-Button werden die Datenfelder auf vollständigkeit überprüft => ausgelesen => In der Datenbank gespeichert
+         * => Internetverbindung gecheckt => Die URL für den HTTP-Aufruf zusammengestellt => Ein Hintergrund-Thread gestartet => MainActivity gestartet
+         */
         abschicken.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -142,8 +163,6 @@ public class DatenEingabeActivity extends AppCompatActivity implements TimePicke
 
                     Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                     startActivity(intent);
-
-
                 }
 
             } else {
@@ -152,7 +171,9 @@ public class DatenEingabeActivity extends AppCompatActivity implements TimePicke
         }
     });
 }
-
+    /**
+     * Die Methode übernimmt die im TimePicker gewählte Zeit und formatiert diese in das Format "HH:MM" um
+     */
     @Override
     public void onTimeSet(TimePicker view, int stunden, int minuten) {
         String formatiertStunden = String.valueOf(stunden);
@@ -168,20 +189,20 @@ public class DatenEingabeActivity extends AppCompatActivity implements TimePicke
     }
 
     /**
-     * Daten werden für Speicherung an die Datenbank weitergeleitet
+     * Daten werden für Speicherung an die Eingabe-Datenbank weitergeleitet
      */
     private void AddDataEingabe(String newEntry, int newEntry2, String newEntry3, String newEntry4, String newEntry5, Boolean newEntry6, Boolean newEntry7) {
         boolean insertData = datenbankEingabe.addData(newEntry, newEntry2, newEntry3, newEntry4, newEntry5, newEntry6, newEntry7);
 
         if (insertData) {
-            //toastMessage("Daten wurden erfolgreich gespeichert!");
+            toastMessage("Daten wurden erfolgreich gespeichert!");
         } else {
             toastMessage("Etwas ist schief gelaufen :(");
         }
     }
 
     /**
-     * Daten werden für Speicherung an die Datenbank weitergeleitet
+     * Daten werden für Speicherung an die Optimierungs-Datenbank weitergeleitet
      */
     private void AddDataEOptimierung(String newEntry, String newEntry2, String newEntry3, String newEntry4, String newEntry5, String newEntry6, String newEntry7, String newEntry8, String newEntry9) {
         boolean insertData = datenbankOptimierung.addData(newEntry, newEntry2, newEntry3, newEntry4, newEntry5, newEntry6, newEntry7, newEntry8, newEntry9);
@@ -193,7 +214,11 @@ public class DatenEingabeActivity extends AppCompatActivity implements TimePicke
         }
     }
 
-
+    /**
+     * Die Methode schickt eine Anfrage an die REST-API
+     *
+     * @return String mit JSON-Inhalt der API-Antwort
+     */
     private String holeOptimierungsDaten() throws Exception {
 
         URL url = null;
@@ -204,7 +229,6 @@ public class DatenEingabeActivity extends AppCompatActivity implements TimePicke
         conn = (HttpURLConnection) url.openConnection();
 
         if (conn.getResponseCode() != HttpURLConnection.HTTP_OK) {
-
             throw new Exception(getString(R.string.HTTPS));
 
         } else {
@@ -215,11 +239,8 @@ public class DatenEingabeActivity extends AppCompatActivity implements TimePicke
 
             httpErgebnisDokument = reader.readLine();
         }
-
         return httpErgebnisDokument;
-
     }
-
     private void toastMessage(String message) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
@@ -235,51 +256,40 @@ public class DatenEingabeActivity extends AppCompatActivity implements TimePicke
     }
 
     /**
-     * Thread zum laden der API-Daten im Hintergrund, auf anderem Thread.
+     * Thread zum laden der API-Daten im Hintergrund, auf paralell Thread.
      * App-Stillstand/Absturz wird vermieden
      */
     private class MeinHintergrundThread extends Thread {
 
         @Override
         public void run() {
-
             try {
                 String jsonDocument = holeOptimierungsDaten();
                 parseJSON(jsonDocument);
                 AddDataEOptimierung(wakeup, morningWork, afternoonWork, eveningWork, lunch, naping, freetime, dinner, sleep);
-
-
             } catch (Exception ex) {
                 System.out.println(ex.getMessage());
-
             }
         }
-
     }
 
     /**
      * String mit JSON-Inhalt wird auf Inhalte ausgelesen (Parsing) und in der dazugehörigen Datenbank abgespeichert
      */
     private void parseJSON(String jsonString) throws Exception {
-
-
         if (jsonString == null || jsonString.trim().length() == 0) {
-
             //Bei erhalt eines leeren Strings wird eine Fehlermeldung zurückgeliefert
             toastMessage("JSON ist leer!");
         }
-
         JSONObject jsonObject = new JSONObject(jsonString);
-
         JSONArray schedule = jsonObject.getJSONArray("schedule");
-        String a = null;
-
+        String keyName = null;
 
         for (int i = 0; i < schedule.length(); i++) {
             JSONObject abs = schedule.getJSONObject(i);
-            a = abs.keys().next();
+            keyName = abs.keys().next();
 
-            switch(a){
+            switch(keyName){
                 case "wakeup":
                     wakeup = abs.getString("wakeup");
                     break;

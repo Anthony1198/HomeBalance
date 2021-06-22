@@ -69,16 +69,15 @@ public class WetterFragment extends Fragment {
                     getZeitDatum();
                     getTimeZone();
                     endTime = "2021-06-22T15:00:00Z";
+                    timeSteps = "1h";
 
-                    urlMitName = "http://192.168.178.62:8080/api/weather?location=" + latitude + "," + longitude + "&startTime=" + startTime + "&endTime=" + endTime + "&timesteps=" + "1h" + "&timezone=" + timeZone;
+                    urlMitName = "http://192.168.178.62:8080/api/weather?location=" + latitude + "," + longitude + "&startTime=" + startTime + "&endTime=" + endTime + "&timesteps=" + timeSteps + "&timezone=" + timeZone;
                     toastMessage("Daten werden verarbeitet!");
 
 
                     // Ausführung des Hintergrund-Thread mit HTTP-Request
                     WetterFragment.MeinHintergrundThread mht = new MeinHintergrundThread();
                     mht.start();
-
-
                 }
             }
         });
@@ -142,9 +141,8 @@ public class WetterFragment extends Fragment {
 
             try {
                 String jsonDocument = holeWetterDaten();
-                //String jsonDocument =  getResources().getString(R.string.wetterBeispiel);
                 parseJSON(jsonDocument);
-                //AddDataEOptimierung(wakeup, morningWork, afternoonWork, eveningWork, lunch, naping, freetime, dinner, sleep);
+                //AddDataWetter();
 
 
 
@@ -157,14 +155,6 @@ public class WetterFragment extends Fragment {
         }
 
     }
-
-
-
-
-
-
-
-
 
 
     /**
@@ -198,14 +188,6 @@ public class WetterFragment extends Fragment {
 
         wetterdaten.setText(test);
     }
-
-
-
-
-
-
-
-
 
     private String holeWetterDaten() throws Exception {
 

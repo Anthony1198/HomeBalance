@@ -11,6 +11,9 @@ import androidx.fragment.app.DialogFragment;
 import java.text.DateFormat;
 import java.util.Calendar;
 
+/**
+ * Controller für die Anzeige des TimePickers in der DatenEingabeActivity
+ */
 public class TimePickerFragment extends DialogFragment {
     @NonNull
     @Override
