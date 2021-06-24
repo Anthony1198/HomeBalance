@@ -20,9 +20,6 @@ public class MainActivity extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-
-
-
         setContentView(R.layout.activity_main);
         BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
         bottomNav.setOnNavigationItemSelectedListener(navListener);
@@ -43,9 +40,6 @@ public class MainActivity extends AppCompatActivity {
         //Übersicht als initiales Fragment im Container
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                     new HomeFragment()).commit();
-
-
-
     }
 
     //Anzeige des ausgewählten Fragments

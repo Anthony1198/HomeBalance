@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -47,7 +48,8 @@ public class WetterFragment extends Fragment {
     Button anzeigen;
     private LocationManager locationManager;
     TextView wetterDay, wetterCurrent;
-    String longitude, latitude, urlMitName, startTime, endTime, timeStep, timeZone, nextDay;
+    String longitude, latitude, urlMitName, startTime, endTime, timeStep, timeZone, nextDay, temperatur, niederschlag, wind, tempDay, rainDay, windDay;
+    DatenbankHelferWetter datenbankWetter;
 
     @Nullable
     @Override
@@ -58,6 +60,7 @@ public class WetterFragment extends Fragment {
         wetterDay = (TextView) view.findViewById(R.id.wetterDay);
         wetterCurrent = (TextView) view.findViewById(R.id.wetterCurrent);
         locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+        datenbankWetter = new DatenbankHelferWetter(getActivity());
 
         gpsHolen();
 
@@ -78,12 +81,24 @@ public class WetterFragment extends Fragment {
                     // Ausführung des Hintergrund-Thread mit HTTP-Request
                     WetterFragment.MeinHintergrundThread mht = new MeinHintergrundThread();
                     mht.start();
+
+
+
                 }
             }
         });
 
+        /**
+         * Auslesen der Optimierungs-Datenbank für den Tagesablaufplan
+         */
+        Cursor dataWetter = datenbankWetter.getData();
+        dataWetter.moveToLast();
+        wetterDay.setText(dataWetter.getString(1) + "\n" + dataWetter.getString(2) + "\n" + dataWetter.getString(3) );
+        wetterCurrent.setText(dataWetter.getString(4) + "\n" + dataWetter.getString(5) + "\n" + dataWetter.getString(6));
+
         return view;
     }
+
 
 
 
@@ -142,20 +157,17 @@ public class WetterFragment extends Fragment {
             try {
                 String jsonDocument = holeWetterDaten();
                 String re = parseJSON(jsonDocument);
-                wetterDay.setText(re);
+                tempDay = temperatur;
+                rainDay = niederschlag;
+                windDay = wind;
 
                 timeStep = "1h";
                 urlMitName = "http://192.168.178.62:8080/api/weather?location=" + latitude + "," + longitude + "&startTime=" + startTime + "&endTime=" + endTime + "&timesteps=" + timeStep + "&timezone=" + timeZone;
 
                 String jsonDocument2 = holeWetterDaten();
-                re = parseJSON(jsonDocument);
-                wetterCurrent.setText(re);
+                re = parseJSON(jsonDocument2);
+                AddDataWetter(tempDay, rainDay, windDay, temperatur, niederschlag, wind);
 
-                //AddDataWetter();
-
-
-
-                //wetterdaten.setText(jsonDocument);
 
             } catch (Exception ex) {
                 System.out.println(ex.getMessage());
@@ -186,10 +198,12 @@ public class WetterFragment extends Fragment {
         JSONArray intervals2 = intervals1.getJSONArray("intervals");
         JSONObject values = intervals2.getJSONObject(0);
 
-        String temperatur = "Temperatur: " + values.getJSONObject("values").getString("temperature") + "°C";
-        String niederschlag = "Niederschlagintensität " + values.getJSONObject("values").getString("precipitationIntensity");
-        String wind = "Windgeschwindigkeit " + values.getJSONObject("values").getString("windSpeed");
+        temperatur = "Temperatur: " + values.getJSONObject("values").getString("temperature") + "°C";
+        niederschlag = "Niederschlagintensität: " + values.getJSONObject("values").getString("precipitationIntensity");
+        wind = "Windgeschwindigkeit: " + values.getJSONObject("values").getString("windSpeed");
         String re = temperatur + " " + niederschlag + " " +wind;
+
+
 
         return re;
     }
@@ -215,9 +229,7 @@ public class WetterFragment extends Fragment {
 
             httpErgebnisDokument = reader.readLine();
         }
-
         return httpErgebnisDokument;
-
     }
 
     private void getDayWetterDatumZeit(){
@@ -233,12 +245,24 @@ public class WetterFragment extends Fragment {
         c.add(Calendar.DAY_OF_MONTH, 1);
         nextDay = df.format((c.getTime()));
         endTime = nextDay + "T" + time + "Z";
-
     }
 
     private void getTimeZone(){
         TimeZone tz = TimeZone.getDefault();
         timeZone= tz.getID();
+    }
+
+    /**
+     * Daten werden für Speicherung an die Wetter-Datenbank weitergeleitet
+     */
+    private void AddDataWetter(String newEntry, String newEntry2, String newEntry3, String newEntry4, String newEntry5, String newEntry6) {
+        boolean insertData = datenbankWetter.addData(newEntry, newEntry2, newEntry3, newEntry4, newEntry5, newEntry6);
+
+        if (insertData) {
+            //toastMessage("Daten wurden erfolgreich gespeichert!");
+        } else {
+            toastMessage("Etwas ist schief gelaufen :(");
+        }
     }
 
 }

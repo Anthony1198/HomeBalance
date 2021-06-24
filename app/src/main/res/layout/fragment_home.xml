@@ -11,14 +11,15 @@
 
     <LinearLayout
         android:id="@+id/linearLayout"
-        android:layout_width="380dp"
-        android:layout_height="800dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginStart="13dp"
-        android:layout_marginTop="37dp"
-        android:layout_marginEnd="21dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="35dp"
+        android:layout_marginBottom="35dp"
+        android:layout_marginEnd="10dp"
         android:orientation="vertical"
         android:layout_gravity="center_vertical|center_horizontal">
 
@@ -51,190 +52,10 @@
             android:text="Credits: 0"
             android:textColor="#FFFFFFFF"
             android:textSize="15dp"
-            android:layout_marginTop="25dp" />
-
-        <TextView
-            android:id="@+id/aufstehzeit"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="37dp"
-            android:ems="10"
-            android:textSize="20dp"
-            android:textColor="#000000"
-            android:text="Aufstehzeit:"
-
-            android:textAlignment="center" />
-
-        <Button
-            android:id="@+id/aufstehzeitButton"
-            android:layout_width="369dp"
-            android:layout_height="36dp"
-            android:layout_gravity="center_vertical|center_horizontal"
-            android:background="@drawable/buttonshape"
-            android:shadowColor="#A8A8A8"
-            android:textColor="#FFFFFFFF"
-            android:textSize="15dp" />
-
-        <TextView
-            android:id="@+id/arbeitsbeginn"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:textSize="20dp"
-            android:text="Arbeitsbeginn:"
-            android:textColor="#000000"
-            android:textAlignment="center" />
-
-        <Button
-            android:id="@+id/arbeitsbeginnButton"
-            android:layout_width="369dp"
-            android:layout_height="36dp"
-            android:layout_gravity="center_vertical|center_horizontal"
-            android:background="@drawable/buttonshape"
-            android:shadowColor="#A8A8A8"
-            android:textColor="#FFFFFFFF"
-            android:textSize="15dp" />
+            android:layout_marginTop="25dp"
+            android:layout_marginBottom="25dp" />
 
 
-        <TextView
-            android:id="@+id/pause"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:textSize="20dp"
-            android:text="Pause:"
-            android:textColor="#000000"
-            android:textAlignment="center" />
-
-        <Button
-            android:id="@+id/pauseButton"
-            android:layout_width="369dp"
-            android:layout_height="36dp"
-            android:layout_gravity="center_vertical|center_horizontal"
-            android:background="@drawable/buttonshape"
-            android:shadowColor="#A8A8A8"
-            android:textColor="#FFFFFFFF"
-            android:textSize="15dp" />
-
-        <TextView
-            android:id="@+id/arbeitfortsetzung"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:textSize="20dp"
-            android:text="Arbeitsfortsetzung:"
-            android:textColor="#000000"
-            android:textAlignment="center" />
-
-        <Button
-            android:id="@+id/arbeitfortsetzungButton"
-            android:layout_width="369dp"
-            android:layout_height="36dp"
-            android:layout_gravity="center_vertical|center_horizontal"
-            android:background="@drawable/buttonshape"
-            android:shadowColor="#A8A8A8"
-            android:textColor="#FFFFFFFF"
-            android:textSize="15dp" />
-
-        <TextView
-            android:id="@+id/naping"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:textSize="20dp"
-            android:text="Nap:"
-            android:textColor="#000000"
-            android:textAlignment="center" />
-
-        <Button
-            android:id="@+id/napingButton"
-            android:layout_width="369dp"
-            android:layout_height="36dp"
-            android:layout_gravity="center_vertical|center_horizontal"
-            android:background="@drawable/buttonshape"
-            android:shadowColor="#A8A8A8"
-            android:textColor="#FFFFFFFF"
-            android:textSize="15dp" />
-
-        <TextView
-            android:id="@+id/freizeit"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:textSize="20dp"
-            android:text="Freizeit:"
-            android:textColor="#000000"
-            android:textAlignment="center" />
-
-        <Button
-            android:id="@+id/freizeitButton"
-            android:layout_width="369dp"
-            android:layout_height="36dp"
-            android:layout_gravity="center_vertical|center_horizontal"
-            android:background="@drawable/buttonshape"
-            android:shadowColor="#A8A8A8"
-            android:textColor="#FFFFFFFF"
-            android:textSize="15dp" />
-
-        <TextView
-            android:id="@+id/abendessen"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:textSize="20dp"
-            android:text="Abendessen:"
-            android:textColor="#000000"
-            android:textAlignment="center" />
-
-        <Button
-            android:id="@+id/abendessenButton"
-            android:layout_width="369dp"
-            android:layout_height="36dp"
-            android:layout_gravity="center_vertical|center_horizontal"
-            android:background="@drawable/buttonshape"
-            android:shadowColor="#A8A8A8"
-            android:textColor="#FFFFFFFF"
-            android:textSize="15dp" />
-
-        <TextView
-            android:id="@+id/arbeitfortsetzung2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:textSize="20dp"
-            android:text="Arbeitsfortsetzung Abend:"
-            android:textColor="#000000"
-            android:textAlignment="center" />
-
-        <Button
-            android:id="@+id/arbeitfortsetzung2Button"
-            android:layout_width="369dp"
-            android:layout_height="36dp"
-            android:layout_gravity="center_vertical|center_horizontal"
-            android:background="@drawable/buttonshape"
-            android:shadowColor="#A8A8A8"
-            android:textColor="#FFFFFFFF"
-            android:textSize="15dp" />
-
-        <TextView
-            android:id="@+id/schlafen"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:textSize="20dp"
-            android:text="Schlafenszeit:"
-            android:textColor="#000000"
-            android:textAlignment="center" />
-
-        <Button
-            android:id="@+id/schlafenButton"
-            android:layout_width="369dp"
-            android:layout_height="36dp"
-            android:layout_gravity="center_vertical|center_horizontal"
-            android:background="@drawable/buttonshape"
-            android:shadowColor="#A8A8A8"
-            android:textColor="#FFFFFFFF"
-            android:textSize="15dp" />
 
 
     </LinearLayout>

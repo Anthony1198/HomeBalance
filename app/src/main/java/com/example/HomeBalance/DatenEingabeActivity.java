@@ -204,7 +204,7 @@ public class DatenEingabeActivity extends AppCompatActivity implements TimePicke
     /**
      * Daten werden für Speicherung an die Optimierungs-Datenbank weitergeleitet
      */
-    private void AddDataEOptimierung(String newEntry, String newEntry2, String newEntry3, String newEntry4, String newEntry5, String newEntry6, String newEntry7, String newEntry8, String newEntry9) {
+    private void AddDataOptimierung(String newEntry, String newEntry2, String newEntry3, String newEntry4, String newEntry5, String newEntry6, String newEntry7, String newEntry8, String newEntry9) {
         boolean insertData = datenbankOptimierung.addData(newEntry, newEntry2, newEntry3, newEntry4, newEntry5, newEntry6, newEntry7, newEntry8, newEntry9);
 
         if (insertData) {
@@ -266,7 +266,7 @@ public class DatenEingabeActivity extends AppCompatActivity implements TimePicke
             try {
                 String jsonDocument = holeOptimierungsDaten();
                 parseJSON(jsonDocument);
-                AddDataEOptimierung(wakeup, morningWork, afternoonWork, eveningWork, lunch, naping, freetime, dinner, sleep);
+                AddDataOptimierung(wakeup, morningWork, afternoonWork, eveningWork, lunch, naping, freetime, dinner, sleep);
             } catch (Exception ex) {
                 System.out.println(ex.getMessage());
             }
