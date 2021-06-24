@@ -70,7 +70,7 @@ public class WetterFragment extends Fragment {
                 if (isOnline() == false) {
                     toastMessage("Keine Internetverbindung!");
                 } else {
-                    getDayWetterDatumZeit();
+                    getWetterDatumZeit();
                     getTimeZone();
                     timeStep = "1d";
 
@@ -156,7 +156,7 @@ public class WetterFragment extends Fragment {
 
             try {
                 String jsonDocument = holeWetterDaten();
-                String re = parseJSON(jsonDocument);
+               parseJSON(jsonDocument);
                 tempDay = temperatur;
                 rainDay = niederschlag;
                 windDay = wind;
@@ -165,7 +165,7 @@ public class WetterFragment extends Fragment {
                 urlMitName = "http://192.168.178.62:8080/api/weather?location=" + latitude + "," + longitude + "&startTime=" + startTime + "&endTime=" + endTime + "&timesteps=" + timeStep + "&timezone=" + timeZone;
 
                 String jsonDocument2 = holeWetterDaten();
-                re = parseJSON(jsonDocument2);
+                 parseJSON(jsonDocument2);
                 AddDataWetter(tempDay, rainDay, windDay, temperatur, niederschlag, wind);
 
 
@@ -181,7 +181,7 @@ public class WetterFragment extends Fragment {
     /**
      * String mit JSON-Inhalt wird auf Inhalte ausgelesen (Parsing) und in der dazugehörigen Datenbank abgespeichert
      */
-    private String parseJSON(String jsonString) throws Exception {
+    private void parseJSON(String jsonString) throws Exception {
 
 
         if (jsonString == null || jsonString.trim().length() == 0) {
@@ -201,11 +201,8 @@ public class WetterFragment extends Fragment {
         temperatur = "Temperatur: " + values.getJSONObject("values").getString("temperature") + "°C";
         niederschlag = "Niederschlagintensität: " + values.getJSONObject("values").getString("precipitationIntensity");
         wind = "Windgeschwindigkeit: " + values.getJSONObject("values").getString("windSpeed");
-        String re = temperatur + " " + niederschlag + " " +wind;
+        String re = temperatur + " " + niederschlag + " " + wind;
 
-
-
-        return re;
     }
 
     private String holeWetterDaten() throws Exception {
@@ -232,7 +229,7 @@ public class WetterFragment extends Fragment {
         return httpErgebnisDokument;
     }
 
-    private void getDayWetterDatumZeit(){
+    private void getWetterDatumZeit(){
 
         DateFormat df = new SimpleDateFormat("yyyy-MM-d");
         DateFormat df2 = new SimpleDateFormat("HH:mm:ss");
