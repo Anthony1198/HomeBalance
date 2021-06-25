@@ -11,7 +11,6 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 
-
 public class MainActivity extends AppCompatActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -56,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
                             selectedFragment = new WetterFragment();
                             break;
                         case R.id.nav_rezepte:
-                            selectedFragment = new RezepteFragment();
+                            selectedFragment = new RezepteEinstellungenFragment();
                             break;
 
                     }
