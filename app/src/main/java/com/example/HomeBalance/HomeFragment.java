@@ -87,23 +87,23 @@ public class HomeFragment extends Fragment {
             testNull = dataOptimierung.getString(b);
             if (testNull == null) {
             }else {
-                TextView textView2 = new TextView(getActivity());
-                textView2.setTextSize(20);
-                textView2.setTextAlignment(view.TEXT_ALIGNMENT_CENTER);
-                textView2.setTextColor(Color.BLACK);
-                textView2.setText(c[i]);
-                linearLayout.addView(textView2);
+                TextView anzeige = new TextView(getActivity());
+                anzeige.setTextSize(20);
+                anzeige.setTextAlignment(view.TEXT_ALIGNMENT_CENTER);
+                anzeige.setTextColor(Color.BLACK);
+                anzeige.setText(c[i]);
+                linearLayout.addView(anzeige);
 
-                Button button2 = new Button(getActivity());
-                button2.setBackgroundResource(R.drawable.buttonshape);
-                button2.setId(i+1);
-                button2.setTextSize(15);
-                button2.setText(testNull);
-                button2.setTextColor(Color.WHITE);
-                linearLayout.addView(button2);
+                Button btn = new Button(getActivity());
+                btn.setBackgroundResource(R.drawable.buttonshape);
+                btn.setId(i+1);
+                btn.setTextSize(15);
+                btn.setText(testNull);
+                btn.setTextColor(Color.WHITE);
+                linearLayout.addView(btn);
 
                 final int index = b;
-                button2.setOnClickListener(new View.OnClickListener() {
+                btn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         zeit = dataOptimierung.getString(index);

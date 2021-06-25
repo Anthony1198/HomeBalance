@@ -33,28 +33,22 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-public class RezepteFragment extends Fragment {
+public class RezepteEinstellungenFragment extends Fragment {
 
-    Button anzeigen;
-    TextView rezept1View, rezept2View, rezept3View;
-    ImageButton rezept1Bild, rezept2Bild, rezept3Bild;
+    Button anzeigenNeue, anzeigenLetzte;
     String urlMitName;
     Switch frueh, mittag, abend, nachtisch, vegan, vegetarisch, glutenfrei, gesund;
     Boolean fruehBoolean, mittagBoolean, abendBoolean, nachtischBoolean, veganBoolean, vegetarischBoolean, glutenfreiBoolean, gesundBoolean;
     String[] rezeptNr1, rezeptNr2, rezeptNr3;
+    DatenbankHelferRezepte datenbankRezepte;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_rezepte, container, false);
 
-        anzeigen = (Button) view.findViewById(R.id.anzeigen);
-        rezept1View = (TextView) view.findViewById(R.id.rezept1);
-        rezept2View = (TextView) view.findViewById(R.id.rezept2);
-        rezept3View = (TextView) view.findViewById(R.id.rezept3);
-        rezept1Bild = (ImageButton) view.findViewById(R.id.rezeptButton);
-        rezept2Bild = (ImageButton) view.findViewById(R.id.rezeptButton2);
-        rezept3Bild = (ImageButton) view.findViewById(R.id.rezeptButton3);
+        anzeigenNeue = (Button) view.findViewById(R.id.anzeigenNeue);
+        anzeigenLetzte = (Button) view.findViewById(R.id.anzeigenLetzte);
         frueh = (Switch) view.findViewById(R.id.fruehstucksRezepte);
         mittag = (Switch) view.findViewById(R.id.fruehstucksRezepte);
         abend = (Switch) view.findViewById(R.id.fruehstucksRezepte);
@@ -63,6 +57,8 @@ public class RezepteFragment extends Fragment {
         vegetarisch = (Switch) view.findViewById(R.id.fruehstucksRezepte);
         glutenfrei = (Switch) view.findViewById(R.id.fruehstucksRezepte);
         gesund = (Switch) view.findViewById(R.id.fruehstucksRezepte);
+
+        datenbankRezepte = new DatenbankHelferRezepte(getActivity());
 
 
         fruehBoolean = frueh.isChecked();
@@ -74,14 +70,14 @@ public class RezepteFragment extends Fragment {
         glutenfreiBoolean = glutenfrei.isChecked();
         gesundBoolean = gesund.isChecked();
 
-        rezeptNr1 = new String[2];
-        rezeptNr2 = new String[2];
-        rezeptNr3 = new String[2];
+        rezeptNr1 = new String[3];
+        rezeptNr2 = new String[3];
+        rezeptNr3 = new String[3];
 
 
 
 
-        anzeigen.setOnClickListener(new View.OnClickListener() {
+        anzeigenNeue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (isOnline() == false) {
@@ -93,35 +89,26 @@ public class RezepteFragment extends Fragment {
 
 
                     // Ausführung des Hintergrund-Thread mit HTTP-Request
-                    RezepteFragment.MeinHintergrundThread mht = new RezepteFragment.MeinHintergrundThread();
+                    RezepteEinstellungenFragment.MeinHintergrundThread mht = new RezepteEinstellungenFragment.MeinHintergrundThread();
                     mht.start();
                     try {
                         mht.join();
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
-
-                    setzteTEXT();
-
-
+                    Fragment mFragment = new RezepteAnzeigenFragment();
+                    getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, mFragment).commit();
                 }
             }
         });
 
-
-        rezept1Bild.setOnClickListener(new View.OnClickListener() {
+        anzeigenLetzte.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (isOnline() == false) {
-                    toastMessage("Keine Internetverbindung!");
-                } else {
-
-                    Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(rezeptNr1[2]));
-                    startActivity(browserIntent);
-                }
+                    Fragment mFragment = new RezepteAnzeigenFragment();
+                    getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, mFragment).commit();
             }
         });
-
 
         return view;
     }
@@ -130,17 +117,13 @@ public class RezepteFragment extends Fragment {
 
         @Override
         public void run() {
-
             try {
                 String jsonDocument = holeRezeptDaten();
                 parseJSON(jsonDocument);
-                rezept1View.setText(rezeptNr1[0]);
-
-
+                AddDataRezepte(rezeptNr1[0], rezeptNr1[1], rezeptNr1[2], rezeptNr2[0], rezeptNr2[1], rezeptNr2[2], rezeptNr3[0], rezeptNr3[1], rezeptNr3[2]);
 
             } catch (Exception ex) {
                 System.out.println(ex.getMessage());
-
             }
         }
     }
@@ -185,20 +168,20 @@ public class RezepteFragment extends Fragment {
             JSONArray recipes = jsonObject.getJSONArray("recipes");
             JSONObject rezeptData1 = recipes.getJSONObject(0);
             JSONObject rezeptData2 = recipes.getJSONObject(1);
-            //JSONObject rezeptData3 = recipes.getJSONObject(2);
+            JSONObject rezeptData3 = recipes.getJSONObject(2);
 
 
             rezeptNr1[0] = rezeptData1.getString("title");
             rezeptNr1[1] = rezeptData1.getString("image");
             rezeptNr1[2] = rezeptData1.getString("sourceUrl");
 
-            /*rezeptNr2[0] = rezeptData2.getString("title");
+            rezeptNr2[0] = rezeptData2.getString("title");
             rezeptNr2[1] = rezeptData2.getString("image");
-            rezeptNr2[2] = rezeptData2.getString("sourceUrl");*/
+            rezeptNr2[2] = rezeptData2.getString("sourceUrl");
 
-            /*rezeptNr3[0] = rezeptData3.getString("title");
+            rezeptNr3[0] = rezeptData3.getString("title");
             rezeptNr3[1] = rezeptData3.getString("image");
-            rezeptNr3[2] = rezeptData3.getString("sourceUrl");*/
+            rezeptNr3[2] = rezeptData3.getString("sourceUrl");
         }
 
     private void toastMessage(String message) {
@@ -215,20 +198,10 @@ public class RezepteFragment extends Fragment {
         return cm.getActiveNetworkInfo() != null && cm.getActiveNetworkInfo().isConnectedOrConnecting();
     }
 
-    private void rezeptBildLaden() {
-
-        Picasso.get().load(rezeptNr1[1]).into(rezept1Bild);
-    }
-
-    public void setzteTEXT() {
-        rezept1View.setText(rezeptNr1[0]);
-        //rezept2View.setText(rezeptNr2[0]);
-        rezeptBildLaden();
-    }
 
 
     private void urlZusammenstellung(){
-        urlMitName = "http://192.168.178.62:8080/api/recipes?number=1&tags=";
+        urlMitName = "http://192.168.178.62:8080/api/recipes?number=3&tags=";
 
         if(fruehBoolean == true){
             urlMitName= urlMitName;
@@ -254,9 +227,19 @@ public class RezepteFragment extends Fragment {
         if(gesundBoolean == true){
             urlMitName= urlMitName + "veryHealthy";
         }
-
-
     }
 
+    /**
+     * Daten werden für Speicherung an die Wetter-Datenbank weitergeleitet
+     */
+    private void AddDataRezepte(String newEntry, String newEntry2, String newEntry3, String newEntry4, String newEntry5, String newEntry6, String newEntry7, String newEntry8, String newEntry9) {
+        boolean insertData = datenbankRezepte.addData(newEntry, newEntry2, newEntry3, newEntry4, newEntry5, newEntry6, newEntry7, newEntry8, newEntry9);
+
+        if (insertData) {
+            //toastMessage("Daten wurden erfolgreich gespeichert!");
+        } else {
+            toastMessage("Etwas ist schief gelaufen :(");
+        }
+    }
 
 }

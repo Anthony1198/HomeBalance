@@ -8,11 +8,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -59,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
                             selectedFragment = new WetterFragment();
                             break;
                         case R.id.nav_rezepte:
-                            selectedFragment = new RezepteFragment();
+                            selectedFragment = new RezepteEinstellungenFragment();
                             break;
 
                     }
