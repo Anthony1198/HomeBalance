@@ -26,7 +26,7 @@ import java.net.URL;
 public class MeditationFragment extends Fragment {
 
     Button anzeigenNeue2, anzeigenLetzte2;
-    String urlMitName;
+    String urlMitName, line;
     TextView test;
 
     @Nullable
@@ -51,11 +51,7 @@ public class MeditationFragment extends Fragment {
                     // Ausführung des Hintergrund-Thread mit HTTP-Request
                     MeditationFragment.MeinHintergrundThread mht = new MeditationFragment.MeinHintergrundThread();
                     mht.start();
-                    try {
-                        mht.join();
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
+
                     //Fragment mFragment = new RezepteAnzeigenFragment();
                     //getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, mFragment).commit();
                 }
@@ -134,7 +130,7 @@ public class MeditationFragment extends Fragment {
 
             httpErgebnisDokument = reader.readLine();
         }
-        test.setText(httpErgebnisDokument);
+        System.out.println(httpErgebnisDokument);
         return httpErgebnisDokument;
 
     }

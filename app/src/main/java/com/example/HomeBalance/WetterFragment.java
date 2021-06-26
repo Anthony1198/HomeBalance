@@ -81,9 +81,13 @@ public class WetterFragment extends Fragment {
                     // Ausführung des Hintergrund-Thread mit HTTP-Request
                     WetterFragment.MeinHintergrundThread mht = new MeinHintergrundThread();
                     mht.start();
-
-
-
+                    try {
+                        mht.join();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    Fragment mFragment = new WetterFragment();
+                    getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, mFragment).commit();
                 }
             }
         });
@@ -93,8 +97,8 @@ public class WetterFragment extends Fragment {
          */
         Cursor dataWetter = datenbankWetter.getData();
         dataWetter.moveToLast();
-        wetterDay.setText(dataWetter.getString(1) + "\n" + dataWetter.getString(2) + "\n" + dataWetter.getString(3) );
-        wetterCurrent.setText(dataWetter.getString(4) + "\n" + dataWetter.getString(5) + "\n" + dataWetter.getString(6));
+        wetterDay.setText("Heute:\n" + dataWetter.getString(1) + "\n" + dataWetter.getString(2) + "\n" + dataWetter.getString(3) );
+        wetterCurrent.setText("Aktuell:\n" + dataWetter.getString(4) + "\n" + dataWetter.getString(5) + "\n" + dataWetter.getString(6));
 
         return view;
     }
