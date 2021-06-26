@@ -1,5 +1,7 @@
 package com.example.HomeBalance;
 
+//TODO: Nicht genutzte Imports entfernen
+
 import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
@@ -83,7 +85,6 @@ public class WetterFragment extends Fragment {
                     mht.start();
 
 
-
                 }
             }
         });
@@ -93,20 +94,17 @@ public class WetterFragment extends Fragment {
          */
         Cursor dataWetter = datenbankWetter.getData();
         dataWetter.moveToLast();
-        wetterDay.setText(dataWetter.getString(1) + "\n" + dataWetter.getString(2) + "\n" + dataWetter.getString(3) );
+        wetterDay.setText(dataWetter.getString(1) + "\n" + dataWetter.getString(2) + "\n" + dataWetter.getString(3));
         wetterCurrent.setText(dataWetter.getString(4) + "\n" + dataWetter.getString(5) + "\n" + dataWetter.getString(6));
 
         return view;
     }
 
 
-
-
-
-    private void gpsHolen(){
+    private void gpsHolen() {
         if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
-                ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED){
-            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION},1);
+                ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION}, 1);
         }
 
 
@@ -134,6 +132,7 @@ public class WetterFragment extends Fragment {
             }
         });
     }
+
     private void toastMessage(String message) {
         Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
     }
@@ -156,7 +155,7 @@ public class WetterFragment extends Fragment {
 
             try {
                 String jsonDocument = holeWetterDaten();
-               parseJSON(jsonDocument);
+                parseJSON(jsonDocument);
                 tempDay = temperatur;
                 rainDay = niederschlag;
                 windDay = wind;
@@ -165,7 +164,7 @@ public class WetterFragment extends Fragment {
                 urlMitName = "http://192.168.178.62:8080/api/weather?location=" + latitude + "," + longitude + "&startTime=" + startTime + "&endTime=" + endTime + "&timesteps=" + timeStep + "&timezone=" + timeZone;
 
                 String jsonDocument2 = holeWetterDaten();
-                 parseJSON(jsonDocument2);
+                parseJSON(jsonDocument2);
                 AddDataWetter(tempDay, rainDay, windDay, temperatur, niederschlag, wind);
 
 
@@ -229,7 +228,7 @@ public class WetterFragment extends Fragment {
         return httpErgebnisDokument;
     }
 
-    private void getWetterDatumZeit(){
+    private void getWetterDatumZeit() {
 
         DateFormat df = new SimpleDateFormat("yyyy-MM-d");
         DateFormat df2 = new SimpleDateFormat("HH:mm:ss");
@@ -244,9 +243,9 @@ public class WetterFragment extends Fragment {
         endTime = nextDay + "T" + time + "Z";
     }
 
-    private void getTimeZone(){
+    private void getTimeZone() {
         TimeZone tz = TimeZone.getDefault();
-        timeZone= tz.getID();
+        timeZone = tz.getID();
     }
 
     /**
