@@ -41,7 +41,7 @@
                 android:layout_width="277dp"
                 android:layout_height="75dp"
                 android:layout_marginTop="60dp"
-                android:text="TextView"
+                android:textColor="#000000"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/wetterDay" />
@@ -51,7 +51,7 @@
                 android:layout_width="287dp"
                 android:layout_height="89dp"
                 android:layout_marginTop="88dp"
-                android:text="TextView"
+                android:textColor="#000000"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/wetter" />

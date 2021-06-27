@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    android:background="@android:color/background_light">
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/meditation2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="37dp"
+            android:text="Meditation"
+            android:textColor="#000000"
+            android:textSize="40dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <TextView
+            android:id="@+id/radioSprache"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="52dp"
+            android:text="Sprache auswählen:"
+            android:textColor="#000000"
+            android:textSize="20dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/meditation2" />
+
+        <Button
+            android:id="@+id/anzeigenNeue2"
+            android:layout_width="213dp"
+            android:layout_height="57dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/buttonshape"
+            android:text="Anzeigen"
+            android:textColor="#FFFFFFFF"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/radioGroup" />
+
+        <Button
+            android:id="@+id/anzeigenLetzte2"
+            android:layout_width="213dp"
+            android:layout_height="57dp"
+            android:layout_marginTop="4dp"
+            android:background="@drawable/buttonshape"
+            android:text="Letzte Meditationen"
+            android:textColor="#FFFFFFFF"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/anzeigenNeue2" />
+
+        <RadioGroup
+            android:id="@+id/radioGroup"
+            android:layout_width="116dp"
+            android:layout_height="158dp"
+            android:layout_marginTop="92dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/meditation2">
+
+
+            <RadioButton
+                android:id="@+id/radioDeutsch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Deutsch" />
+
+            <RadioButton
+                android:id="@+id/radioEnglisch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Englisch" />
+
+            <RadioButton
+                android:id="@+id/radioFranz"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Französisch" />
+
+        </RadioGroup>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>

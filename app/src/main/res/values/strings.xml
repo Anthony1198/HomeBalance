@@ -11,9 +11,9 @@
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
 
     <!-- Strings für das App Intro -->
-    <string name="introTitle1">Willkommen bei HomeBalance!</string>
+    <string name="introTitle1">Willkommen bei Balanced!</string>
     <string name="introTitle2">Daten eingeben und Unterstützung erhalten</string>
-    <string name="introDescr1">HomeBalance trägt zur Balance deiner Arbeits- Lebens- Schlaf- und Aktivitätszeiten bei.</string>
+    <string name="introDescr1">Balanced trägt zur Balance deiner Arbeits- Lebens- Schlaf- und Aktivitätszeiten bei.</string>
     <string name="introDescr2">Durch unser intelligentes System erhälst du täglich an dich angepasste Vorschläge, um deinen Alltag zu strukturieren, auszugleichen und vieles Mehr!</string>
     <string name="HTTPS">HTTP Conecction funktioniert nicht!</string>
 </resources>

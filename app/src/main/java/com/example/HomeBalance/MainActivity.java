@@ -51,13 +51,13 @@ public class MainActivity extends AppCompatActivity {
                             selectedFragment = new HomeFragment();
                             break;
                         case R.id.nav_meditation:
-                            selectedFragment = new MeditationFragment();
+                            selectedFragment = new MeditationSucheFragment();
                             break;
                         case R.id.nav_wetter:
                             selectedFragment = new WetterFragment();
                             break;
                         case R.id.nav_rezepte:
-                            selectedFragment = new RezepteEinstellungenFragment();
+                            selectedFragment = new RezepteSucheFragment();
                             break;
 
                     }
