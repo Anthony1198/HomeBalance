@@ -1,24 +1,18 @@
 package com.example.HomeBalance;
 
 import android.content.Context;
-import android.content.Intent;
 import android.net.ConnectivityManager;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.RadioButton;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-
-import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -160,8 +154,6 @@ public class MeditationSucheFragment extends Fragment {
         audio3[0] = result3.getString("title_original");
         audio3[1] = result3.getString("image");
         audio3[2] = result3.getString("audio");
-
-        System.out.println(audio1[0] + " " + audio1[1] + " " + audio1[2] + "\n" + audio2[0] + " " + audio2[1] + " " + audio2[1] + "\n" + audio3[0] + " " + audio3[1] + " " + audio3[1]);
     }
 
 
@@ -208,7 +200,7 @@ public class MeditationSucheFragment extends Fragment {
     }
 
     /**
-     * Daten werden für Speicherung an die Wetter-Datenbank weitergeleitet
+     * Daten werden für Speicherung an die Meditation-Datenbank weitergeleitet
      */
     private void AddDataMeditation(String newEntry, String newEntry2, String newEntry3, String newEntry4, String newEntry5, String newEntry6, String newEntry7, String newEntry8, String newEntry9) {
         boolean insertData = datenbankMeditation.addData(newEntry, newEntry2, newEntry3, newEntry4, newEntry5, newEntry6, newEntry7, newEntry8, newEntry9);

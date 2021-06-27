@@ -27,12 +27,11 @@ public class HomeFragment extends Fragment {
      * Deklaration nötiger Varibalen
      */
     LinearLayout linearLayout;
+    Button creditsButton;
     private TextView name;
-    private Button wakeup, morningWork, afternoonWork, eveningWork, lunch, naping, freetime, dinner, sleep, hilfe;
     private int hour, minuten;
     private String zeit, testNull;
 
-    String a[];
     String c[] = new String[]{"Aufstehzeit:", "Arbeitsbeginn:", "Pause:", "Arbeitsfortsetzung:", "Powernap:", "Freizeit", "Abendessen", "Arbeitsfortsetzung am Abend:", "Schlafenszeit:"};
 
     /**
@@ -57,13 +56,13 @@ public class HomeFragment extends Fragment {
         datenbankEingabe = new DatenbankHelferEingabe(getActivity());
         datenbankOptimierung = new DatenbankHelferOptimierung(getActivity());
 
+        final CreditsActivity credits = new CreditsActivity();
 
         /**
          * Initialisierung der View-Komponenten
          */
         name = (TextView) view.findViewById(R.id.name);
-
-
+        creditsButton = (Button) view.findViewById(R.id.credits);
 
         /**
          * Auslesen der Eingabe-Datenbank für den User-Namen
@@ -106,6 +105,7 @@ public class HomeFragment extends Fragment {
                 btn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        credits.getNewCredits(10);
                         zeit = dataOptimierung.getString(index);
                         weckerStellen(zeit);
                     }
@@ -129,5 +129,9 @@ public class HomeFragment extends Fragment {
             intent.putExtra(AlarmClock.EXTRA_MINUTES, minuten);
             startActivity(intent);
         }
+    }
+
+    public void setCredits(int anzahl){
+        creditsButton.setText("CREDITS: ");
     }
 }
