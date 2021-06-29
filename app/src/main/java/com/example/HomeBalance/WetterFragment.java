@@ -262,6 +262,5 @@ public class WetterFragment extends Fragment {
             toastMessage("Etwas ist schief gelaufen :(");
         }
     }
-
 }
 

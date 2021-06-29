@@ -1,6 +1,7 @@
 package com.example.HomeBalance;
 
 
+import android.Manifest;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -16,6 +17,7 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.DialogFragment;
 
 import org.json.JSONArray;
@@ -202,6 +204,8 @@ public class DatenEingabeActivity extends AppCompatActivity implements TimePicke
                     fruehstueck.setChecked(true);
                 }
             }
+        } else {
+            locationAnfragen();
         }
     }
 
@@ -354,5 +358,10 @@ public class DatenEingabeActivity extends AppCompatActivity implements TimePicke
                 default:
             }
         }
+    }
+    private void locationAnfragen(){
+        ActivityCompat.requestPermissions(this,
+                new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                1);
     }
 }
