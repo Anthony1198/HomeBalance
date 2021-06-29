@@ -17,7 +17,7 @@
     <string name="introDescr2">Durch unser intelligentes System erhälst du täglich an dich angepasste Vorschläge, um deinen Alltag zu strukturieren, auszugleichen und vieles Mehr!</string>
     <string name="HTTPS">HTTP Conecction funktioniert nicht!</string>
 
-    <string name="localeIP">192.168.178.64</string>
+    <string name="localeIP">127.0.0.1</string>
     <string name="wetterAPIURL">HTTP Conecction funktioniert nicht!</string>
     <string name="scheduleAPIURL">HTTP Conecction funktioniert nicht!</string>
     <string name="rezeptAPIURL">HTTP Conecction funktioniert nicht!</string>
