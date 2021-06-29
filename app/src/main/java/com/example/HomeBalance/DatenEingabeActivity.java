@@ -154,7 +154,7 @@ public class DatenEingabeActivity extends AppCompatActivity implements TimePicke
                 if (isOnline() == false) {
                     toastMessage("Keine Internetverbindung!");
                 } else {
-                    urlMitName = "http://192.168.178.64:8080/api/schedule?" + "nap=" + napInhalt + "&age=" + alterInhalt + "&breakfast=" + fruehstueckInhalt + "&wakeUpTime=" + aufstehzeitInhalt + "&getReadyDuration=" + routineInhalt + "&workingHours=" + arbneitszeitInhalt;
+                    urlMitName = "http://" + getString(R.string.localeIP) + ":8080/api/schedule?" + "nap=" + napInhalt + "&age=" + alterInhalt + "&breakfast=" + fruehstueckInhalt + "&wakeUpTime=" + aufstehzeitInhalt + "&getReadyDuration=" + routineInhalt + "&workingHours=" + arbneitszeitInhalt;
 
                     // Button deaktivieren während ein HTTP-Request läuft
                     abschicken.setEnabled(false);

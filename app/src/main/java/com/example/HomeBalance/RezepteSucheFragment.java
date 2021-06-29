@@ -185,7 +185,7 @@ public class RezepteSucheFragment extends Fragment {
 
 
     private void urlZusammenstellung(){
-        urlMitName = "http://192.168.178.64:8080/api/recipes?number=3&tags=";
+        urlMitName = "http://" + getString(R.string.localeIP) + ":8080/api/recipes?number=3&tags=";
 
         fruehBoolean = frueh.isChecked();
         mittagBoolean = mittag.isChecked();

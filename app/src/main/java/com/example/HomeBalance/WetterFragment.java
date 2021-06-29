@@ -74,7 +74,7 @@ public class WetterFragment extends Fragment {
                     getTimeZone();
                     timeStep = "1d";
 
-                    urlMitName = "http://192.168.178.64:8080/api/weather?location=" + latitude + "," + longitude + "&startTime=" + startTime + "&endTime=" + endTime + "&timesteps=" + timeStep + "&timezone=" + timeZone;
+                    urlMitName = "http://" + getString(R.string.localeIP) + ":8080/api/weather?location=" + latitude + "," + longitude + "&startTime=" + startTime + "&endTime=" + endTime + "&timesteps=" + timeStep + "&timezone=" + timeZone;
                     toastMessage("Daten werden verarbeitet!");
 
 
