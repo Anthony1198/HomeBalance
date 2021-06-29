@@ -82,6 +82,7 @@ public class DatenEingabeActivity extends AppCompatActivity implements TimePicke
         datenbankEingabe = new DatenbankHelferEingabe(this);
         datenbankOptimierung = new DatenbankHelferOptimierung(this);
 
+
         /**
          * Initialisierung der View-Komponenten
          */
@@ -96,8 +97,6 @@ public class DatenEingabeActivity extends AppCompatActivity implements TimePicke
         arbeitszeitButton = (Button) findViewById(R.id.arbeitszeitButton);
         nap = (Switch) findViewById(R.id.nap);
         fruehstueck = (Switch) findViewById(R.id.fruehstueck);
-
-        befuellen();
 
 
         /**
@@ -153,7 +152,7 @@ public class DatenEingabeActivity extends AppCompatActivity implements TimePicke
                 if (isOnline() == false) {
                     toastMessage("Keine Internetverbindung!");
                 } else {
-                    urlMitName = "http://192.168.178.62:8080/api/schedule?" + "nap=" + napInhalt + "&age=" + alterInhalt + "&breakfast=" + fruehstueckInhalt + "&wakeUpTime=" + aufstehzeitInhalt + "&getReadyDuration=" + routineInhalt + "&workingHours=" + arbneitszeitInhalt;
+                    urlMitName = "http://192.168.178.64:8080/api/schedule?" + "nap=" + napInhalt + "&age=" + alterInhalt + "&breakfast=" + fruehstueckInhalt + "&wakeUpTime=" + aufstehzeitInhalt + "&getReadyDuration=" + routineInhalt + "&workingHours=" + arbneitszeitInhalt;
 
                     // Button deaktivieren während ein HTTP-Request läuft
                     abschicken.setEnabled(false);
@@ -164,7 +163,11 @@ public class DatenEingabeActivity extends AppCompatActivity implements TimePicke
                     // Ausführung des Hintergrund-Thread mit HTTP-Request
                     MeinHintergrundThread mht = new MeinHintergrundThread();
                     mht.start();
-
+                    try {
+                        mht.join();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
                     Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                     startActivity(intent);
                 }
@@ -174,25 +177,30 @@ public class DatenEingabeActivity extends AppCompatActivity implements TimePicke
             }
         }
     });
+
+        Cursor dataEingabe = datenbankEingabe.getData();
+        befuellen(dataEingabe);
 }
 
     /**
      * Die Methode befüllt schon vorhandene Eingabedaten in die Maske
      */
-    private void befuellen(){
-        Cursor dataEingabe = datenbankEingabe.getData();
-        dataEingabe.moveToLast();
-        if (dataEingabe.getString(1) != null){
-            vorname.setText(dataEingabe.getString(1));
-            alter.setText(dataEingabe.getString(2));
-            aufstehzeit.setText(dataEingabe.getString(3));
-            routine.setText(dataEingabe.getString(4));
-            arbeitszeit.setText(dataEingabe.getString(5));
-            if(dataEingabe.getString(6).equals("1")) {
-                nap.setChecked(true);
-            }
-            if(dataEingabe.getString(7).equals("1")) {
-                fruehstueck.setChecked(true);
+    private void befuellen(Cursor dataEingabe){
+
+        if( dataEingabe != null && dataEingabe.moveToFirst() ){
+            dataEingabe.moveToLast();
+            if (dataEingabe.getString(1) != null) {
+                vorname.setText(dataEingabe.getString(1));
+                alter.setText(dataEingabe.getString(2));
+                aufstehzeit.setText(dataEingabe.getString(3));
+                routine.setText(dataEingabe.getString(4));
+                arbeitszeit.setText(dataEingabe.getString(5));
+                if (dataEingabe.getString(6).equals("1")) {
+                    nap.setChecked(true);
+                }
+                if (dataEingabe.getString(7).equals("1")) {
+                    fruehstueck.setChecked(true);
+                }
             }
         }
     }

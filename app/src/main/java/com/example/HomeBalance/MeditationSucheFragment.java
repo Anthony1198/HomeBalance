@@ -91,7 +91,7 @@ public class MeditationSucheFragment extends Fragment {
     }
 
     private void urlZusammenstellung() {
-        urlMitName = "http://192.168.178.62:8080/api/meditation?search=Meditation&language=";
+        urlMitName = "http://192.168.178.64:8080/api/meditation?search=Meditation&language=";
 
         deutschBoolean = radioDeutsch.isChecked();
         englischBoolean = radioEnglisch.isChecked();

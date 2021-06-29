@@ -74,7 +74,7 @@ public class WetterFragment extends Fragment {
                     getTimeZone();
                     timeStep = "1d";
 
-                    urlMitName = "http://192.168.178.62:8080/api/weather?location=" + latitude + "," + longitude + "&startTime=" + startTime + "&endTime=" + endTime + "&timesteps=" + timeStep + "&timezone=" + timeZone;
+                    urlMitName = "http://192.168.178.64:8080/api/weather?location=" + latitude + "," + longitude + "&startTime=" + startTime + "&endTime=" + endTime + "&timesteps=" + timeStep + "&timezone=" + timeZone;
                     toastMessage("Daten werden verarbeitet!");
 
 
@@ -96,16 +96,13 @@ public class WetterFragment extends Fragment {
          * Auslesen der Optimierungs-Datenbank für den Tagesablaufplan
          */
         Cursor dataWetter = datenbankWetter.getData();
-        dataWetter.moveToLast();
-        wetterDay.setText("Heute:\n" + dataWetter.getString(1) + "\n" + dataWetter.getString(2) + "\n" + dataWetter.getString(3) );
-        wetterCurrent.setText("Aktuell:\n" + dataWetter.getString(4) + "\n" + dataWetter.getString(5) + "\n" + dataWetter.getString(6));
-
+        if( dataWetter != null && dataWetter.moveToFirst() ) {
+            dataWetter.moveToLast();
+            wetterDay.setText("Heute:\n" + dataWetter.getString(1) + "\n" + dataWetter.getString(2) + "\n" + dataWetter.getString(3));
+            wetterCurrent.setText("Aktuell:\n" + dataWetter.getString(4) + "\n" + dataWetter.getString(5) + "\n" + dataWetter.getString(6));
+        }
         return view;
     }
-
-
-
-
 
     private void gpsHolen(){
         if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED &&

@@ -61,27 +61,30 @@ public class RezepteAnzeigenFragment extends Fragment {
         /**
          * Auslesen der Eingabe-Datenbank für den User-Namen
          */
-        Cursor dataEingabe = datenbankRezepte.getData();
-        dataEingabe.moveToLast();
+        Cursor dataRezepte = datenbankRezepte.getData();
+        if( dataRezepte != null && dataRezepte.moveToFirst() ) {
+            dataRezepte.moveToLast();
 
-        rezeptNr1[0] = (dataEingabe.getString(1));
-        rezeptNr1[1] = (dataEingabe.getString(2));
-        rezeptNr1[2] = (dataEingabe.getString(3));
-        rezeptNr2[0] = (dataEingabe.getString(4));
-        rezeptNr2[1] = (dataEingabe.getString(5));
-        rezeptNr2[2] = (dataEingabe.getString(6));
-        rezeptNr3[0] = (dataEingabe.getString(7));
-        rezeptNr3[1] = (dataEingabe.getString(8));
-        rezeptNr3[2] = (dataEingabe.getString(9));
+            rezeptNr1[0] = (dataRezepte.getString(1));
+            rezeptNr1[1] = (dataRezepte.getString(2));
+            rezeptNr1[2] = (dataRezepte.getString(3));
+            rezeptNr2[0] = (dataRezepte.getString(4));
+            rezeptNr2[1] = (dataRezepte.getString(5));
+            rezeptNr2[2] = (dataRezepte.getString(6));
+            rezeptNr3[0] = (dataRezepte.getString(7));
+            rezeptNr3[1] = (dataRezepte.getString(8));
+            rezeptNr3[2] = (dataRezepte.getString(9));
 
-        rezept1title.setText(rezeptNr1[0]);
-        rezept2title.setText(rezeptNr2[0]);
-        rezept3title.setText(rezeptNr3[0]);
+            rezept1title.setText(rezeptNr1[0]);
+            rezept2title.setText(rezeptNr2[0]);
+            rezept3title.setText(rezeptNr3[0]);
 
-        Picasso.get().load(rezeptNr1[1]).into(rezept1bild);
-        Picasso.get().load(rezeptNr2[1]).into(rezept2bild);
-        Picasso.get().load(rezeptNr3[1]).into(rezept3bild);
-
+            Picasso.get().load(rezeptNr1[1]).into(rezept1bild);
+            Picasso.get().load(rezeptNr2[1]).into(rezept2bild);
+            Picasso.get().load(rezeptNr3[1]).into(rezept3bild);
+        } else {
+            toastMessage("Es wurden noch keine Rezepte gesucht!");
+        }
 
         rezept1bild.setOnClickListener(new View.OnClickListener() {
             @Override

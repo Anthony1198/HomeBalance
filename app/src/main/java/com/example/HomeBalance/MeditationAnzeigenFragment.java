@@ -55,27 +55,30 @@ public class MeditationAnzeigenFragment extends Fragment {
         /**
          * Auslesen der Eingabe-Datenbank für den User-Namen
          */
-        Cursor dataEingabe = datenbankMeditation.getData();
-        dataEingabe.moveToLast();
+        Cursor dataMeditation = datenbankMeditation.getData();
+        if( dataMeditation != null && dataMeditation.moveToFirst() ) {
+            dataMeditation.moveToLast();
 
-        meditationNr1[0] = (dataEingabe.getString(1));
-        meditationNr1[1] = (dataEingabe.getString(2));
-        meditationNr1[2] = (dataEingabe.getString(3));
-        meditationNr2[0] = (dataEingabe.getString(4));
-        meditationNr2[1] = (dataEingabe.getString(5));
-        meditationNr2[2] = (dataEingabe.getString(6));
-        meditationNr3[0] = (dataEingabe.getString(7));
-        meditationNr3[1] = (dataEingabe.getString(8));
-        meditationNr3[2] = (dataEingabe.getString(9));
+            meditationNr1[0] = (dataMeditation.getString(1));
+            meditationNr1[1] = (dataMeditation.getString(2));
+            meditationNr1[2] = (dataMeditation.getString(3));
+            meditationNr2[0] = (dataMeditation.getString(4));
+            meditationNr2[1] = (dataMeditation.getString(5));
+            meditationNr2[2] = (dataMeditation.getString(6));
+            meditationNr3[0] = (dataMeditation.getString(7));
+            meditationNr3[1] = (dataMeditation.getString(8));
+            meditationNr3[2] = (dataMeditation.getString(9));
 
-        meditation1title.setText(meditationNr1[0]);
-        meditation2title.setText(meditationNr2[0]);
-        meditation3title.setText(meditationNr3[0]);
+            meditation1title.setText(meditationNr1[0]);
+            meditation2title.setText(meditationNr2[0]);
+            meditation3title.setText(meditationNr3[0]);
 
-        Picasso.get().load(meditationNr1[1]).into(mediation1bild);
-        Picasso.get().load(meditationNr2[1]).into(mediation2bild);
-        Picasso.get().load(meditationNr3[1]).into(mediation3bild);
-
+            Picasso.get().load(meditationNr1[1]).into(mediation1bild);
+            Picasso.get().load(meditationNr2[1]).into(mediation2bild);
+            Picasso.get().load(meditationNr3[1]).into(mediation3bild);
+        } else {
+            toastMessage("Es wurden noch keine Meditationen gesucht!");
+        }
 
         mediation1bild.setOnClickListener(new View.OnClickListener() {
             @Override
