@@ -72,55 +72,66 @@ public class HomeFragment extends Fragment {
         creditsButton = (Button) view.findViewById(R.id.credits);
 
         CreditsActivity.getInstance().setNewCredits(0, creditsButton);
+        linearLayout = (LinearLayout) view.findViewById(R.id.linearLayout);
 
         /**
-         * Auslesen der Eingabe-Datenbank für den User-Namen
+         * Auslesen der Eingabe-Datenbank für den User-Namen, wenn nicht vorhanden, dann steht die Dateneingabe noch aus
          */
         Cursor dataEingabe = datenbankEingabe.getData();
-        dataEingabe.moveToLast();
-        name.setText("Hallo " + dataEingabe.getString(1) + "!");
+        if( dataEingabe != null && dataEingabe.moveToFirst() ) {
+            dataEingabe.moveToLast();
+            name.setText("Hallo " + dataEingabe.getString(1) + "!");
+        } else {
+            TextView anzeige = new TextView(getActivity());
+            anzeige.setTextSize(20);
+            anzeige.setTextAlignment(view.TEXT_ALIGNMENT_CENTER);
+            anzeige.setTextColor(Color.BLACK);
+            anzeige.setText("Bitte die Dateneingabe auf dem + durchführen!");
+            linearLayout.addView(anzeige);
+        }
 
-        linearLayout = (LinearLayout) view.findViewById(R.id.linearLayout);
 
 
         /**
          * Auslesen der Optimierungs-Datenbank für den Tagesablaufplan + dynamische Auffüllung der View
          */
         final Cursor dataOptimierung = datenbankOptimierung.getData();
-        dataOptimierung.moveToLast();
+        if( dataEingabe != null && dataEingabe.moveToFirst() ) {
+            dataOptimierung.moveToLast();
 
-        int b = 1;
+            int b = 1;
 
-        for (int i = 0; i<9; i++){
-            testNull = dataOptimierung.getString(b);
-            if (testNull == null) {
-            }else {
-                TextView anzeige = new TextView(getActivity());
-                anzeige.setTextSize(20);
-                anzeige.setTextAlignment(view.TEXT_ALIGNMENT_CENTER);
-                anzeige.setTextColor(Color.BLACK);
-                anzeige.setText(c[i]);
-                linearLayout.addView(anzeige);
+            for (int i = 0; i < 9; i++) {
+                testNull = dataOptimierung.getString(b);
+                if (testNull == null) {
+                } else {
+                    TextView anzeige = new TextView(getActivity());
+                    anzeige.setTextSize(20);
+                    anzeige.setTextAlignment(view.TEXT_ALIGNMENT_CENTER);
+                    anzeige.setTextColor(Color.BLACK);
+                    anzeige.setText(c[i]);
+                    linearLayout.addView(anzeige);
 
-                Button btn = new Button(getActivity());
-                btn.setBackgroundResource(R.drawable.buttonshape);
-                btn.setId(i+1);
-                btn.setTextSize(15);
-                btn.setText(testNull);
-                btn.setTextColor(Color.WHITE);
-                linearLayout.addView(btn);
+                    Button btn = new Button(getActivity());
+                    btn.setBackgroundResource(R.drawable.buttonshape);
+                    btn.setId(i + 1);
+                    btn.setTextSize(15);
+                    btn.setText(testNull);
+                    btn.setTextColor(Color.WHITE);
+                    linearLayout.addView(btn);
 
-                final int index = b;
-                btn.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        CreditsActivity.getInstance().setNewCredits(1, creditsButton);
-                        zeit = dataOptimierung.getString(index);
-                        weckerStellen(zeit);
-                    }
-                });
+                    final int index = b;
+                    btn.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            CreditsActivity.getInstance().setNewCredits(1, creditsButton);
+                            zeit = dataOptimierung.getString(index);
+                            weckerStellen(zeit);
+                        }
+                    });
+                }
+                b++;
             }
-            b++;
         }
         return view;
     }
