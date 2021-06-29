@@ -4,6 +4,7 @@ package com.example.HomeBalance;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.view.View;
@@ -64,6 +65,7 @@ public class DatenEingabeActivity extends AppCompatActivity implements TimePicke
     private TextView vorname, alter, aufstehzeit, routine, arbeitszeit, ausgewaehlt;
     private Switch nap, fruehstueck;
 
+
     /**
      * onCreate-Methode wird bei erstmaligem Aufruf der Activity ausgeführt
      *
@@ -94,6 +96,8 @@ public class DatenEingabeActivity extends AppCompatActivity implements TimePicke
         arbeitszeitButton = (Button) findViewById(R.id.arbeitszeitButton);
         nap = (Switch) findViewById(R.id.nap);
         fruehstueck = (Switch) findViewById(R.id.fruehstueck);
+
+        befuellen();
 
 
         /**
@@ -171,6 +175,28 @@ public class DatenEingabeActivity extends AppCompatActivity implements TimePicke
         }
     });
 }
+
+    /**
+     * Die Methode befüllt schon vorhandene Eingabedaten in die Maske
+     */
+    private void befuellen(){
+        Cursor dataEingabe = datenbankEingabe.getData();
+        dataEingabe.moveToLast();
+        if (dataEingabe.getString(1) != null){
+            vorname.setText(dataEingabe.getString(1));
+            alter.setText(dataEingabe.getString(2));
+            aufstehzeit.setText(dataEingabe.getString(3));
+            routine.setText(dataEingabe.getString(4));
+            arbeitszeit.setText(dataEingabe.getString(5));
+            if(dataEingabe.getString(6).equals("1")) {
+                nap.setChecked(true);
+            }
+            if(dataEingabe.getString(7).equals("1")) {
+                fruehstueck.setChecked(true);
+            }
+        }
+    }
+
     /**
      * Die Methode übernimmt die im TimePicker gewählte Zeit und formatiert diese in das Format "HH:MM" um
      */
