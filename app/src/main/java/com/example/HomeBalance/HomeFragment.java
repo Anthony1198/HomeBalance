@@ -5,25 +5,17 @@ import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.provider.AlarmClock;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import java.net.Inet4Address;
-import java.net.InetAddress;
-import java.net.NetworkInterface;
-import java.net.SocketException;
-import java.util.Enumeration;
 
 /**
  * Controller für die Anzeige der Tagesstruktur, welche durch die eingegebenen Daten mit der API brechnet wurde
@@ -70,9 +62,10 @@ public class HomeFragment extends Fragment {
          */
         name = (TextView) view.findViewById(R.id.name);
         creditsButton = (Button) view.findViewById(R.id.credits);
+        linearLayout = (LinearLayout) view.findViewById(R.id.linearLayout);
 
         CreditsActivity.getInstance().setNewCredits(0, creditsButton);
-        linearLayout = (LinearLayout) view.findViewById(R.id.linearLayout);
+
 
         /**
          * Auslesen der Eingabe-Datenbank für den User-Namen, wenn nicht vorhanden, dann steht die Dateneingabe noch aus
@@ -96,7 +89,8 @@ public class HomeFragment extends Fragment {
          * Auslesen der Optimierungs-Datenbank für den Tagesablaufplan + dynamische Auffüllung der View
          */
         final Cursor dataOptimierung = datenbankOptimierung.getData();
-        if( dataEingabe != null && dataEingabe.moveToFirst() ) {
+
+        if( dataOptimierung != null && dataEingabe.moveToFirst() ) {
             dataOptimierung.moveToLast();
 
             int b = 1;
