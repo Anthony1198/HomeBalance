@@ -29,111 +29,100 @@
             android:id="@+id/anzeigenNeue"
             android:layout_width="213dp"
             android:layout_height="57dp"
-            android:layout_marginTop="124dp"
+            android:layout_marginTop="40dp"
             android:background="@drawable/buttonshape"
             android:text="Anzeigen"
             android:textColor="#FFFFFFFF"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/nachtischRezepte" />
+            app:layout_constraintTop_toBottomOf="@+id/glutenfrei" />
 
 
         <Button
             android:id="@+id/anzeigenLetzte"
             android:layout_width="213dp"
             android:layout_height="57dp"
-            android:layout_marginTop="192dp"
+            android:layout_marginTop="10dp"
             android:background="@drawable/buttonshape"
             android:text="Letzte Rezepte"
             android:textColor="#FFFFFFFF"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/nachtischRezepte" />
+            app:layout_constraintTop_toBottomOf="@+id/anzeigenNeue" />
 
         <Switch
             android:id="@+id/fruehstucksRezepte"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="100dp"
+            android:layout_marginTop="50dp"
             android:text="Frühstück"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.495"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/rezepte"
-            tools:layout_editor_absoluteX="169dp" />
+            app:layout_constraintTop_toBottomOf="@+id/rezepte" />
 
         <Switch
             android:id="@+id/mittagsRezepte"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="27dp"
             android:text="Mittagessen"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/fruehstucksRezepte"
-            tools:layout_editor_absoluteX="169dp" />
+            app:layout_constraintTop_toBottomOf="@+id/fruehstucksRezepte" />
 
         <Switch
-            android:id="@+id/abendRezeppte"
+            android:id="@+id/abendRezepte"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
             android:text="Abendessen"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/fruehstucksRezepte"
-            tools:layout_editor_absoluteX="169dp" />
+            app:layout_constraintTop_toBottomOf="@+id/mittagsRezepte"/>
 
         <Switch
             android:id="@+id/nachtischRezepte"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="48dp"
             android:text="Nachtisch"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/fruehstucksRezepte" />
+            app:layout_constraintTop_toBottomOf="@+id/abendRezepte" />
 
         <Switch
             android:id="@+id/vegetarisch"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="72dp"
             android:text="vegetarisch"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.493"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/fruehstucksRezepte" />
+            app:layout_constraintTop_toBottomOf="@+id/nachtischRezepte" />
 
         <Switch
             android:id="@+id/gesund"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="152dp"
             android:text="gesund"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.498"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/fruehstucksRezepte" />
+            app:layout_constraintTop_toBottomOf="@+id/vegan" />
 
         <Switch
             android:id="@+id/glutenfrei"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="124dp"
             android:text="glutenfrei"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/fruehstucksRezepte" />
+            app:layout_constraintTop_toBottomOf="@+id/gesund" />
 
         <Switch
             android:id="@+id/vegan"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="96dp"
             android:text="vegan"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/fruehstucksRezepte" />
+            app:layout_constraintTop_toBottomOf="@+id/vegetarisch" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
