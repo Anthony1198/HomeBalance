@@ -277,6 +277,7 @@ public class DatenEingabeActivity extends AppCompatActivity implements TimePicke
 
             httpErgebnisDokument = reader.readLine();
         }
+        System.out.println(httpErgebnisDokument);
         return httpErgebnisDokument;
     }
     private void toastMessage(String message) {

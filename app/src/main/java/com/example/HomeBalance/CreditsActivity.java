@@ -26,6 +26,10 @@ public class CreditsActivity extends AppCompatActivity {
         creditButton.setText("CREDITS: "+credits);
     }
 
+    public void setNewCredits(int anzahl){
+        credits += anzahl;
+    }
+
     public static CreditsActivity getInstance(){
         return creditAct;
     }

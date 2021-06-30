@@ -92,6 +92,7 @@ public class RezepteAnzeigenFragment extends Fragment {
                 if (isOnline() == false) {
                     toastMessage("Keine Internetverbindung!");
                 } else {
+                    CreditsActivity.getInstance().setNewCredits(2);
                     Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(rezeptNr1[2]));
                     startActivity(browserIntent);
                 }
@@ -104,6 +105,7 @@ public class RezepteAnzeigenFragment extends Fragment {
                 if (isOnline() == false) {
                     toastMessage("Keine Internetverbindung!");
                 } else {
+                    CreditsActivity.getInstance().setNewCredits(2);
                     Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(rezeptNr2[2]));
                     startActivity(browserIntent);
                 }
@@ -116,6 +118,7 @@ public class RezepteAnzeigenFragment extends Fragment {
                 if (isOnline() == false) {
                     toastMessage("Keine Internetverbindung!");
                 } else {
+                    CreditsActivity.getInstance().setNewCredits(2);
                     Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(rezeptNr3[2]));
                     startActivity(browserIntent);
                 }

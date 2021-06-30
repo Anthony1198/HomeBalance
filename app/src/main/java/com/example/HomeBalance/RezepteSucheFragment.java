@@ -105,6 +105,7 @@ public class RezepteSucheFragment extends Fragment {
                 String jsonDocument = holeRezeptDaten();
                 parseJSON(jsonDocument);
                 AddDataRezepte(rezeptNr1[0], rezeptNr1[1], rezeptNr1[2], rezeptNr2[0], rezeptNr2[1], rezeptNr2[2], rezeptNr3[0], rezeptNr3[1], rezeptNr3[2]);
+                CreditsActivity.getInstance().setNewCredits(1);
 
             } catch (Exception ex) {
                 System.out.println(ex.getMessage());
@@ -219,6 +220,7 @@ public class RezepteSucheFragment extends Fragment {
         }
         if(gesundBoolean == true){
             urlMitName= urlMitName + "veryHealthy";
+            CreditsActivity.getInstance().setNewCredits(5);
         }
     }
 
