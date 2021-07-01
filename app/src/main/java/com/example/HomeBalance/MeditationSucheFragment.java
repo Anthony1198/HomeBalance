@@ -30,14 +30,11 @@ public class MeditationSucheFragment extends Fragment {
     RadioButton radioDeutsch, radioEnglisch, radioFranz;
     String [] audio1, audio2, audio3;
     Boolean deutschBoolean, englischBoolean, franzBoolean;
-    DatenbankHelferMeditation datenbankMeditation;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_meditationsuche, container, false);
-
-        datenbankMeditation = new DatenbankHelferMeditation(getActivity());
 
         audio1 = new String[3];
         audio2 = new String[3];
@@ -117,7 +114,7 @@ public class MeditationSucheFragment extends Fragment {
                 String jsonDocument = holeMeditationsDaten();
                 parseJSON(jsonDocument);
                 AddDataMeditation(audio1[0], audio1[1], audio1[2], audio2[0], audio2[1], audio2[2], audio3[0], audio3[1], audio3[2]);
-                CreditsActivity.getInstance().setNewCredits(1);
+                CreditsActivity.getInstance().addCredits(1);
 
             } catch (Exception ex) {
                 System.out.println(ex.getMessage());
@@ -204,7 +201,7 @@ public class MeditationSucheFragment extends Fragment {
      * Daten werden für Speicherung an die Meditation-Datenbank weitergeleitet
      */
     private void AddDataMeditation(String newEntry, String newEntry2, String newEntry3, String newEntry4, String newEntry5, String newEntry6, String newEntry7, String newEntry8, String newEntry9) {
-        boolean insertData = datenbankMeditation.addData(newEntry, newEntry2, newEntry3, newEntry4, newEntry5, newEntry6, newEntry7, newEntry8, newEntry9);
+        boolean insertData = DatenbankHelferMeditation.getInstance(this.getContext()).addData(newEntry, newEntry2, newEntry3, newEntry4, newEntry5, newEntry6, newEntry7, newEntry8, newEntry9);
 
         if (insertData) {
             //toastMessage("Daten wurden erfolgreich gespeichert!");

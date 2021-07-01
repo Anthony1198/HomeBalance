@@ -13,6 +13,14 @@ import android.util.Log;
 
 public class DatenbankHelferMeditation extends SQLiteOpenHelper {
 
+    private static DatenbankHelferMeditation meditationDatenbankHelfer;
+
+    public static synchronized DatenbankHelferMeditation getInstance(Context context){
+        if(meditationDatenbankHelfer == null){
+            meditationDatenbankHelfer = new DatenbankHelferMeditation(context.getApplicationContext());
+        }
+        return meditationDatenbankHelfer;
+    }
     /**
      * Variablen Deklaration
      */
@@ -44,9 +52,11 @@ public class DatenbankHelferMeditation extends SQLiteOpenHelper {
     }
 
     @Override
-    public void onUpgrade(SQLiteDatabase db, int i, int i1) {
-        db.execSQL("DROP IF TABLE EXISTS " + TABLE_NAME);
-        onCreate(db);
+    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        if(oldVersion!=newVersion) {
+            db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
+            onCreate(db);
+        }
     }
 
     /**

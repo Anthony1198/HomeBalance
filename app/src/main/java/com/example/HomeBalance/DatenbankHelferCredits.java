@@ -23,6 +23,14 @@ public class DatenbankHelferCredits extends SQLiteOpenHelper {
 
     private static final String TAG = "DatenbankCredits";
 
+    private static DatenbankHelferCredits creditsDatenbankHelfer;
+
+    public static synchronized DatenbankHelferCredits getInstance(Context context){
+        if(creditsDatenbankHelfer == null){
+            creditsDatenbankHelfer = new DatenbankHelferCredits(context.getApplicationContext());
+        }
+        return creditsDatenbankHelfer;
+    }
 
     public DatenbankHelferCredits(Context context) {
         super(context, TABLE_NAME, null, 1);
@@ -36,9 +44,11 @@ public class DatenbankHelferCredits extends SQLiteOpenHelper {
     }
 
     @Override
-    public void onUpgrade(SQLiteDatabase db, int i, int i1) {
-        db.execSQL("DROP IF TABLE EXISTS " + TABLE_NAME);
-        onCreate(db);
+    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        if(oldVersion!=newVersion){
+            db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
+            onCreate(db);
+        }
     }
 
     /**

@@ -25,7 +25,6 @@ public class MeditationAnzeigenFragment extends Fragment {
     ImageButton mediation1bild, mediation2bild, mediation3bild;
     String[] meditationNr1, meditationNr2, meditationNr3;
 
-    DatenbankHelferMeditation datenbankMeditation;
 
     /**
      * onCreate-Methode wird bei erstmaligem Aufruf der Activity ausgeführt
@@ -36,8 +35,6 @@ public class MeditationAnzeigenFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragement_meditationanzeigen, container, false);
-
-        datenbankMeditation = new DatenbankHelferMeditation(getActivity());
 
         /**
          * Initialisierung der View-Komponenten
@@ -55,7 +52,7 @@ public class MeditationAnzeigenFragment extends Fragment {
         /**
          * Auslesen der Eingabe-Datenbank für den User-Namen
          */
-        Cursor dataMeditation = datenbankMeditation.getData();
+        Cursor dataMeditation = DatenbankHelferMeditation.getInstance(this.getContext()).getData();
         if( dataMeditation != null && dataMeditation.moveToFirst() ) {
             dataMeditation.moveToLast();
 
@@ -86,7 +83,7 @@ public class MeditationAnzeigenFragment extends Fragment {
                 if (isOnline() == false) {
                     toastMessage("Keine Internetverbindung!");
                 } else {
-                    CreditsActivity.getInstance().setNewCredits(3);
+                    CreditsActivity.getInstance().addCredits(3);
                     Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(meditationNr1[2]));
                     startActivity(browserIntent);
                 }
@@ -99,7 +96,7 @@ public class MeditationAnzeigenFragment extends Fragment {
                 if (isOnline() == false) {
                     toastMessage("Keine Internetverbindung!");
                 } else {
-                    CreditsActivity.getInstance().setNewCredits(3);
+                    CreditsActivity.getInstance().addCredits(3);
                     Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(meditationNr2[2]));
                     startActivity(browserIntent);
                 }
@@ -112,7 +109,7 @@ public class MeditationAnzeigenFragment extends Fragment {
                 if (isOnline() == false) {
                     toastMessage("Keine Internetverbindung!");
                 } else {
-                    CreditsActivity.getInstance().setNewCredits(3);
+                    CreditsActivity.getInstance().addCredits(3);
                     Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(meditationNr3[2]));
                     startActivity(browserIntent);
                 }

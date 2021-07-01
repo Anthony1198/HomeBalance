@@ -16,6 +16,14 @@ public class DatenbankHelferOptimierung extends SQLiteOpenHelper {
     /**
      * Variablen Deklaration
      */
+    private static DatenbankHelferOptimierung optimierungDatenbankHelfer;
+
+    public static synchronized DatenbankHelferOptimierung getInstance(Context context){
+        if(optimierungDatenbankHelfer == null){
+            optimierungDatenbankHelfer = new DatenbankHelferOptimierung(context.getApplicationContext());
+        }
+        return optimierungDatenbankHelfer;
+    }
 
     private static final String TABLE_NAME = "Optimierungswerte";
     private static final String COL1 = "ID";
@@ -46,9 +54,11 @@ public class DatenbankHelferOptimierung extends SQLiteOpenHelper {
     }
 
     @Override
-    public void onUpgrade(SQLiteDatabase db, int i, int i1) {
-        db.execSQL("DROP IF TABLE EXISTS " + TABLE_NAME);
-        onCreate(db);
+    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        if(oldVersion != newVersion){
+            db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
+            onCreate(db);
+        }
     }
 
     /**

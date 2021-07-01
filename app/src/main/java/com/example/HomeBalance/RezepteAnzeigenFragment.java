@@ -3,16 +3,13 @@ package com.example.HomeBalance;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
-import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,8 +25,6 @@ public class RezepteAnzeigenFragment extends Fragment {
     ImageButton rezept1bild, rezept2bild, rezept3bild;
     String[] rezeptNr1, rezeptNr2, rezeptNr3;
 
-    DatenbankHelferRezepte datenbankRezepte;
-
     /**
      * onCreate-Methode wird bei erstmaligem Aufruf der Activity ausgeführt
      *
@@ -39,8 +34,6 @@ public class RezepteAnzeigenFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragement_rezepteanzeigen, container, false);
-
-        datenbankRezepte = new DatenbankHelferRezepte(getActivity());
 
         /**
          * Initialisierung der View-Komponenten
@@ -61,7 +54,7 @@ public class RezepteAnzeigenFragment extends Fragment {
         /**
          * Auslesen der Eingabe-Datenbank für den User-Namen
          */
-        Cursor dataRezepte = datenbankRezepte.getData();
+        Cursor dataRezepte = DatenbankHelferRezepte.getInstance(this.getContext()).getData();
         if( dataRezepte != null && dataRezepte.moveToFirst() ) {
             dataRezepte.moveToLast();
 
@@ -92,7 +85,7 @@ public class RezepteAnzeigenFragment extends Fragment {
                 if (isOnline() == false) {
                     toastMessage("Keine Internetverbindung!");
                 } else {
-                    CreditsActivity.getInstance().setNewCredits(2);
+                    CreditsActivity.getInstance().addCredits(2);
                     Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(rezeptNr1[2]));
                     startActivity(browserIntent);
                 }
@@ -105,7 +98,7 @@ public class RezepteAnzeigenFragment extends Fragment {
                 if (isOnline() == false) {
                     toastMessage("Keine Internetverbindung!");
                 } else {
-                    CreditsActivity.getInstance().setNewCredits(2);
+                    CreditsActivity.getInstance().addCredits(2);
                     Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(rezeptNr2[2]));
                     startActivity(browserIntent);
                 }
@@ -118,7 +111,7 @@ public class RezepteAnzeigenFragment extends Fragment {
                 if (isOnline() == false) {
                     toastMessage("Keine Internetverbindung!");
                 } else {
-                    CreditsActivity.getInstance().setNewCredits(2);
+                    CreditsActivity.getInstance().addCredits(2);
                     Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(rezeptNr3[2]));
                     startActivity(browserIntent);
                 }

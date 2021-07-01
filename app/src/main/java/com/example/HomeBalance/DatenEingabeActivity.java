@@ -55,12 +55,6 @@ public class DatenEingabeActivity extends AppCompatActivity implements TimePicke
     String sleep = null;
 
     /**
-     * Deklaration der SQLite-Datenbanken
-     */
-    DatenbankHelferEingabe datenbankEingabe;
-    DatenbankHelferOptimierung datenbankOptimierung;
-
-    /**
      * Deklaration der View-Komponenten
      */
     private Button abschicken, aufstehzeitButton, routineButton, arbeitszeitButton;
@@ -77,12 +71,6 @@ public class DatenEingabeActivity extends AppCompatActivity implements TimePicke
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dateneingabe);
-
-        /**
-         * Initialisierung der Datenbanken
-         */
-        datenbankEingabe = new DatenbankHelferEingabe(this);
-        datenbankOptimierung = new DatenbankHelferOptimierung(this);
 
 
         /**
@@ -180,7 +168,7 @@ public class DatenEingabeActivity extends AppCompatActivity implements TimePicke
         }
     });
 
-        Cursor dataEingabe = datenbankEingabe.getData();
+        Cursor dataEingabe = DatenbankHelferEingabe.getInstance(this).getData();
         befuellen(dataEingabe);
 }
 
@@ -230,7 +218,7 @@ public class DatenEingabeActivity extends AppCompatActivity implements TimePicke
      * Daten werden für Speicherung an die Eingabe-Datenbank weitergeleitet
      */
     private void AddDataEingabe(String newEntry, int newEntry2, String newEntry3, String newEntry4, String newEntry5, Boolean newEntry6, Boolean newEntry7) {
-        boolean insertData = datenbankEingabe.addData(newEntry, newEntry2, newEntry3, newEntry4, newEntry5, newEntry6, newEntry7);
+        boolean insertData = DatenbankHelferEingabe.getInstance(this).addData(newEntry, newEntry2, newEntry3, newEntry4, newEntry5, newEntry6, newEntry7);
 
         if (insertData) {
             toastMessage("Daten wurden erfolgreich gespeichert!");
@@ -243,7 +231,7 @@ public class DatenEingabeActivity extends AppCompatActivity implements TimePicke
      * Daten werden für Speicherung an die Optimierungs-Datenbank weitergeleitet
      */
     private void AddDataOptimierung(String newEntry, String newEntry2, String newEntry3, String newEntry4, String newEntry5, String newEntry6, String newEntry7, String newEntry8, String newEntry9) {
-        boolean insertData = datenbankOptimierung.addData(newEntry, newEntry2, newEntry3, newEntry4, newEntry5, newEntry6, newEntry7, newEntry8, newEntry9);
+        boolean insertData = DatenbankHelferOptimierung.getInstance(this).addData(newEntry, newEntry2, newEntry3, newEntry4, newEntry5, newEntry6, newEntry7, newEntry8, newEntry9);
 
         if (insertData) {
             //toastMessage("Daten wurden erfolgreich gespeichert!");

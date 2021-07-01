@@ -1,10 +1,9 @@
 package com.example.HomeBalance;
 
-//TODO: Nicht genutzte Imports entfernen
+//TODO: Nicht genutzte Imports entfernen, auch bei anderen Klassen
 
 import android.Manifest;
 import android.content.Context;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.location.Location;
@@ -23,7 +22,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 
 import org.json.JSONArray;
@@ -34,16 +32,10 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.sql.Date;
-import java.sql.Time;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Locale;
 import java.util.TimeZone;
-
-import static androidx.core.content.ContextCompat.getSystemService;
-import static androidx.core.content.ContextCompat.getSystemServiceName;
 
 public class WetterFragment extends Fragment {
 
@@ -51,7 +43,6 @@ public class WetterFragment extends Fragment {
     private LocationManager locationManager;
     TextView wetterDay, wetterCurrent;
     String longitude, latitude, urlMitName, startTime, endTime, timeStep, timeZone, nextDay, temperatur, niederschlag, wind, tempDay, rainDay, windDay;
-    DatenbankHelferWetter datenbankWetter;
 
     @Nullable
     @Override
@@ -62,7 +53,6 @@ public class WetterFragment extends Fragment {
         wetterDay = (TextView) view.findViewById(R.id.wetterDay);
         wetterCurrent = (TextView) view.findViewById(R.id.wetterCurrent);
         locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
-        datenbankWetter = new DatenbankHelferWetter(getActivity());
 
         gpsHolen();
 
@@ -72,7 +62,7 @@ public class WetterFragment extends Fragment {
                 if (isOnline() == false) {
                     toastMessage("Keine Internetverbindung!");
                 } else {
-                    CreditsActivity.getInstance().setNewCredits(2);
+                    CreditsActivity.getInstance().addCredits(2);
                     getWetterDatumZeit();
                     getTimeZone();
                     timeStep = "1d";
@@ -98,7 +88,7 @@ public class WetterFragment extends Fragment {
         /**
          * Auslesen der Optimierungs-Datenbank für den Tagesablaufplan
          */
-        Cursor dataWetter = datenbankWetter.getData();
+        Cursor dataWetter = DatenbankHelferWetter.getInstance(this.getContext()).getData();
         if( dataWetter != null && dataWetter.moveToFirst() ) {
             dataWetter.moveToLast();
             wetterDay.setText("Heute:\n" + dataWetter.getString(1) + "\n" + dataWetter.getString(2) + "\n" + dataWetter.getString(3));
@@ -258,7 +248,7 @@ public class WetterFragment extends Fragment {
      * Daten werden für Speicherung an die Wetter-Datenbank weitergeleitet
      */
     private void AddDataWetter(String newEntry, String newEntry2, String newEntry3, String newEntry4, String newEntry5, String newEntry6) {
-        boolean insertData = datenbankWetter.addData(newEntry, newEntry2, newEntry3, newEntry4, newEntry5, newEntry6);
+        boolean insertData = DatenbankHelferWetter.getInstance(this.getContext()).addData(newEntry, newEntry2, newEntry3, newEntry4, newEntry5, newEntry6);
 
         if (insertData) {
             //toastMessage("Daten wurden erfolgreich gespeichert!");

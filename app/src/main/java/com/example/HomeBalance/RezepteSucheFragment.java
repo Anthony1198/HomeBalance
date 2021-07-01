@@ -34,7 +34,6 @@ public class RezepteSucheFragment extends Fragment {
     Switch frueh, mittag, abend, nachtisch, vegan, vegetarisch, glutenfrei, gesund;
     Boolean fruehBoolean, mittagBoolean, abendBoolean, nachtischBoolean, veganBoolean, vegetarischBoolean, glutenfreiBoolean, gesundBoolean;
     String[] rezeptNr1, rezeptNr2, rezeptNr3;
-    DatenbankHelferRezepte datenbankRezepte;
 
     @Nullable
     @Override
@@ -51,8 +50,6 @@ public class RezepteSucheFragment extends Fragment {
         vegetarisch = (Switch) view.findViewById(R.id.fruehstucksRezepte);
         glutenfrei = (Switch) view.findViewById(R.id.fruehstucksRezepte);
         gesund = (Switch) view.findViewById(R.id.fruehstucksRezepte);
-
-        datenbankRezepte = new DatenbankHelferRezepte(getActivity());
 
         rezeptNr1 = new String[3];
         rezeptNr2 = new String[3];
@@ -105,7 +102,7 @@ public class RezepteSucheFragment extends Fragment {
                 String jsonDocument = holeRezeptDaten();
                 parseJSON(jsonDocument);
                 AddDataRezepte(rezeptNr1[0], rezeptNr1[1], rezeptNr1[2], rezeptNr2[0], rezeptNr2[1], rezeptNr2[2], rezeptNr3[0], rezeptNr3[1], rezeptNr3[2]);
-                CreditsActivity.getInstance().setNewCredits(1);
+                CreditsActivity.getInstance().addCredits(1);
 
             } catch (Exception ex) {
                 System.out.println(ex.getMessage());
@@ -220,7 +217,7 @@ public class RezepteSucheFragment extends Fragment {
         }
         if(gesundBoolean == true){
             urlMitName= urlMitName + "veryHealthy";
-            CreditsActivity.getInstance().setNewCredits(5);
+            CreditsActivity.getInstance().addCredits(5);
         }
     }
 
@@ -228,7 +225,7 @@ public class RezepteSucheFragment extends Fragment {
      * Daten werden für Speicherung an die Wetter-Datenbank weitergeleitet
      */
     private void AddDataRezepte(String newEntry, String newEntry2, String newEntry3, String newEntry4, String newEntry5, String newEntry6, String newEntry7, String newEntry8, String newEntry9) {
-        boolean insertData = datenbankRezepte.addData(newEntry, newEntry2, newEntry3, newEntry4, newEntry5, newEntry6, newEntry7, newEntry8, newEntry9);
+        boolean insertData = DatenbankHelferRezepte.getInstance(this.getContext()).addData(newEntry, newEntry2, newEntry3, newEntry4, newEntry5, newEntry6, newEntry7, newEntry8, newEntry9);
 
         if (insertData) {
             //toastMessage("Daten wurden erfolgreich gespeichert!");

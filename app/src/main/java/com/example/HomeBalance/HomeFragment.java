@@ -35,12 +35,6 @@ public class HomeFragment extends Fragment {
     String c[] = new String[]{"Aufstehzeit:", "Arbeitsbeginn:", "Pause:", "Arbeitsfortsetzung:", "Powernap:", "Freizeit", "Abendessen", "Arbeitsfortsetzung am Abend:", "Schlafenszeit:"};
 
     /**
-     * Deklaration der SQLite-Datenbanken
-     */
-    DatenbankHelferOptimierung datenbankOptimierung;
-    DatenbankHelferEingabe datenbankEingabe;
-
-    /**
      * onCreate-Methode wird bei erstmaligem Aufruf der Activity ausgeführt
      *
      * @return Gibt die fertige view an fragment_home zurück
@@ -51,26 +45,19 @@ public class HomeFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
         /**
-         * Initialisierung der Datenbanken
-         */
-        datenbankEingabe = new DatenbankHelferEingabe(getActivity());
-        datenbankOptimierung = new DatenbankHelferOptimierung(getActivity());
-
-
-        /**
          * Initialisierung der View-Komponenten
          */
         name = (TextView) view.findViewById(R.id.name);
         creditsButton = (Button) view.findViewById(R.id.credits);
         linearLayout = (LinearLayout) view.findViewById(R.id.linearLayout);
 
-        CreditsActivity.getInstance().setNewCredits(0, creditsButton);
+        CreditsActivity.getInstance().showCreditsOnButton(creditsButton);
 
 
         /**
          * Auslesen der Eingabe-Datenbank für den User-Namen, wenn nicht vorhanden, dann steht die Dateneingabe noch aus
          */
-        Cursor dataEingabe = datenbankEingabe.getData();
+        Cursor dataEingabe = DatenbankHelferEingabe.getInstance(this.getContext()).getData();
         if( dataEingabe != null && dataEingabe.moveToFirst() ) {
             dataEingabe.moveToLast();
             name.setText("Hallo " + dataEingabe.getString(1) + "!");
@@ -88,7 +75,7 @@ public class HomeFragment extends Fragment {
         /**
          * Auslesen der Optimierungs-Datenbank für den Tagesablaufplan + dynamische Auffüllung der View
          */
-        final Cursor dataOptimierung = datenbankOptimierung.getData();
+        final Cursor dataOptimierung = DatenbankHelferOptimierung.getInstance(this.getContext()).getData();
 
         if( dataOptimierung != null && dataEingabe.moveToFirst() ) {
             dataOptimierung.moveToLast();
@@ -118,7 +105,7 @@ public class HomeFragment extends Fragment {
                     btn.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            CreditsActivity.getInstance().setNewCredits(1, creditsButton);
+                            CreditsActivity.getInstance().addCreditsAndShowOnButton(1, creditsButton);
                             zeit = dataOptimierung.getString(index);
                             weckerStellen(zeit);
                         }

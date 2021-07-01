@@ -17,6 +17,15 @@ public class DatenbankHelferRezepte extends SQLiteOpenHelper {
      * Variablen Deklaration
      */
 
+    private static DatenbankHelferRezepte rezepteDatenbankHelfer;
+
+    public static synchronized DatenbankHelferRezepte getInstance(Context context){
+        if(rezepteDatenbankHelfer == null){
+            rezepteDatenbankHelfer = new DatenbankHelferRezepte(context.getApplicationContext());
+        }
+        return rezepteDatenbankHelfer;
+    }
+
     private static final String TABLE_NAME = "Rezeptdaten";
     private static final String COL1 = "ID";
     private static final String COL2 = "rezept1tilte";
@@ -44,9 +53,11 @@ public class DatenbankHelferRezepte extends SQLiteOpenHelper {
     }
 
     @Override
-    public void onUpgrade(SQLiteDatabase db, int i, int i1) {
-        db.execSQL("DROP IF TABLE EXISTS " + TABLE_NAME);
-        onCreate(db);
+    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        if(newVersion!=oldVersion){
+            db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
+            onCreate(db);
+        }
     }
 
     /**
