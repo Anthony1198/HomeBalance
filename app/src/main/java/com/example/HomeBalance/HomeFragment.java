@@ -11,12 +11,11 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+
 
 /**
  * Controller für die Anzeige der Tagesstruktur, welche durch die eingegebenen Daten mit der API brechnet wurde
@@ -27,12 +26,12 @@ public class HomeFragment extends Fragment {
      * Deklaration nötiger Varibalen
      */
     LinearLayout linearLayout;
+    Button creditsButton;
     private TextView name;
-    private Button wakeup, morningWork, afternoonWork, eveningWork, lunch, naping, freetime, dinner, sleep, hilfe;
     private int hour, minuten;
     private String zeit, testNull;
 
-    String a[];
+
     String c[] = new String[]{"Aufstehzeit:", "Arbeitsbeginn:", "Pause:", "Arbeitsfortsetzung:", "Powernap:", "Freizeit", "Abendessen", "Arbeitsfortsetzung am Abend:", "Schlafenszeit:"};
 
     /**
@@ -62,56 +61,71 @@ public class HomeFragment extends Fragment {
          * Initialisierung der View-Komponenten
          */
         name = (TextView) view.findViewById(R.id.name);
+        creditsButton = (Button) view.findViewById(R.id.credits);
+        linearLayout = (LinearLayout) view.findViewById(R.id.linearLayout);
 
+        CreditsActivity.getInstance().setNewCredits(0, creditsButton);
 
 
         /**
-         * Auslesen der Eingabe-Datenbank für den User-Namen
+         * Auslesen der Eingabe-Datenbank für den User-Namen, wenn nicht vorhanden, dann steht die Dateneingabe noch aus
          */
         Cursor dataEingabe = datenbankEingabe.getData();
-        dataEingabe.moveToLast();
-        name.setText("Hallo " + dataEingabe.getString(1) + "!");
+        if( dataEingabe != null && dataEingabe.moveToFirst() ) {
+            dataEingabe.moveToLast();
+            name.setText("Hallo " + dataEingabe.getString(1) + "!");
+        } else {
+            TextView anzeige = new TextView(getActivity());
+            anzeige.setTextSize(20);
+            anzeige.setTextAlignment(view.TEXT_ALIGNMENT_CENTER);
+            anzeige.setTextColor(Color.BLACK);
+            anzeige.setText("Bitte die Dateneingabe auf dem + durchführen!");
+            linearLayout.addView(anzeige);
+        }
 
-        linearLayout = (LinearLayout) view.findViewById(R.id.linearLayout);
 
 
         /**
          * Auslesen der Optimierungs-Datenbank für den Tagesablaufplan + dynamische Auffüllung der View
          */
         final Cursor dataOptimierung = datenbankOptimierung.getData();
-        dataOptimierung.moveToLast();
 
-        int b = 1;
+        if( dataOptimierung != null && dataEingabe.moveToFirst() ) {
+            dataOptimierung.moveToLast();
 
-        for (int i = 0; i<9; i++){
-            testNull = dataOptimierung.getString(b);
-            if (testNull == null) {
-            }else {
-                TextView anzeige = new TextView(getActivity());
-                anzeige.setTextSize(20);
-                anzeige.setTextAlignment(view.TEXT_ALIGNMENT_CENTER);
-                anzeige.setTextColor(Color.BLACK);
-                anzeige.setText(c[i]);
-                linearLayout.addView(anzeige);
+            int b = 1;
 
-                Button btn = new Button(getActivity());
-                btn.setBackgroundResource(R.drawable.buttonshape);
-                btn.setId(i+1);
-                btn.setTextSize(15);
-                btn.setText(testNull);
-                btn.setTextColor(Color.WHITE);
-                linearLayout.addView(btn);
+            for (int i = 0; i < 9; i++) {
+                testNull = dataOptimierung.getString(b);
+                if (testNull == null) {
+                } else {
+                    TextView anzeige = new TextView(getActivity());
+                    anzeige.setTextSize(20);
+                    anzeige.setTextAlignment(view.TEXT_ALIGNMENT_CENTER);
+                    anzeige.setTextColor(Color.BLACK);
+                    anzeige.setText(c[i]);
+                    linearLayout.addView(anzeige);
 
-                final int index = b;
-                btn.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        zeit = dataOptimierung.getString(index);
-                        weckerStellen(zeit);
-                    }
-                });
+                    Button btn = new Button(getActivity());
+                    btn.setBackgroundResource(R.drawable.buttonshape);
+                    btn.setId(i + 1);
+                    btn.setTextSize(15);
+                    btn.setText(testNull);
+                    btn.setTextColor(Color.WHITE);
+                    linearLayout.addView(btn);
+
+                    final int index = b;
+                    btn.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            CreditsActivity.getInstance().setNewCredits(1, creditsButton);
+                            zeit = dataOptimierung.getString(index);
+                            weckerStellen(zeit);
+                        }
+                    });
+                }
+                b++;
             }
-            b++;
         }
         return view;
     }

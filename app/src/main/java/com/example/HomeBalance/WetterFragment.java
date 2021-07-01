@@ -72,19 +72,25 @@ public class WetterFragment extends Fragment {
                 if (isOnline() == false) {
                     toastMessage("Keine Internetverbindung!");
                 } else {
+                    CreditsActivity.getInstance().setNewCredits(2);
                     getWetterDatumZeit();
                     getTimeZone();
                     timeStep = "1d";
 
-                    urlMitName = "http://192.168.178.62:8080/api/weather?location=" + latitude + "," + longitude + "&startTime=" + startTime + "&endTime=" + endTime + "&timesteps=" + timeStep + "&timezone=" + timeZone;
+                    urlMitName = "http://" + getString(R.string.localeIP) + ":8080/api/weather?location=" + latitude + "," + longitude + "&startTime=" + startTime + "&endTime=" + endTime + "&timesteps=" + timeStep + "&timezone=" + timeZone;
                     toastMessage("Daten werden verarbeitet!");
 
 
                     // Ausführung des Hintergrund-Thread mit HTTP-Request
                     WetterFragment.MeinHintergrundThread mht = new MeinHintergrundThread();
                     mht.start();
-
-
+                    try {
+                        mht.join();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    Fragment mFragment = new WetterFragment();
+                    getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, mFragment).commit();
                 }
             }
         });
@@ -93,15 +99,15 @@ public class WetterFragment extends Fragment {
          * Auslesen der Optimierungs-Datenbank für den Tagesablaufplan
          */
         Cursor dataWetter = datenbankWetter.getData();
-        dataWetter.moveToLast();
-        wetterDay.setText(dataWetter.getString(1) + "\n" + dataWetter.getString(2) + "\n" + dataWetter.getString(3));
-        wetterCurrent.setText(dataWetter.getString(4) + "\n" + dataWetter.getString(5) + "\n" + dataWetter.getString(6));
-
+        if( dataWetter != null && dataWetter.moveToFirst() ) {
+            dataWetter.moveToLast();
+            wetterDay.setText("Heute:\n" + dataWetter.getString(1) + "\n" + dataWetter.getString(2) + "\n" + dataWetter.getString(3));
+            wetterCurrent.setText("Aktuell:\n" + dataWetter.getString(4) + "\n" + dataWetter.getString(5) + "\n" + dataWetter.getString(6));
+        }
         return view;
     }
 
-
-    private void gpsHolen() {
+    private void gpsHolen(){
         if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
                 ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION}, 1);
@@ -260,6 +266,5 @@ public class WetterFragment extends Fragment {
             toastMessage("Etwas ist schief gelaufen :(");
         }
     }
-
 }
 

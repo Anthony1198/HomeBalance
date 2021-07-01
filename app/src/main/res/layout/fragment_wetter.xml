@@ -26,33 +26,35 @@
 
             <Button
                 android:id="@+id/anzeigen"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="44dp"
-                android:text="Anzeigen"
+                android:layout_width="133dp"
+                android:layout_height="51dp"
+                android:layout_marginTop="204dp"
+                android:background="@drawable/buttonshape"
+                android:text="Aktualisieren"
+                android:textColor="#FFFFFFFF"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/wetter" />
+                app:layout_constraintTop_toBottomOf="@+id/wetterDay" />
 
             <TextView
                 android:id="@+id/wetterCurrent"
                 android:layout_width="277dp"
                 android:layout_height="75dp"
-                android:layout_marginTop="200dp"
-                android:text="TextView"
+                android:layout_marginTop="60dp"
+                android:textColor="#000000"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/anzeigen" />
+                app:layout_constraintTop_toBottomOf="@+id/wetterDay" />
 
             <TextView
                 android:id="@+id/wetterDay"
                 android:layout_width="287dp"
                 android:layout_height="89dp"
-                android:layout_marginTop="28dp"
-                android:text="TextView"
+                android:layout_marginTop="88dp"
+                android:textColor="#000000"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/anzeigen" />
+                app:layout_constraintTop_toBottomOf="@+id/wetter" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

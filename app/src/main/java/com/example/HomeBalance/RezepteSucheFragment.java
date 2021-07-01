@@ -27,7 +27,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-public class RezepteEinstellungenFragment extends Fragment {
+public class RezepteSucheFragment extends Fragment {
 
     Button anzeigenNeue, anzeigenLetzte;
     String urlMitName;
@@ -39,7 +39,7 @@ public class RezepteEinstellungenFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_rezepteeinstellen, container, false);
+        View view = inflater.inflate(R.layout.fragment_rezeptesuchen, container, false);
 
         anzeigenNeue = (Button) view.findViewById(R.id.anzeigenNeue);
         anzeigenLetzte = (Button) view.findViewById(R.id.anzeigenLetzte);
@@ -53,16 +53,6 @@ public class RezepteEinstellungenFragment extends Fragment {
         gesund = (Switch) view.findViewById(R.id.fruehstucksRezepte);
 
         datenbankRezepte = new DatenbankHelferRezepte(getActivity());
-
-
-        fruehBoolean = frueh.isChecked();
-        mittagBoolean = mittag.isChecked();
-        abendBoolean = abend.isChecked();
-        nachtischBoolean = nachtisch.isChecked();
-        veganBoolean = vegan.isChecked();
-        vegetarischBoolean = vegetarisch.isChecked();
-        glutenfreiBoolean = glutenfrei.isChecked();
-        gesundBoolean = gesund.isChecked();
 
         rezeptNr1 = new String[3];
         rezeptNr2 = new String[3];
@@ -83,7 +73,7 @@ public class RezepteEinstellungenFragment extends Fragment {
 
 
                     // Ausführung des Hintergrund-Thread mit HTTP-Request
-                    RezepteEinstellungenFragment.MeinHintergrundThread mht = new RezepteEinstellungenFragment.MeinHintergrundThread();
+                    RezepteSucheFragment.MeinHintergrundThread mht = new RezepteSucheFragment.MeinHintergrundThread();
                     mht.start();
                     try {
                         mht.join();
@@ -115,6 +105,7 @@ public class RezepteEinstellungenFragment extends Fragment {
                 String jsonDocument = holeRezeptDaten();
                 parseJSON(jsonDocument);
                 AddDataRezepte(rezeptNr1[0], rezeptNr1[1], rezeptNr1[2], rezeptNr2[0], rezeptNr2[1], rezeptNr2[2], rezeptNr3[0], rezeptNr3[1], rezeptNr3[2]);
+                CreditsActivity.getInstance().setNewCredits(1);
 
             } catch (Exception ex) {
                 System.out.println(ex.getMessage());
@@ -195,7 +186,16 @@ public class RezepteEinstellungenFragment extends Fragment {
 
 
     private void urlZusammenstellung(){
-        urlMitName = "http://192.168.178.62:8080/api/recipes?number=3&tags=";
+        urlMitName = "http://" + getString(R.string.localeIP) + ":8080/api/recipes?number=3&tags=";
+
+        fruehBoolean = frueh.isChecked();
+        mittagBoolean = mittag.isChecked();
+        abendBoolean = abend.isChecked();
+        nachtischBoolean = nachtisch.isChecked();
+        veganBoolean = vegan.isChecked();
+        vegetarischBoolean = vegetarisch.isChecked();
+        glutenfreiBoolean = glutenfrei.isChecked();
+        gesundBoolean = gesund.isChecked();
 
         if(fruehBoolean == true){
             urlMitName= urlMitName;
@@ -220,6 +220,7 @@ public class RezepteEinstellungenFragment extends Fragment {
         }
         if(gesundBoolean == true){
             urlMitName= urlMitName + "veryHealthy";
+            CreditsActivity.getInstance().setNewCredits(5);
         }
     }
 

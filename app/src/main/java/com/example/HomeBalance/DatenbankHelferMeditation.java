@@ -11,28 +11,28 @@ import android.util.Log;
  * Datenbankklasse für die Daten der Frau
  */
 
-public class DatenbankHelferRezepte extends SQLiteOpenHelper {
+public class DatenbankHelferMeditation extends SQLiteOpenHelper {
 
     /**
      * Variablen Deklaration
      */
 
-    private static final String TABLE_NAME = "Rezeptdaten";
+    private static final String TABLE_NAME = "Mediationsdaten";
     private static final String COL1 = "ID";
-    private static final String COL2 = "rezept1tilte";
-    private static final String COL3 = "rezept1bild";
-    private static final String COL4 = "rezept1url";
-    private static final String COL5 = "rezept2title";
-    private static final String COL6 = "rezept2bild";
-    private static final String COL7 = "rezept2url";
-    private static final String COL8 = "rezept3title";
-    private static final String COL9 = "rezept3bild";
-    private static final String COL10 = "rezept3url";
+    private static final String COL2 = "audio1title";
+    private static final String COL3 = "audio1image";
+    private static final String COL4 = "audio1audio";
+    private static final String COL5 = "audio2title";
+    private static final String COL6 = "audio2image";
+    private static final String COL7 = "audio2audio";
+    private static final String COL8 = "audio3title";
+    private static final String COL9 = "audio3image";
+    private static final String COL10 = "audio3audio";
 
     private static final String TAG = "DatenbankEingabe";
 
 
-    public DatenbankHelferRezepte(Context context) {
+    public DatenbankHelferMeditation(Context context) {
         super(context, TABLE_NAME, null, 1);
     }
 

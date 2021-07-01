@@ -84,26 +84,4 @@ public class DatenbankHelferWetter extends SQLiteOpenHelper {
         Cursor data = db.rawQuery(query, null);
         return data;
     }
-
-    /**
-     * Zählt Anzahl der Tabellen-Zeilen
-     * @return Anzahl Zeilen
-     */
-    public int getRowsCount() {
-        String countQuery = "SELECT  * FROM " + TABLE_NAME;
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery(countQuery, null);
-        int count = cursor.getCount();
-        cursor.close();
-        return count;
-    }
-
-
-    /**
-     * Datenbank wird gelöscht
-     */
-    public void löscheDB() {
-        SQLiteDatabase db = this.getWritableDatabase();
-        db.execSQL("delete from "+ TABLE_NAME);
-    }
 }

@@ -1,9 +1,11 @@
 package com.example.HomeBalance;
 
 
+import android.Manifest;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.view.View;
@@ -15,6 +17,7 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.DialogFragment;
 
 import org.json.JSONArray;
@@ -64,6 +67,7 @@ public class DatenEingabeActivity extends AppCompatActivity implements TimePicke
     private TextView vorname, alter, aufstehzeit, routine, arbeitszeit, ausgewaehlt;
     private Switch nap, fruehstueck;
 
+
     /**
      * onCreate-Methode wird bei erstmaligem Aufruf der Activity ausgeführt
      *
@@ -79,6 +83,7 @@ public class DatenEingabeActivity extends AppCompatActivity implements TimePicke
          */
         datenbankEingabe = new DatenbankHelferEingabe(this);
         datenbankOptimierung = new DatenbankHelferOptimierung(this);
+
 
         /**
          * Initialisierung der View-Komponenten
@@ -149,7 +154,7 @@ public class DatenEingabeActivity extends AppCompatActivity implements TimePicke
                 if (isOnline() == false) {
                     toastMessage("Keine Internetverbindung!");
                 } else {
-                    urlMitName = "http://192.168.178.62:8080/api/schedule?" + "nap=" + napInhalt + "&age=" + alterInhalt + "&breakfast=" + fruehstueckInhalt + "&wakeUpTime=" + aufstehzeitInhalt + "&getReadyDuration=" + routineInhalt + "&workingHours=" + arbneitszeitInhalt;
+                    urlMitName = "http://" + getString(R.string.localeIP) + ":8080/api/schedule?" + "nap=" + napInhalt + "&age=" + alterInhalt + "&breakfast=" + fruehstueckInhalt + "&wakeUpTime=" + aufstehzeitInhalt + "&getReadyDuration=" + routineInhalt + "&workingHours=" + arbneitszeitInhalt;
 
                     // Button deaktivieren während ein HTTP-Request läuft
                     abschicken.setEnabled(false);
@@ -160,7 +165,11 @@ public class DatenEingabeActivity extends AppCompatActivity implements TimePicke
                     // Ausführung des Hintergrund-Thread mit HTTP-Request
                     MeinHintergrundThread mht = new MeinHintergrundThread();
                     mht.start();
-
+                    try {
+                        mht.join();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
                     Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                     startActivity(intent);
                 }
@@ -170,7 +179,36 @@ public class DatenEingabeActivity extends AppCompatActivity implements TimePicke
             }
         }
     });
+
+        Cursor dataEingabe = datenbankEingabe.getData();
+        befuellen(dataEingabe);
 }
+
+    /**
+     * Die Methode befüllt schon vorhandene Eingabedaten in die Maske
+     */
+    private void befuellen(Cursor dataEingabe){
+
+        if( dataEingabe != null && dataEingabe.moveToFirst() ){
+            dataEingabe.moveToLast();
+            if (dataEingabe.getString(1) != null) {
+                vorname.setText(dataEingabe.getString(1));
+                alter.setText(dataEingabe.getString(2));
+                aufstehzeit.setText(dataEingabe.getString(3));
+                routine.setText(dataEingabe.getString(4));
+                arbeitszeit.setText(dataEingabe.getString(5));
+                if (dataEingabe.getString(6).equals("1")) {
+                    nap.setChecked(true);
+                }
+                if (dataEingabe.getString(7).equals("1")) {
+                    fruehstueck.setChecked(true);
+                }
+            }
+        } else {
+            locationAnfragen();
+        }
+    }
+
     /**
      * Die Methode übernimmt die im TimePicker gewählte Zeit und formatiert diese in das Format "HH:MM" um
      */
@@ -239,6 +277,7 @@ public class DatenEingabeActivity extends AppCompatActivity implements TimePicke
 
             httpErgebnisDokument = reader.readLine();
         }
+        System.out.println(httpErgebnisDokument);
         return httpErgebnisDokument;
     }
     private void toastMessage(String message) {
@@ -320,5 +359,10 @@ public class DatenEingabeActivity extends AppCompatActivity implements TimePicke
                 default:
             }
         }
+    }
+    private void locationAnfragen(){
+        ActivityCompat.requestPermissions(this,
+                new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                1);
     }
 }
