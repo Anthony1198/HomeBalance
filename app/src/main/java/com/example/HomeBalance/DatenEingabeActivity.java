@@ -234,7 +234,7 @@ public class DatenEingabeActivity extends AppCompatActivity implements TimePicke
         boolean insertData = DatenbankHelferOptimierung.getInstance(this).addData(newEntry, newEntry2, newEntry3, newEntry4, newEntry5, newEntry6, newEntry7, newEntry8, newEntry9);
 
         if (insertData) {
-            //toastMessage("Daten wurden erfolgreich gespeichert!");
+            toastMessage("Daten wurden erfolgreich gespeichert!");
         } else {
             toastMessage("Etwas ist schief gelaufen :(");
         }

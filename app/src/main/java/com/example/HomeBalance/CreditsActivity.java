@@ -1,5 +1,6 @@
 package com.example.HomeBalance;
 
+import android.content.Context;
 import android.database.Cursor;
 import android.widget.Button;
 import androidx.appcompat.app.AppCompatActivity;
@@ -8,9 +9,11 @@ import androidx.appcompat.app.AppCompatActivity;
 public class CreditsActivity extends AppCompatActivity {
     private int credits;
     private static CreditsActivity creditAct;
+    Context context;
 
-    public CreditsActivity(){
-        credits = getActualCredits(DatenbankHelferCredits.getInstance(this).getData());
+    public CreditsActivity(Context context){
+        this.context = context;
+        credits = getActualCredits(DatenbankHelferCredits.getInstance(context).getData());
     }
 
     private int getActualCredits(Cursor addData) {
@@ -19,24 +22,18 @@ public class CreditsActivity extends AppCompatActivity {
         return actualCredits;
     }
 
-    public void showCreditsOnButton(Button creditButton){
-        if(creditButton != null) creditButton.setText(getString(R.string.credits)+credits);
-    }
-
-    public void addCreditsAndShowOnButton(int anzahl, Button creditButton){
-        credits += anzahl;
-        if(creditButton != null) creditButton.setText(getString(R.string.credits) + credits);
-        DatenbankHelferCredits.getInstance(this).addData(credits);
+    public int getCredits(){
+        return credits;
     }
 
     public void addCredits(int anzahl){
         credits += anzahl;
-        DatenbankHelferCredits.getInstance(this).addData(credits);
+        DatenbankHelferCredits.getInstance(context).addData(credits);
     }
 
-    public static synchronized CreditsActivity getInstance(){
+    public static synchronized CreditsActivity getInstance(Context context){
         if(creditAct == null){
-            creditAct = new CreditsActivity();
+            creditAct = new CreditsActivity(context);
         }
         return creditAct;
     }

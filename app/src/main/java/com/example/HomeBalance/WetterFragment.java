@@ -62,7 +62,7 @@ public class WetterFragment extends Fragment {
                 if (isOnline() == false) {
                     toastMessage("Keine Internetverbindung!");
                 } else {
-                    CreditsActivity.getInstance().addCredits(2);
+                    CreditsActivity.getInstance(getContext()).addCredits(2);
                     getWetterDatumZeit();
                     getTimeZone();
                     timeStep = "1d";
