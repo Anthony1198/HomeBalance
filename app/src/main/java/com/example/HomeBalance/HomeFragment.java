@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -30,7 +31,8 @@ public class HomeFragment extends Fragment {
     private TextView name;
     private int hour, minuten;
     private String zeit, testNull;
-
+    View view;
+    TextView anzeige;
 
     String c[] = new String[]{"Aufstehzeit:", "Arbeitsbeginn:", "Pause:", "Arbeitsfortsetzung:", "Powernap:", "Freizeit", "Abendessen", "Arbeitsfortsetzung am Abend:", "Schlafenszeit:"};
 
@@ -42,7 +44,7 @@ public class HomeFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_home, container, false);
+        view = inflater.inflate(R.layout.fragment_home, container, false);
 
         /**
          * Initialisierung der View-Komponenten
@@ -51,7 +53,7 @@ public class HomeFragment extends Fragment {
         creditsButton = (Button) view.findViewById(R.id.credits);
         linearLayout = (LinearLayout) view.findViewById(R.id.linearLayout);
 
-        creditsButton.setText(getString(R.string.credits + CreditsActivity.getInstance(this.getContext()).getCredits()));
+        creditsButton.setText(getString(R.string.credits) + CreditsActivity.getInstance(this.getContext()).getCredits());
 
 
         /**
@@ -62,59 +64,14 @@ public class HomeFragment extends Fragment {
             dataEingabe.moveToLast();
             name.setText("Hallo " + dataEingabe.getString(1) + "!");
         } else {
-            TextView anzeige = new TextView(getActivity());
+            anzeige = new TextView(getActivity());
             anzeige.setTextSize(20);
             anzeige.setTextAlignment(view.TEXT_ALIGNMENT_CENTER);
             anzeige.setTextColor(Color.BLACK);
             anzeige.setText("Bitte die Dateneingabe auf dem + durchführen!");
             linearLayout.addView(anzeige);
         }
-
-
-
-        /**
-         * Auslesen der Optimierungs-Datenbank für den Tagesablaufplan + dynamische Auffüllung der View
-         */
-        final Cursor dataOptimierung = DatenbankHelferOptimierung.getInstance(this.getContext()).getData();
-
-        if( dataOptimierung != null && dataEingabe.moveToFirst() ) {
-            dataOptimierung.moveToLast();
-
-            int b = 1;
-
-            for (int i = 0; i < 9; i++) {
-                testNull = dataOptimierung.getString(b);
-                if (testNull == null) {
-                } else {
-                    TextView anzeige = new TextView(getActivity());
-                    anzeige.setTextSize(20);
-                    anzeige.setTextAlignment(view.TEXT_ALIGNMENT_CENTER);
-                    anzeige.setTextColor(Color.BLACK);
-                    anzeige.setText(c[i]);
-                    linearLayout.addView(anzeige);
-
-                    Button btn = new Button(getActivity());
-                    btn.setBackgroundResource(R.drawable.buttonshape);
-                    btn.setId(i + 1);
-                    btn.setTextSize(15);
-                    btn.setText(testNull);
-                    btn.setTextColor(Color.WHITE);
-                    linearLayout.addView(btn);
-
-                    final int index = b;
-                    btn.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            CreditsActivity.getInstance(getContext()).addCredits(1);
-                            creditsButton.setText(getString(R.string.credits + CreditsActivity.getInstance(getContext()).getCredits()));
-                            zeit = dataOptimierung.getString(index);
-                            weckerStellen(zeit);
-                        }
-                    });
-                }
-                b++;
-            }
-        }
+        befuellen();
         return view;
     }
 
@@ -130,6 +87,59 @@ public class HomeFragment extends Fragment {
             intent.putExtra(AlarmClock.EXTRA_HOUR, hour);
             intent.putExtra(AlarmClock.EXTRA_MINUTES, minuten);
             startActivity(intent);
+        }
+    }
+
+    private void befuellen(){
+        /**
+         * Auslesen der Optimierungs-Datenbank für den Tagesablaufplan + dynamische Auffüllung der View
+         */
+        final Cursor dataOptimierung = DatenbankHelferOptimierung.getInstance(this.getContext()).getData();
+
+        if( dataOptimierung != null ) {
+            dataOptimierung.moveToLast();
+
+            for (int i = 0; i < 9; i++) {
+                try {
+                    testNull = dataOptimierung.getString(i+1);
+                }catch (IndexOutOfBoundsException e){
+                    anzeige = new TextView(getActivity());
+                    anzeige.setTextSize(20);
+                    anzeige.setTextAlignment(view.TEXT_ALIGNMENT_CENTER);
+                    anzeige.setTextColor(Color.BLACK);
+                    anzeige.setText("Bitte die Dateneingabe auf dem + durchführen!");
+                    linearLayout.addView(anzeige);
+                    return;
+                }
+
+                if (testNull != null) {
+                    TextView anzeige = new TextView(getActivity());
+                    anzeige.setTextSize(20);
+                    anzeige.setTextAlignment(view.TEXT_ALIGNMENT_CENTER);
+                    anzeige.setTextColor(Color.BLACK);
+                    anzeige.setText(c[i]);
+                    linearLayout.addView(anzeige);
+
+                    Button btn = new Button(getActivity());
+                    btn.setBackgroundResource(R.drawable.buttonshape);
+                    btn.setId(i + 1);
+                    btn.setTextSize(15);
+                    btn.setText(testNull);
+                    btn.setTextColor(Color.WHITE);
+                    linearLayout.addView(btn);
+
+                    final int index = i+1;
+                    btn.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            CreditsActivity.getInstance(getContext()).addCredits(1);
+                            creditsButton.setText(getString(R.string.credits + CreditsActivity.getInstance(getContext()).getCredits()));
+                            zeit = dataOptimierung.getString(index);
+                            weckerStellen(zeit);
+                        }
+                    });
+                }
+            }
         }
     }
 }

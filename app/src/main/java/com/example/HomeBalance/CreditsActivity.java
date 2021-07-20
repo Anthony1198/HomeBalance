@@ -13,12 +13,20 @@ public class CreditsActivity extends AppCompatActivity {
 
     public CreditsActivity(Context context){
         this.context = context;
-        credits = getActualCredits(DatenbankHelferCredits.getInstance(context).getData());
+        credits = getSavedCredits(DatenbankHelferCredits.getInstance(context).getData());
     }
 
-    private int getActualCredits(Cursor addData) {
+    private int getSavedCredits(Cursor data) {
         int actualCredits = 0;
-        //TODO: Aus dem cursor die eigentlichen Credits rausholen und zurückgeben
+        if( data != null) {
+            data.moveToLast();
+            try{
+                actualCredits = Integer.parseInt(data.getString(1));
+            } catch (Exception e){
+                //Keine Credits vorhanden, z. B. beim Start
+                return actualCredits;
+            }
+        }
         return actualCredits;
     }
 

@@ -22,6 +22,6 @@
     <string name="scheduleAPIURL">HTTP Conecction funktioniert nicht!</string>
     <string name="rezeptAPIURL">HTTP Conecction funktioniert nicht!</string>
     <string name="meditationAPIURL">HTTP Conecction funktioniert nicht!</string>
-    <string name="credits">\"CREDITS: \"</string>
+    <string name="credits">CREDITS: </string>
 
 </resources>

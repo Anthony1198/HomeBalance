@@ -157,6 +157,7 @@ public class DatenEingabeActivity extends AppCompatActivity implements TimePicke
                         mht.join();
                     } catch (InterruptedException e) {
                         e.printStackTrace();
+                        toastMessage("HTTP-Anfrage fehlgeschlagen");
                     }
                     Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                     startActivity(intent);
