@@ -91,8 +91,8 @@ public class WetterFragment extends Fragment {
         Cursor dataWetter = DatenbankHelferWetter.getInstance(this.getContext()).getData();
         if( dataWetter != null && dataWetter.moveToFirst() ) {
             dataWetter.moveToLast();
-            wetterDay.setText("Heute:\n" + dataWetter.getString(1) + "\n" + dataWetter.getString(2) + "\n" + dataWetter.getString(3));
-            wetterCurrent.setText("Aktuell:\n" + dataWetter.getString(4) + "\n" + dataWetter.getString(5) + "\n" + dataWetter.getString(6));
+            wetterDay.setText(dataWetter.getString(1) + "\n" + dataWetter.getString(2) + "\n" + dataWetter.getString(3));
+            wetterCurrent.setText(dataWetter.getString(4) + "\n" + dataWetter.getString(5) + "\n" + dataWetter.getString(6));
         }
         return view;
     }
@@ -109,7 +109,6 @@ public class WetterFragment extends Fragment {
             public void onLocationChanged(Location location) {
                 latitude = String.valueOf(location.getLatitude());
                 longitude = String.valueOf(location.getLongitude());
-                //wetterdaten.setText(latitude + " " + longitude);
             }
 
             @Override
@@ -151,16 +150,18 @@ public class WetterFragment extends Fragment {
 
             try {
                 String jsonDocument = holeWetterDaten();
-                parseJSON(jsonDocument);
+               parseJSON(jsonDocument);
+               System.out.println(jsonDocument);
                 tempDay = temperatur;
                 rainDay = niederschlag;
                 windDay = wind;
 
                 timeStep = "1h";
-                urlMitName = "http://192.168.178.62:8080/api/weather?location=" + latitude + "," + longitude + "&startTime=" + startTime + "&endTime=" + endTime + "&timesteps=" + timeStep + "&timezone=" + timeZone;
+                urlMitName = "http://" + getString(R.string.localeIP) + ":8080/api/weather?location=" + latitude + "," + longitude + "&startTime=" + startTime + "&endTime=" + endTime + "&timesteps=" + timeStep + "&timezone=" + timeZone;
 
                 String jsonDocument2 = holeWetterDaten();
                 parseJSON(jsonDocument2);
+                System.out.println(jsonDocument2);
                 AddDataWetter(tempDay, rainDay, windDay, temperatur, niederschlag, wind);
 
 
@@ -221,12 +222,13 @@ public class WetterFragment extends Fragment {
 
             httpErgebnisDokument = reader.readLine();
         }
+        System.out.println(httpErgebnisDokument);
         return httpErgebnisDokument;
     }
 
     private void getWetterDatumZeit() {
 
-        DateFormat df = new SimpleDateFormat("yyyy-MM-d");
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         DateFormat df2 = new SimpleDateFormat("HH:mm:ss");
 
         String date = df.format(Calendar.getInstance().getTime());
