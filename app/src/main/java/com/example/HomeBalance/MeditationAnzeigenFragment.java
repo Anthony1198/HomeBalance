@@ -83,7 +83,7 @@ public class MeditationAnzeigenFragment extends Fragment {
                 if (isOnline() == false) {
                     toastMessage("Keine Internetverbindung!");
                 } else {
-                    CreditsActivity.getInstance(getContext()).addCredits(3);
+                    CreditsHandler.getInstance(getContext()).addCredits(3);
                     Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(meditationNr1[2]));
                     startActivity(browserIntent);
                 }
@@ -96,7 +96,7 @@ public class MeditationAnzeigenFragment extends Fragment {
                 if (isOnline() == false) {
                     toastMessage("Keine Internetverbindung!");
                 } else {
-                    CreditsActivity.getInstance(getContext()).addCredits(3);
+                    CreditsHandler.getInstance(getContext()).addCredits(3);
                     Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(meditationNr2[2]));
                     startActivity(browserIntent);
                 }
@@ -109,7 +109,7 @@ public class MeditationAnzeigenFragment extends Fragment {
                 if (isOnline() == false) {
                     toastMessage("Keine Internetverbindung!");
                 } else {
-                    CreditsActivity.getInstance(getContext()).addCredits(3);
+                    CreditsHandler.getInstance(getContext()).addCredits(3);
                     Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(meditationNr3[2]));
                     startActivity(browserIntent);
                 }
