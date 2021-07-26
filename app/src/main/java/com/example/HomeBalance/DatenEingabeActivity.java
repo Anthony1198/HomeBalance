@@ -1,6 +1,5 @@
 package com.example.HomeBalance;
 
-
 import android.Manifest;
 import android.app.TimePickerDialog;
 import android.content.Context;
@@ -29,7 +28,7 @@ import java.net.URL;
 
 
 /**
- * Controller für die Eingabeseite der Nutzerdaten
+ * Controller für die Eingabeseite der Nutzerdaten (Sperichert und liest die notwendigen Datenbanken und reagiert auf die GUI)
  */
 public class DatenEingabeActivity extends AppCompatActivity implements TimePickerDialog.OnTimeSetListener, Caller{
 
@@ -146,8 +145,6 @@ public class DatenEingabeActivity extends AppCompatActivity implements TimePicke
                     // Button deaktivieren während ein HTTP-Request läuft
                     abschicken.setEnabled(false);
 
-                    toastMessage("Daten werden verarbeitet!");
-
                     // Ausführung des Hintergrund-Thread mit HTTP-Request
                     URL url = null;
                     try {
@@ -169,15 +166,6 @@ public class DatenEingabeActivity extends AppCompatActivity implements TimePicke
         befuellen(dataEingabe);
 }
 
-    /**
-     * Internetverbindung wird getestet
-     *
-     * @return boolean, ob Internetverbindung vorhanden
-     */
-    private boolean isOnline() {
-        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        return cm.getActiveNetworkInfo() != null && cm.getActiveNetworkInfo().isConnectedOrConnecting();
-    }
 
     /**
      * Die Methode befüllt schon vorhandene Eingabedaten in die Maske
@@ -247,10 +235,6 @@ public class DatenEingabeActivity extends AppCompatActivity implements TimePicke
         }
     }
 
-    private void toastMessage(String message) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
-    }
-
     /**
      * String mit JSON-Inhalt wird auf Inhalte ausgelesen (Parsing) und in der dazugehörigen Datenbank abgespeichert
      */
@@ -299,11 +283,6 @@ public class DatenEingabeActivity extends AppCompatActivity implements TimePicke
             }
         }
     }
-    private void locationAnfragen(){
-        ActivityCompat.requestPermissions(this,
-                new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                1);
-    }
 
     //Empfängt die Antwort des HTTPHandlers
     @Override
@@ -323,5 +302,31 @@ public class DatenEingabeActivity extends AppCompatActivity implements TimePicke
         }
         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
         startActivity(intent);
+    }
+
+    /**
+     * Internetverbindung wird getestet
+     *
+     * @return boolean, ob Internetverbindung vorhanden
+     */
+    private boolean isOnline() {
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        return cm.getActiveNetworkInfo() != null && cm.getActiveNetworkInfo().isConnectedOrConnecting();
+    }
+
+    /**
+     * Abfrage der Genehmigung für doe Nutzung von den GPS-Koordinaten
+     */
+    private void locationAnfragen(){
+        ActivityCompat.requestPermissions(this,
+                new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                1);
+    }
+
+    /**
+     * Ausgabe von Android Toast-Massages
+     */
+    private void toastMessage(String message) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 }
