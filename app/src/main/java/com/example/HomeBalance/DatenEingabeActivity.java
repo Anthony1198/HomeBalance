@@ -27,13 +27,14 @@ import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 
 
 /**
  * Controller für die Eingabeseite der Nutzerdaten
  */
-public class DatenEingabeActivity extends AppCompatActivity implements TimePickerDialog.OnTimeSetListener {
+public class DatenEingabeActivity extends AppCompatActivity implements TimePickerDialog.OnTimeSetListener, Caller{
 
     /**
      * Deklaration aller notwendigen Variablen
@@ -119,6 +120,7 @@ public class DatenEingabeActivity extends AppCompatActivity implements TimePicke
             }
         });
 
+        final HTTPHandler handler = new HTTPHandler(this);
 
         /**
          * Bei Click auf dem Abschick-Button werden die Datenfelder auf vollständigkeit überprüft => ausgelesen => In der Datenbank gespeichert
@@ -149,18 +151,15 @@ public class DatenEingabeActivity extends AppCompatActivity implements TimePicke
 
                     toastMessage("Daten werden verarbeitet!");
 
-
                     // Ausführung des Hintergrund-Thread mit HTTP-Request
-                    MeinHintergrundThread mht = new MeinHintergrundThread();
-                    mht.start();
+                    URL url = null;
                     try {
-                        mht.join();
-                    } catch (InterruptedException e) {
+                        url = new URL(urlMitName);
+                    } catch (MalformedURLException e) {
                         e.printStackTrace();
-                        toastMessage("HTTP-Anfrage fehlgeschlagen");
                     }
-                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                    startActivity(intent);
+                    handler.setUrl(url);
+                    handler.start();
                 }
 
             } else {
@@ -172,6 +171,16 @@ public class DatenEingabeActivity extends AppCompatActivity implements TimePicke
         Cursor dataEingabe = DatenbankHelferEingabe.getInstance(this).getData();
         befuellen(dataEingabe);
 }
+
+    /**
+     * Internetverbindung wird getestet
+     *
+     * @return boolean, ob Internetverbindung vorhanden
+     */
+    private boolean isOnline() {
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        return cm.getActiveNetworkInfo() != null && cm.getActiveNetworkInfo().isConnectedOrConnecting();
+    }
 
     /**
      * Die Methode befüllt schon vorhandene Eingabedaten in die Maske
@@ -241,64 +250,8 @@ public class DatenEingabeActivity extends AppCompatActivity implements TimePicke
         }
     }
 
-    /**
-     * Die Methode schickt eine Anfrage an die REST-API
-     *
-     * @return String mit JSON-Inhalt der API-Antwort
-     */
-    private String holeOptimierungsDaten() throws Exception {
-
-        URL url = null;
-        HttpURLConnection conn = null;
-        String httpErgebnisDokument = "";
-
-        url = new URL(urlMitName);
-        conn = (HttpURLConnection) url.openConnection();
-
-        if (conn.getResponseCode() != HttpURLConnection.HTTP_OK) {
-            throw new Exception(getString(R.string.HTTPS));
-
-        } else {
-
-            InputStream is = conn.getInputStream();
-            InputStreamReader ris = new InputStreamReader(is);
-            BufferedReader reader = new BufferedReader(ris);
-
-            httpErgebnisDokument = reader.readLine();
-        }
-        System.out.println(httpErgebnisDokument);
-        return httpErgebnisDokument;
-    }
     private void toastMessage(String message) {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
-    }
-
-    /**
-     * Internetverbindung wird getestet
-     *
-     * @return boolean, ob Internetverbindung vorhanden
-     */
-    private boolean isOnline() {
-        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        return cm.getActiveNetworkInfo() != null && cm.getActiveNetworkInfo().isConnectedOrConnecting();
-    }
-
-    /**
-     * Thread zum laden der API-Daten im Hintergrund, auf paralell Thread.
-     * App-Stillstand/Absturz wird vermieden
-     */
-    private class MeinHintergrundThread extends Thread {
-
-        @Override
-        public void run() {
-            try {
-                String jsonDocument = holeOptimierungsDaten();
-                parseJSON(jsonDocument);
-                AddDataOptimierung(wakeup, morningWork, afternoonWork, eveningWork, lunch, naping, freetime, dinner, sleep);
-            } catch (Exception ex) {
-                System.out.println(ex.getMessage());
-            }
-        }
     }
 
     /**
@@ -353,5 +306,25 @@ public class DatenEingabeActivity extends AppCompatActivity implements TimePicke
         ActivityCompat.requestPermissions(this,
                 new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                 1);
+    }
+
+    //Empfängt die Antwort des HTTPHandlers
+    @Override
+    public void handleAnswer(BufferedReader bufferedReader, String message) {
+        if (bufferedReader!=null){
+            try{
+                String jsonDocument = bufferedReader.readLine();
+                parseJSON(jsonDocument);
+            }catch (Exception e){
+                //TODO:Fehlerhandling
+                System.out.println(e.getMessage() + " / " + message);
+            }
+            AddDataOptimierung(wakeup, morningWork, afternoonWork, eveningWork, lunch, naping, freetime, dinner, sleep);
+        } else {
+            //TODO: Fehlerhandling
+            System.out.println(message);
+        }
+        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        startActivity(intent);
     }
 }
