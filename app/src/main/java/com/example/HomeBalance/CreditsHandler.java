@@ -2,8 +2,6 @@ package com.example.HomeBalance;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.widget.Button;
-import androidx.appcompat.app.AppCompatActivity;
 
 
 public class CreditsHandler {
