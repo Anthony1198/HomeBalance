@@ -216,9 +216,9 @@ public class DatenEingabeActivity extends AppCompatActivity implements TimePicke
         boolean insertData = DatenbankHelferEingabe.getInstance(this).addData(newEntry, newEntry2, newEntry3, newEntry4, newEntry5, newEntry6, newEntry7);
 
         if (insertData) {
-            toastMessage("Daten wurden erfolgreich gespeichert!");
+            //toastMessage("Daten wurden erfolgreich gespeichert!");
         } else {
-            toastMessage("Etwas ist schief gelaufen :(");
+            //toastMessage("Etwas ist schief gelaufen :(");
         }
     }
 
@@ -229,9 +229,9 @@ public class DatenEingabeActivity extends AppCompatActivity implements TimePicke
         boolean insertData = DatenbankHelferOptimierung.getInstance(this).addData(newEntry, newEntry2, newEntry3, newEntry4, newEntry5, newEntry6, newEntry7, newEntry8, newEntry9);
 
         if (insertData) {
-            toastMessage("Daten wurden erfolgreich gespeichert!");
+            //toastMessage("Daten wurden erfolgreich gespeichert!");
         } else {
-            toastMessage("Etwas ist schief gelaufen :(");
+            //toastMessage("Etwas ist schief gelaufen :(");
         }
     }
 
@@ -241,7 +241,7 @@ public class DatenEingabeActivity extends AppCompatActivity implements TimePicke
     private void parseJSON(String jsonString) throws Exception {
         if (jsonString == null || jsonString.trim().length() == 0) {
             //Bei erhalt eines leeren Strings wird eine Fehlermeldung zurückgeliefert
-            toastMessage("JSON ist leer!");
+            //toastMessage("JSON ist leer!");
         }
         JSONObject jsonObject = new JSONObject(jsonString);
         JSONArray schedule = jsonObject.getJSONArray("schedule");
@@ -293,13 +293,13 @@ public class DatenEingabeActivity extends AppCompatActivity implements TimePicke
                 parseJSON(jsonDocument);
             }catch (Exception e){
                 //TODO:Fehlerhandling
-                toastMessage(e.getMessage());
+                //toastMessage(e.getMessage());
                 System.out.println(e.getMessage() + " / " + message);
             }
             AddDataOptimierung(wakeup, morningWork, afternoonWork, eveningWork, lunch, naping, freetime, dinner, sleep);
         } else {
             //TODO: Fehlerhandling
-            toastMessage(message);
+            //toastMessage(message);
             System.out.println(message);
         }
         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
