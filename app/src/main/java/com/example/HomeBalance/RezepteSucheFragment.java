@@ -56,8 +56,6 @@ public class RezepteSucheFragment extends Fragment {
         rezeptNr3 = new String[3];
 
 
-
-
         anzeigenNeue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

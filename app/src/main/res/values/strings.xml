@@ -21,4 +21,24 @@
     <string name="meditationAPIURL">HTTP Conecction funktioniert nicht!</string>
     <string name="credits">CREDITS: </string>
 
+    <string name="hilfeText" formatted="true"> <b> Willkommen in der Balanced App! </b> \n\n
+Ihrem Helfer für eine produktive und gesunde Tagesaufteilung im Homeoffice.\n\n
+
+Mit Hilfe Ihrer persönlichen Daten wird ein passender Tagesplan mit wichtigen Zeitpunkten für Sie generiert und auf der Startseite angezeigt.
+Dort können sie durch antippen der Zeitpunkte bei Bedarf auch direkt einen Wecker an Ihrem Endgerät einstellen, um Ihre persönlichen Zeitpunkte nicht zu vergessen.
+Ihre persönlichen Daten lassen sich jeder Zeit über den Plus-Knopf unten rechts anpassen.\n\n
+
+Die zweite Seite der App zeigt Ihnen das lokale Wetter basierend auf dem (beim ersten App-Start) freigegeben Standort Ihres Gerätes.
+Bei Bedarf können Sie dieses per Knopfdruck aktualisieren.\n\n
+
+Die dritte Seite bietet Ihnen Möglichkeiten, nach passenden Rezepten für Ihre Mahlzeiten zu suchen. Dafür gibt es verschiedene Filter, die Sie bei Ihrer Suche einsetzen können.
+Auf Basis der Filter werden dann je drei zufällige, passende Rezepte für Sie rausgesucht. Die drei letzten angezeigten Rezepte können Sie sich bei Bedarf auch noch einmal anzeigen lassen.\n\n
+
+Ähnliche Funktionen finden Sie auf der vierten Seite mit Meditations-Möglichkeiten. Diese können nach Sprache gefilterten werden. Anschließend werden wie bei den Rezepten immer zufällig drei passende für Sie angezeigt. Auch hier können die letzten Ergebnisse bei Bedarf immer erneut angezeigt werden. Über antippen einer Meditation werden Sie in Ihren Brwoser weitergeleitet um sofort zu entspannen.\n\n
+
+Für das regelmäßige Benutzen der App Erhalten Sie außerdem Punkte, die Ihnen auf der Startseite angezeigt werden und bei den kommenden Updates von Vorteil sein werden.\n\n
+
+Viel Spaß beim Benutzen!\n\n
+<b>Stay balanced.</b> </string>
+
 </resources>
