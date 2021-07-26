@@ -6,12 +6,12 @@ import android.widget.Button;
 import androidx.appcompat.app.AppCompatActivity;
 
 
-public class CreditsActivity extends AppCompatActivity {
+public class CreditsHandler {
     private int credits;
-    private static CreditsActivity creditAct;
+    private static CreditsHandler creditAct;
     Context context;
 
-    public CreditsActivity(Context context){
+    public CreditsHandler(Context context){
         this.context = context;
         credits = getSavedCredits(DatenbankHelferCredits.getInstance(context).getData());
     }
@@ -39,9 +39,9 @@ public class CreditsActivity extends AppCompatActivity {
         DatenbankHelferCredits.getInstance(context).addData(credits);
     }
 
-    public static synchronized CreditsActivity getInstance(Context context){
+    public static synchronized CreditsHandler getInstance(Context context){
         if(creditAct == null){
-            creditAct = new CreditsActivity(context);
+            creditAct = new CreditsHandler(context);
         }
         return creditAct;
     }

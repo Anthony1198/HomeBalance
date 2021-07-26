@@ -114,7 +114,7 @@ public class MeditationSucheFragment extends Fragment {
                 String jsonDocument = holeMeditationsDaten();
                 parseJSON(jsonDocument);
                 AddDataMeditation(audio1[0], audio1[1], audio1[2], audio2[0], audio2[1], audio2[2], audio3[0], audio3[1], audio3[2]);
-                CreditsActivity.getInstance(getContext()).addCredits(1);
+                CreditsHandler.getInstance(getContext()).addCredits(1);
 
             } catch (Exception ex) {
                 System.out.println(ex.getMessage());

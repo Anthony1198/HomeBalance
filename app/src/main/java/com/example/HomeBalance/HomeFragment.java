@@ -53,7 +53,7 @@ public class HomeFragment extends Fragment {
         creditsButton = (Button) view.findViewById(R.id.credits);
         linearLayout = (LinearLayout) view.findViewById(R.id.linearLayout);
 
-        creditsButton.setText(getString(R.string.credits) + CreditsActivity.getInstance(this.getContext()).getCredits());
+        creditsButton.setText(getString(R.string.credits) + CreditsHandler.getInstance(this.getContext()).getCredits());
 
 
         /**
@@ -132,8 +132,8 @@ public class HomeFragment extends Fragment {
                     btn.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            CreditsActivity.getInstance(getContext()).addCredits(1);
-                            creditsButton.setText(getString(R.string.credits + CreditsActivity.getInstance(getContext()).getCredits()));
+                            CreditsHandler.getInstance(getContext()).addCredits(1);
+                            creditsButton.setText(getString(R.string.credits) + CreditsHandler.getInstance(getContext()).getCredits());
                             zeit = dataOptimierung.getString(index);
                             weckerStellen(zeit);
                         }
