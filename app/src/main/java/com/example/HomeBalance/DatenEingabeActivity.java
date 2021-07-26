@@ -317,11 +317,13 @@ public class DatenEingabeActivity extends AppCompatActivity implements TimePicke
                 parseJSON(jsonDocument);
             }catch (Exception e){
                 //TODO:Fehlerhandling
+                toastMessage(e.getMessage());
                 System.out.println(e.getMessage() + " / " + message);
             }
             AddDataOptimierung(wakeup, morningWork, afternoonWork, eveningWork, lunch, naping, freetime, dinner, sleep);
         } else {
             //TODO: Fehlerhandling
+            toastMessage(message);
             System.out.println(message);
         }
         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
