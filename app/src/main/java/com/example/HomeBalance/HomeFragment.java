@@ -11,8 +11,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -22,7 +20,6 @@ import androidx.fragment.app.Fragment;
  * Controller für die Anzeige der Tagesstruktur, welche durch die eingegebenen Daten mit der API brechnet wurde
  */
 public class HomeFragment extends Fragment {
-
     /**
      * Deklaration nötiger Varibalen
      */
@@ -34,7 +31,7 @@ public class HomeFragment extends Fragment {
     View view;
     TextView anzeige;
 
-    String c[] = new String[]{"Aufstehzeit:", "Arbeitsbeginn:", "Pause:", "Arbeitsfortsetzung:", "Powernap:", "Freizeit", "Abendessen", "Arbeitsfortsetzung am Abend:", "Schlafenszeit:"};
+    String[] c = new String[]{"Aufstehzeit:", "Arbeitsbeginn:", "Pause:", "Arbeitsfortsetzung:", "Powernap:", "Freizeit", "Abendessen", "Arbeitsfortsetzung am Abend:", "Schlafenszeit:"};
 
     /**
      * onCreate-Methode wird bei erstmaligem Aufruf der Activity ausgeführt
@@ -46,8 +43,8 @@ public class HomeFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_home, container, false);
 
-        /**
-         * Initialisierung der View-Komponenten
+        /*
+          Initialisierung der View-Komponenten
          */
         name = (TextView) view.findViewById(R.id.name);
         creditsButton = (Button) view.findViewById(R.id.credits);
@@ -56,8 +53,8 @@ public class HomeFragment extends Fragment {
         creditsButton.setText(getString(R.string.credits) + CreditsHandler.getInstance(this.getContext()).getCredits());
 
 
-        /**
-         * Auslesen der Eingabe-Datenbank für den User-Namen, wenn nicht vorhanden, dann steht die Dateneingabe noch aus
+        /*
+          Auslesen der Eingabe-Datenbank für den User-Namen, wenn nicht vorhanden, dann steht die Dateneingabe noch aus
          */
         Cursor dataEingabe = DatenbankHelferEingabe.getInstance(this.getContext()).getData();
         if( dataEingabe != null && dataEingabe.moveToFirst() ) {
@@ -66,7 +63,7 @@ public class HomeFragment extends Fragment {
         } else {
             anzeige = new TextView(getActivity());
             anzeige.setTextSize(20);
-            anzeige.setTextAlignment(view.TEXT_ALIGNMENT_CENTER);
+            anzeige.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
             anzeige.setTextColor(Color.BLACK);
             anzeige.setText("Bitte die Dateneingabe auf dem + durchführen!");
             linearLayout.addView(anzeige);
@@ -89,11 +86,11 @@ public class HomeFragment extends Fragment {
             startActivity(intent);
         }
     }
-
+    /**
+     * Auslesen der Optimierungs-Datenbank für den Tagesablaufplan + dynamische Auffüllung der View
+     */
     private void befuellen(){
-        /**
-         * Auslesen der Optimierungs-Datenbank für den Tagesablaufplan + dynamische Auffüllung der View
-         */
+
         final Cursor dataOptimierung = DatenbankHelferOptimierung.getInstance(this.getContext()).getData();
 
         if( dataOptimierung != null ) {
@@ -105,7 +102,7 @@ public class HomeFragment extends Fragment {
                 }catch (IndexOutOfBoundsException e){
                     anzeige = new TextView(getActivity());
                     anzeige.setTextSize(20);
-                    anzeige.setTextAlignment(view.TEXT_ALIGNMENT_CENTER);
+                    anzeige.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
                     anzeige.setTextColor(Color.BLACK);
                     anzeige.setText("Bitte die Dateneingabe auf dem + durchführen!");
                     linearLayout.addView(anzeige);
@@ -115,7 +112,7 @@ public class HomeFragment extends Fragment {
                 if (testNull != null) {
                     TextView anzeige = new TextView(getActivity());
                     anzeige.setTextSize(20);
-                    anzeige.setTextAlignment(view.TEXT_ALIGNMENT_CENTER);
+                    anzeige.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
                     anzeige.setTextColor(Color.BLACK);
                     anzeige.setText(c[i]);
                     linearLayout.addView(anzeige);

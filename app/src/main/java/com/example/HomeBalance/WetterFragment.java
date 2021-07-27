@@ -17,27 +17,22 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
-
 import org.json.JSONArray;
 import org.json.JSONObject;
-
 import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.TimeZone;
 
-public class WetterFragment extends Fragment {
+public class WetterFragment extends Fragment implements Caller{
 
     Button anzeigen;
     private LocationManager locationManager;
@@ -55,11 +50,12 @@ public class WetterFragment extends Fragment {
         locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
 
         gpsHolen();
-
+        final HTTPHandler handlerDay = new HTTPHandler(this);
+        final HTTPHandler handlerHour = new HTTPHandler(this);
         anzeigen.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (isOnline() == false) {
+                if (!isOnline()) {
                     toastMessage("Keine Internetverbindung!");
                 } else {
                     CreditsHandler.getInstance(getContext()).addCredits(2);
@@ -70,22 +66,33 @@ public class WetterFragment extends Fragment {
                     urlMitName = "http://" + getString(R.string.localeIP) + ":8080/api/weather?location=" + latitude + "," + longitude + "&startTime=" + startTime + "&endTime=" + endTime + "&timesteps=" + timeStep + "&timezone=" + timeZone;
                     toastMessage("Daten werden verarbeitet!");
 
-
                     // Ausführung des Hintergrund-Thread mit HTTP-Request
-                    WetterFragment.MeinHintergrundThread mht = new MeinHintergrundThread();
-                    mht.start();
-                    try {
-                        mht.join();
-                    } catch (InterruptedException e) {
+                    URL url = null;
+                    try{
+                        url = new URL(urlMitName);
+                    } catch (MalformedURLException e){
                         e.printStackTrace();
                     }
-                    Fragment mFragment = new WetterFragment();
-                    getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, mFragment).commit();
+                    handlerDay.setUrl(url);
+                    handlerDay.setIdentifier("weatherPerDay");
+                    handlerDay.start();
+
+                    timeStep = "1h";
+                    urlMitName = "http://" + getString(R.string.localeIP) + ":8080/api/weather?location=" + latitude + "," + longitude + "&startTime=" + startTime + "&endTime=" + endTime + "&timesteps=" + timeStep + "&timezone=" + timeZone;
+                    url = null;
+                    try{
+                        url = new URL(urlMitName);
+                    } catch (MalformedURLException e){
+                        e.printStackTrace();
+                    }
+                    handlerHour.setUrl(url);
+                    handlerHour.setIdentifier("weatherPerHour");
+                    handlerHour.start();
                 }
             }
         });
 
-        /**
+        /*
          * Auslesen der Optimierungs-Datenbank für den Tagesablaufplan
          */
         Cursor dataWetter = DatenbankHelferWetter.getInstance(this.getContext()).getData();
@@ -142,37 +149,40 @@ public class WetterFragment extends Fragment {
         return cm.getActiveNetworkInfo() != null && cm.getActiveNetworkInfo().isConnectedOrConnecting();
     }
 
-
-    private class MeinHintergrundThread extends Thread {
-
-        @Override
-        public void run() {
-
-            try {
-                String jsonDocument = holeWetterDaten();
-               parseJSON(jsonDocument);
-               System.out.println(jsonDocument);
+    @Override
+    public synchronized void handleAnswer(BufferedReader bufferedReader, String identifier, String message) {
+        String jsonDocument;
+        if(bufferedReader!=null){
+            try{
+                jsonDocument = bufferedReader.readLine();
+                parseJSON(jsonDocument);
+            }catch (Exception e){
+                toastMessageOnUiThread("Answer not readable");
+            }
+            if(identifier.equals("weatherPerDay")){
                 tempDay = temperatur;
                 rainDay = niederschlag;
                 windDay = wind;
-
-                timeStep = "1h";
-                urlMitName = "http://" + getString(R.string.localeIP) + ":8080/api/weather?location=" + latitude + "," + longitude + "&startTime=" + startTime + "&endTime=" + endTime + "&timesteps=" + timeStep + "&timezone=" + timeZone;
-
-                String jsonDocument2 = holeWetterDaten();
-                parseJSON(jsonDocument2);
-                System.out.println(jsonDocument2);
+            }else if(identifier.equals("weatherPerHour")){
                 AddDataWetter(tempDay, rainDay, windDay, temperatur, niederschlag, wind);
-
-
-            } catch (Exception ex) {
-                System.out.println(ex.getMessage());
-
+            }else {
+                toastMessageOnUiThread("Internal Error");
             }
+        }else {
+            toastMessageOnUiThread(message);
         }
-
+        Fragment mFragment = new WetterFragment();
+        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, mFragment).commit();
     }
 
+    private void toastMessageOnUiThread(String message){
+        final String m = message;
+        getActivity().runOnUiThread(new Runnable() {
+            public void run() {
+                toastMessage(m);
+            }
+        });
+    }
 
     /**
      * String mit JSON-Inhalt wird auf Inhalte ausgelesen (Parsing) und in der dazugehörigen Datenbank abgespeichert
@@ -184,6 +194,7 @@ public class WetterFragment extends Fragment {
 
             //Bei erhalt eines leeren Strings wird eine Fehlermeldung zurückgeliefert
             toastMessage("JSON ist leer!");
+            return;
         }
         //wetterdaten.setText(jsonString);
 
@@ -199,31 +210,6 @@ public class WetterFragment extends Fragment {
         wind = "Windgeschwindigkeit: " + values.getJSONObject("values").getString("windSpeed");
         String re = temperatur + " " + niederschlag + " " + wind;
 
-    }
-
-    private String holeWetterDaten() throws Exception {
-
-        URL url = null;
-        HttpURLConnection conn = null;
-        String httpErgebnisDokument = "";
-
-        url = new URL(urlMitName);
-        conn = (HttpURLConnection) url.openConnection();
-
-        if (conn.getResponseCode() != HttpURLConnection.HTTP_OK) {
-
-            throw new Exception(getString(R.string.HTTPS));
-
-        } else {
-
-            InputStream is = conn.getInputStream();
-            InputStreamReader ris = new InputStreamReader(is);
-            BufferedReader reader = new BufferedReader(ris);
-
-            httpErgebnisDokument = reader.readLine();
-        }
-        System.out.println(httpErgebnisDokument);
-        return httpErgebnisDokument;
     }
 
     private void getWetterDatumZeit() {
@@ -253,7 +239,7 @@ public class WetterFragment extends Fragment {
         boolean insertData = DatenbankHelferWetter.getInstance(this.getContext()).addData(newEntry, newEntry2, newEntry3, newEntry4, newEntry5, newEntry6);
 
         if (insertData) {
-            //toastMessage("Daten wurden erfolgreich gespeichert!");
+            toastMessage("Daten wurden erfolgreich gespeichert!");
         } else {
             toastMessage("Etwas ist schief gelaufen :(");
         }

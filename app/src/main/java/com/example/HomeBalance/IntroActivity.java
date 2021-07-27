@@ -1,16 +1,11 @@
 package com.example.HomeBalance;
 
-import android.Manifest;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-
 import androidx.annotation.Nullable;
-import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
-
 import com.github.appintro.AppIntro;
-import com.github.appintro.AppIntro2;
 import com.github.appintro.AppIntroFragment;
 
 
@@ -56,7 +51,7 @@ public class IntroActivity extends AppIntro {
      * Die Methode checkt, ob die App schon einmal geöffnet wurde, um das Intro ggfls. nicht mehr anzeigen zu müssen
      */
     private void checkFirstOpen(){
-        Boolean isFirstRun = getSharedPreferences("PREFERENCE", MODE_PRIVATE)
+        boolean isFirstRun = getSharedPreferences("PREFERENCE", MODE_PRIVATE)
                 .getBoolean("isFirstRun", true);
         if (!isFirstRun) {
             Intent intent = new Intent(this, MainActivity.class);

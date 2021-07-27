@@ -36,8 +36,8 @@ public class MeditationAnzeigenFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragement_meditationanzeigen, container, false);
 
-        /**
-         * Initialisierung der View-Komponenten
+        /*
+          Initialisierung der View-Komponenten
          */
         meditation1title = (TextView) view.findViewById(R.id.meditation1);
         meditation2title = (TextView) view.findViewById(R.id.meditation2);
@@ -49,7 +49,7 @@ public class MeditationAnzeigenFragment extends Fragment {
         meditationNr1 = new String[3];
         meditationNr2 = new String[3];
         meditationNr3 = new String[3];
-        /**
+        /*
          * Auslesen der Eingabe-Datenbank für den User-Namen
          */
         Cursor dataMeditation = DatenbankHelferMeditation.getInstance(this.getContext()).getData();
@@ -80,7 +80,7 @@ public class MeditationAnzeigenFragment extends Fragment {
         mediation1bild.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (isOnline() == false) {
+                if (!isOnline()) {
                     toastMessage("Keine Internetverbindung!");
                 } else {
                     CreditsHandler.getInstance(getContext()).addCredits(3);
@@ -93,7 +93,7 @@ public class MeditationAnzeigenFragment extends Fragment {
         mediation2bild.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (isOnline() == false) {
+                if (!isOnline()) {
                     toastMessage("Keine Internetverbindung!");
                 } else {
                     CreditsHandler.getInstance(getContext()).addCredits(3);
@@ -106,7 +106,7 @@ public class MeditationAnzeigenFragment extends Fragment {
         mediation3bild.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (isOnline() == false) {
+                if (!isOnline()) {
                     toastMessage("Keine Internetverbindung!");
                 } else {
                     CreditsHandler.getInstance(getContext()).addCredits(3);

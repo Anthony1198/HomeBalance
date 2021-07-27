@@ -11,8 +11,9 @@ import java.net.URL;
  * App-Stillstand/Absturz wird vermieden
  */
 public class HTTPHandler extends Thread{
-    private Caller caller;
+    private final Caller caller;
     private URL url;
+    private String identifier;
 
     public HTTPHandler(Caller caller){
         this.caller = caller;
@@ -24,21 +25,24 @@ public class HTTPHandler extends Thread{
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                 conn.setConnectTimeout(2000);
                 if (conn.getResponseCode() != HttpURLConnection.HTTP_OK) {
-                    caller.handleAnswer(null, "Connection not Ok");
+                    caller.handleAnswer(null, identifier, "Connection not Ok");
                 } else {
                     InputStream is = conn.getInputStream();
                     InputStreamReader ris = new InputStreamReader(is);
                     BufferedReader reader = new BufferedReader(ris);
-                    caller.handleAnswer(reader, "Connection Ok");
+                    caller.handleAnswer(reader, identifier, "Connection Ok");
                 }
             } catch (Exception ex) {
-                caller.handleAnswer(null, "Unknown Exception");
+                caller.handleAnswer(null, identifier, "No connection to backend possible");
             }
         }else {
-            caller.handleAnswer(null, "URl is null");
+            caller.handleAnswer(null, identifier, "URl malformed");
         }
     }
     public void setUrl(URL url) {
         this.url = url;
+    }
+    public void setIdentifier(String identifier) {
+        this.identifier = identifier;
     }
 }

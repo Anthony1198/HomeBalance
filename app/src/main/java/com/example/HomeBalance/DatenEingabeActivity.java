@@ -1,6 +1,5 @@
 package com.example.HomeBalance;
 
-
 import android.Manifest;
 import android.app.TimePickerDialog;
 import android.content.Context;
@@ -15,18 +14,12 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
-
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.DialogFragment;
-
 import org.json.JSONArray;
 import org.json.JSONObject;
-
 import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
@@ -74,8 +67,8 @@ public class DatenEingabeActivity extends AppCompatActivity implements TimePicke
         setContentView(R.layout.activity_dateneingabe);
 
 
-        /**
-         * Initialisierung der View-Komponenten
+        /*
+          Initialisierung der View-Komponenten
          */
         vorname = (EditText) findViewById(R.id.vorname);
         alter = (EditText) findViewById(R.id.alter);
@@ -90,8 +83,8 @@ public class DatenEingabeActivity extends AppCompatActivity implements TimePicke
         fruehstueck = (Switch) findViewById(R.id.fruehstueck);
 
 
-        /**
-         * Bei Click auf einen Zeit-Auswahl Button wird der TimePicker aufgerufen und auf der View angezeigt
+        /*
+          Bei Click auf einen Zeit-Auswahl Button wird der TimePicker aufgerufen und auf der View angezeigt
          */
         aufstehzeitButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -141,7 +134,7 @@ public class DatenEingabeActivity extends AppCompatActivity implements TimePicke
 
                 AddDataEingabe(vornameInhalt, alterInhalt, aufstehzeitInhalt, routineInhalt, arbneitszeitInhalt, napInhalt, fruehstueckInhalt);
 
-                if (isOnline() == false) {
+                if (!isOnline()) {
                     toastMessage("Keine Internetverbindung!");
                 } else {
                     urlMitName = "http://" + getString(R.string.localeIP) + ":8080/api/schedule?" + "nap=" + napInhalt + "&age=" + alterInhalt + "&breakfast=" + fruehstueckInhalt + "&wakeUpTime=" + aufstehzeitInhalt + "&getReadyDuration=" + routineInhalt + "&workingHours=" + arbneitszeitInhalt;
@@ -261,10 +254,11 @@ public class DatenEingabeActivity extends AppCompatActivity implements TimePicke
         if (jsonString == null || jsonString.trim().length() == 0) {
             //Bei erhalt eines leeren Strings wird eine Fehlermeldung zurückgeliefert
             toastMessage("JSON ist leer!");
+            return;
         }
         JSONObject jsonObject = new JSONObject(jsonString);
         JSONArray schedule = jsonObject.getJSONArray("schedule");
-        String keyName = null;
+        String keyName;
 
         for (int i = 0; i < schedule.length(); i++) {
             JSONObject abs = schedule.getJSONObject(i);
@@ -308,25 +302,34 @@ public class DatenEingabeActivity extends AppCompatActivity implements TimePicke
                 1);
     }
 
-    //Empfängt die Antwort des HTTPHandlers
+    /**Empfängt die Antwort des HTTPHandlers
+     * @param bufferedReader BufferedReader mit HTTP-Antwort
+     * @param message Gibt Auskunft über Art des Fehlers oder Erfolg
+     */
     @Override
-    public void handleAnswer(BufferedReader bufferedReader, String message) {
+    public void handleAnswer(BufferedReader bufferedReader, String identifier, final String message) {
+
         if (bufferedReader!=null){
             try{
                 String jsonDocument = bufferedReader.readLine();
                 parseJSON(jsonDocument);
             }catch (Exception e){
-                //TODO:Fehlerhandling
-                toastMessage(e.getMessage());
-                System.out.println(e.getMessage() + " / " + message);
+                toastMessageOnUiThread("Answer not readable");
             }
             AddDataOptimierung(wakeup, morningWork, afternoonWork, eveningWork, lunch, naping, freetime, dinner, sleep);
         } else {
-            //TODO: Fehlerhandling
-            toastMessage(message);
-            System.out.println(message);
+            toastMessageOnUiThread(message);
         }
         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
         startActivity(intent);
+    }
+
+    private void toastMessageOnUiThread(String message){
+        final String m = message;
+        runOnUiThread(new Runnable() {
+            public void run() {
+                toastMessage(m);
+            }
+        });
     }
 }

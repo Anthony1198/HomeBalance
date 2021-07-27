@@ -35,8 +35,8 @@ public class RezepteAnzeigenFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragement_rezepteanzeigen, container, false);
 
-        /**
-         * Initialisierung der View-Komponenten
+        /*
+          Initialisierung der View-Komponenten
          */
         rezept1title = (TextView) view.findViewById(R.id.rezept1);
         rezept2title = (TextView) view.findViewById(R.id.rezept2);
@@ -51,7 +51,7 @@ public class RezepteAnzeigenFragment extends Fragment {
 
 
 
-        /**
+        /*
          * Auslesen der Eingabe-Datenbank für den User-Namen
          */
         Cursor dataRezepte = DatenbankHelferRezepte.getInstance(this.getContext()).getData();
@@ -82,7 +82,7 @@ public class RezepteAnzeigenFragment extends Fragment {
         rezept1bild.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (isOnline() == false) {
+                if (!isOnline()) {
                     toastMessage("Keine Internetverbindung!");
                 } else {
                     CreditsHandler.getInstance(getContext()).addCredits(2);
@@ -95,7 +95,7 @@ public class RezepteAnzeigenFragment extends Fragment {
         rezept2bild.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (isOnline() == false) {
+                if (!isOnline()) {
                     toastMessage("Keine Internetverbindung!");
                 } else {
                     CreditsHandler.getInstance(getContext()).addCredits(2);
@@ -108,7 +108,7 @@ public class RezepteAnzeigenFragment extends Fragment {
         rezept3bild.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (isOnline() == false) {
+                if (!isOnline()) {
                     toastMessage("Keine Internetverbindung!");
                 } else {
                     CreditsHandler.getInstance(getContext()).addCredits(2);

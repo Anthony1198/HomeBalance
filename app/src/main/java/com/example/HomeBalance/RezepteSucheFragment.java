@@ -1,33 +1,24 @@
 package com.example.HomeBalance;
 
 import android.content.Context;
-
 import android.net.ConnectivityManager;
 import android.os.Bundle;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-
 import android.widget.Switch;
 import android.widget.Toast;
-
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-
 import org.json.JSONArray;
 import org.json.JSONObject;
-
 import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 
-public class RezepteSucheFragment extends Fragment {
+public class RezepteSucheFragment extends Fragment implements Caller{
 
     Button anzeigenNeue, anzeigenLetzte;
     String urlMitName;
@@ -57,28 +48,26 @@ public class RezepteSucheFragment extends Fragment {
 
 
 
-
+        final HTTPHandler handler = new HTTPHandler(this);
         anzeigenNeue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (isOnline() == false) {
+                if (!isOnline()) {
                     toastMessage("Keine Internetverbindung!");
                 } else {
                     urlZusammenstellung();
 
                     toastMessage("Daten werden verarbeitet!");
-
-
-                    // Ausführung des Hintergrund-Thread mit HTTP-Request
-                    RezepteSucheFragment.MeinHintergrundThread mht = new RezepteSucheFragment.MeinHintergrundThread();
-                    mht.start();
-                    try {
-                        mht.join();
-                    } catch (InterruptedException e) {
+                    URL url = null;
+                    try{
+                        url = new URL(urlMitName);
+                    } catch (MalformedURLException e){
                         e.printStackTrace();
                     }
-                    Fragment mFragment = new RezepteAnzeigenFragment();
-                    getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, mFragment).commit();
+
+                    // Ausführung des Hintergrund-Thread mit HTTP-Request
+                    handler.setUrl(url);
+                    handler.start();
                 }
             }
         });
@@ -94,44 +83,32 @@ public class RezepteSucheFragment extends Fragment {
         return view;
     }
 
-    private class MeinHintergrundThread extends Thread {
-
-        @Override
-        public void run() {
-            try {
-                String jsonDocument = holeRezeptDaten();
+    @Override
+    public void handleAnswer(BufferedReader bufferedReader, String identifier, String message) {
+        if(bufferedReader!=null){
+            String jsonDocument;
+            try{
+                jsonDocument = bufferedReader.readLine();
                 parseJSON(jsonDocument);
-                AddDataRezepte(rezeptNr1[0], rezeptNr1[1], rezeptNr1[2], rezeptNr2[0], rezeptNr2[1], rezeptNr2[2], rezeptNr3[0], rezeptNr3[1], rezeptNr3[2]);
-                CreditsHandler.getInstance(getContext()).addCredits(1);
-
-            } catch (Exception ex) {
-                System.out.println(ex.getMessage());
+            }catch(Exception e){
+                toastMessageOnUiThread("Answer not readable");
             }
+            AddDataRezepte(rezeptNr1[0], rezeptNr1[1], rezeptNr1[2], rezeptNr2[0], rezeptNr2[1], rezeptNr2[2], rezeptNr3[0], rezeptNr3[1], rezeptNr3[2]);
+            CreditsHandler.getInstance(getContext()).addCredits(1);
+        }else{
+            toastMessageOnUiThread(message);
         }
+        Fragment mFragment = new RezepteAnzeigenFragment();
+        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, mFragment).commit();
     }
 
-    private String holeRezeptDaten() throws Exception {
-
-        URL url = null;
-        HttpURLConnection conn = null;
-        String httpErgebnisDokument = "";
-
-        url = new URL(urlMitName);
-        conn = (HttpURLConnection) url.openConnection();
-
-        if (conn.getResponseCode() != HttpURLConnection.HTTP_OK) {
-
-            throw new Exception(getString(R.string.HTTPS));
-
-        } else {
-
-            InputStream is = conn.getInputStream();
-            InputStreamReader ris = new InputStreamReader(is);
-            BufferedReader reader = new BufferedReader(ris);
-
-            httpErgebnisDokument = reader.readLine();
-        }
-        return httpErgebnisDokument;
+    private void toastMessageOnUiThread(String message){
+        final String m = message;
+        getActivity().runOnUiThread(new Runnable() {
+            public void run() {
+                toastMessage(m);
+            }
+        });
     }
 
         /**
@@ -144,6 +121,7 @@ public class RezepteSucheFragment extends Fragment {
 
                 //Bei erhalt eines leeren Strings wird eine Fehlermeldung zurückgeliefert
                 toastMessage("JSON ist leer!");
+                return;
             }
 
             JSONObject jsonObject = new JSONObject(jsonString);
@@ -194,28 +172,28 @@ public class RezepteSucheFragment extends Fragment {
         glutenfreiBoolean = glutenfrei.isChecked();
         gesundBoolean = gesund.isChecked();
 
-        if(fruehBoolean == true){
+        if(fruehBoolean){
             urlMitName= urlMitName;
         }
-        if(mittagBoolean == true){
+        if(mittagBoolean){
             urlMitName= urlMitName + "lunch";
         }
-        if(abendBoolean == true){
+        if(abendBoolean){
             urlMitName= urlMitName + "dinner";
         }
-        if(nachtischBoolean == true){
+        if(nachtischBoolean){
             urlMitName= urlMitName + "dessert";
         }
-        if(veganBoolean == true){
+        if(veganBoolean){
             urlMitName= urlMitName + "vegan";
         }
-        if(vegetarischBoolean == true){
+        if(vegetarischBoolean){
             urlMitName= urlMitName + "vegetarian";
         }
-        if(glutenfreiBoolean == true){
+        if(glutenfreiBoolean){
             urlMitName= urlMitName + "glutenFree";
         }
-        if(gesundBoolean == true){
+        if(gesundBoolean){
             urlMitName= urlMitName + "veryHealthy";
             CreditsHandler.getInstance(getContext()).addCredits(5);
         }
@@ -228,7 +206,7 @@ public class RezepteSucheFragment extends Fragment {
         boolean insertData = DatenbankHelferRezepte.getInstance(this.getContext()).addData(newEntry, newEntry2, newEntry3, newEntry4, newEntry5, newEntry6, newEntry7, newEntry8, newEntry9);
 
         if (insertData) {
-            //toastMessage("Daten wurden erfolgreich gespeichert!");
+            toastMessage("Daten wurden erfolgreich gespeichert!");
         } else {
             toastMessage("Etwas ist schief gelaufen :(");
         }

@@ -9,21 +9,19 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-
 import org.json.JSONArray;
 import org.json.JSONObject;
-
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 
-public class MeditationSucheFragment extends Fragment {
+public class MeditationSucheFragment extends Fragment implements Caller{
 
     Button anzeigenNeue2, anzeigenLetzte2;
     String urlMitName;
@@ -47,11 +45,11 @@ public class MeditationSucheFragment extends Fragment {
         anzeigenNeue2 = (Button) view.findViewById(R.id.anzeigenNeue2);
 
 
-
+        final HTTPHandler handler = new HTTPHandler(this);
         anzeigenNeue2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (isOnline() == false) {
+                if (!isOnline()) {
                     toastMessage("Keine Internetverbindung!");
                 } else {
 
@@ -60,15 +58,14 @@ public class MeditationSucheFragment extends Fragment {
                     toastMessage("Daten werden verarbeitet!");
 
                     // Ausführung des Hintergrund-Thread mit HTTP-Request
-                    MeditationSucheFragment.MeinHintergrundThread mht = new MeditationSucheFragment.MeinHintergrundThread();
-                    mht.start();
-                    try {
-                        mht.join();
-                    } catch (InterruptedException e) {
+                    URL url = null;
+                    try{
+                        url = new URL(urlMitName);
+                    } catch (MalformedURLException e) {
                         e.printStackTrace();
                     }
-                    Fragment mFragment = new MeditationAnzeigenFragment();
-                    getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, mFragment).commit();
+                    handler.setUrl(url);
+                    handler.start();
                 }
             }
         });
@@ -95,32 +92,48 @@ public class MeditationSucheFragment extends Fragment {
         franzBoolean = radioFranz.isChecked();
 
 
-        if (deutschBoolean == true) {
+        if (deutschBoolean) {
             urlMitName = urlMitName + "German";
         }
-        if (englischBoolean == true) {
+        if (englischBoolean) {
             urlMitName = urlMitName + "English";
         }
-        if (franzBoolean == true) {
+        if (franzBoolean) {
             urlMitName = urlMitName + "French";
         }
     }
 
-    private class MeinHintergrundThread extends Thread {
-
-        @Override
-        public void run() {
+    @Override
+    public void handleAnswer(BufferedReader bufferedReader, String identifier, String message) {
+        if (bufferedReader!=null){
+            String jsonDocument = "";
             try {
-                String jsonDocument = holeMeditationsDaten();
+                String output;
+                while ((output = bufferedReader.readLine()) != null){
+                    jsonDocument += output;
+                }
                 parseJSON(jsonDocument);
-                AddDataMeditation(audio1[0], audio1[1], audio1[2], audio2[0], audio2[1], audio2[2], audio3[0], audio3[1], audio3[2]);
-                CreditsHandler.getInstance(getContext()).addCredits(1);
-
             } catch (Exception ex) {
-                System.out.println(ex.getMessage());
+                toastMessageOnUiThread("Answer not readable");
             }
+            AddDataMeditation(audio1[0], audio1[1], audio1[2], audio2[0], audio2[1], audio2[2], audio3[0], audio3[1], audio3[2]);
+            CreditsHandler.getInstance(getContext()).addCredits(1);
+        } else {
+            toastMessageOnUiThread(message);
         }
+        Fragment mFragment = new MeditationAnzeigenFragment();
+        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, mFragment).commit();
     }
+
+    private void toastMessageOnUiThread(String message){
+        final String m = message;
+        getActivity().runOnUiThread(new Runnable() {
+            public void run() {
+                toastMessage(m);
+            }
+        });
+    }
+
 
     /**
      * String mit JSON-Inhalt wird auf Inhalte ausgelesen (Parsing) und in der dazugehörigen Datenbank abgespeichert
@@ -132,6 +145,7 @@ public class MeditationSucheFragment extends Fragment {
 
             //Bei erhalt eines leeren Strings wird eine Fehlermeldung zurückgeliefert
             toastMessage("JSON ist leer!");
+            return;
         }
 
         JSONObject jsonObject = new JSONObject(jsonString);
@@ -155,34 +169,6 @@ public class MeditationSucheFragment extends Fragment {
     }
 
 
-    private String holeMeditationsDaten() throws Exception {
-
-        URL url = null;
-        HttpURLConnection conn = null;
-        String httpErgebnisDokument = "";
-
-        url = new URL(urlMitName);
-        conn = (HttpURLConnection) url.openConnection();
-
-        if (conn.getResponseCode() != HttpURLConnection.HTTP_OK) {
-
-            throw new Exception(getString(R.string.HTTPS));
-
-        } else {
-
-            InputStream is = conn.getInputStream();
-            InputStreamReader ris = new InputStreamReader(is);
-            BufferedReader reader = new BufferedReader(ris);
-
-            String output;
-            while ((output = reader.readLine()) != null){
-                httpErgebnisDokument += output;
-            }
-        }
-        return httpErgebnisDokument;
-
-    }
-
     /**
      * Internetverbindung wird getestet
      *
@@ -204,7 +190,7 @@ public class MeditationSucheFragment extends Fragment {
         boolean insertData = DatenbankHelferMeditation.getInstance(this.getContext()).addData(newEntry, newEntry2, newEntry3, newEntry4, newEntry5, newEntry6, newEntry7, newEntry8, newEntry9);
 
         if (insertData) {
-            //toastMessage("Daten wurden erfolgreich gespeichert!");
+            toastMessage("Daten wurden erfolgreich gespeichert!");
         } else {
             toastMessage("Etwas ist schief gelaufen :(");
         }
