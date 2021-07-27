@@ -25,7 +25,7 @@ import java.net.URL;
 
 
 /**
- * Controller für die Eingabeseite der Nutzerdaten
+ * Controller für die Eingabeseite der Nutzerdaten (Sperichert und liest die notwendigen Datenbanken und reagiert auf die GUI)
  */
 public class DatenEingabeActivity extends AppCompatActivity implements TimePickerDialog.OnTimeSetListener, Caller{
 
@@ -142,8 +142,6 @@ public class DatenEingabeActivity extends AppCompatActivity implements TimePicke
                     // Button deaktivieren während ein HTTP-Request läuft
                     abschicken.setEnabled(false);
 
-                    toastMessage("Daten werden verarbeitet!");
-
                     // Ausführung des Hintergrund-Thread mit HTTP-Request
                     URL url = null;
                     try {
@@ -165,15 +163,6 @@ public class DatenEingabeActivity extends AppCompatActivity implements TimePicke
         befuellen(dataEingabe);
 }
 
-    /**
-     * Internetverbindung wird getestet
-     *
-     * @return boolean, ob Internetverbindung vorhanden
-     */
-    private boolean isOnline() {
-        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        return cm.getActiveNetworkInfo() != null && cm.getActiveNetworkInfo().isConnectedOrConnecting();
-    }
 
     /**
      * Die Methode befüllt schon vorhandene Eingabedaten in die Maske
@@ -224,9 +213,9 @@ public class DatenEingabeActivity extends AppCompatActivity implements TimePicke
         boolean insertData = DatenbankHelferEingabe.getInstance(this).addData(newEntry, newEntry2, newEntry3, newEntry4, newEntry5, newEntry6, newEntry7);
 
         if (insertData) {
-            toastMessage("Daten wurden erfolgreich gespeichert!");
+            //toastMessage("Daten wurden erfolgreich gespeichert!");
         } else {
-            toastMessage("Etwas ist schief gelaufen :(");
+            //toastMessage("Etwas ist schief gelaufen :(");
         }
     }
 
@@ -237,14 +226,10 @@ public class DatenEingabeActivity extends AppCompatActivity implements TimePicke
         boolean insertData = DatenbankHelferOptimierung.getInstance(this).addData(newEntry, newEntry2, newEntry3, newEntry4, newEntry5, newEntry6, newEntry7, newEntry8, newEntry9);
 
         if (insertData) {
-            toastMessage("Daten wurden erfolgreich gespeichert!");
+            //toastMessage("Daten wurden erfolgreich gespeichert!");
         } else {
-            toastMessage("Etwas ist schief gelaufen :(");
+            //toastMessage("Etwas ist schief gelaufen :(");
         }
-    }
-
-    private void toastMessage(String message) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 
     /**
@@ -296,11 +281,6 @@ public class DatenEingabeActivity extends AppCompatActivity implements TimePicke
             }
         }
     }
-    private void locationAnfragen(){
-        ActivityCompat.requestPermissions(this,
-                new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                1);
-    }
 
     /**Empfängt die Antwort des HTTPHandlers
      * @param bufferedReader BufferedReader mit HTTP-Antwort
@@ -331,5 +311,29 @@ public class DatenEingabeActivity extends AppCompatActivity implements TimePicke
                 toastMessage(m);
             }
         });
+    /**
+     * Internetverbindung wird getestet
+     *
+     * @return boolean, ob Internetverbindung vorhanden
+     */
+    private boolean isOnline() {
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        return cm.getActiveNetworkInfo() != null && cm.getActiveNetworkInfo().isConnectedOrConnecting();
+    }
+
+    /**
+     * Abfrage der Genehmigung für doe Nutzung von den GPS-Koordinaten
+     */
+    private void locationAnfragen(){
+        ActivityCompat.requestPermissions(this,
+                new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                1);
+    }
+
+    /**
+     * Ausgabe von Android Toast-Massages
+     */
+    private void toastMessage(String message) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
     }
 }

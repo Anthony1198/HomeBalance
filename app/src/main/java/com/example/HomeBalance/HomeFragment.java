@@ -24,7 +24,7 @@ public class HomeFragment extends Fragment {
      * Deklaration nötiger Varibalen
      */
     LinearLayout linearLayout;
-    Button creditsButton;
+    Button creditsButton, hilfeButton;
     private TextView name;
     private int hour, minuten;
     private String zeit, testNull;
@@ -49,8 +49,16 @@ public class HomeFragment extends Fragment {
         name = (TextView) view.findViewById(R.id.name);
         creditsButton = (Button) view.findViewById(R.id.credits);
         linearLayout = (LinearLayout) view.findViewById(R.id.linearLayout);
-
+        hilfeButton = (Button) view.findViewById(R.id.hilfeButton);
         creditsButton.setText(getString(R.string.credits) + CreditsHandler.getInstance(this.getContext()).getCredits());
+
+        hilfeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Fragment mFragment = new HilfeFragment();
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, mFragment).commit();
+            }
+        });
 
 
         /*
