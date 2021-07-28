@@ -22,6 +22,8 @@ import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 import java.io.BufferedReader;
@@ -47,7 +49,7 @@ public class WetterFragment extends Fragment implements Caller{
         anzeigen = (Button) view.findViewById(R.id.anzeigen);
         wetterDay = (TextView) view.findViewById(R.id.wetterDay);
         wetterCurrent = (TextView) view.findViewById(R.id.wetterCurrent);
-        locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+        locationManager = (LocationManager) requireActivity().getSystemService(Context.LOCATION_SERVICE);
 
         gpsHolen();
         final HTTPHandler handlerDay = new HTTPHandler(this);
@@ -73,10 +75,15 @@ public class WetterFragment extends Fragment implements Caller{
                     } catch (MalformedURLException e){
                         e.printStackTrace();
                     }
+                    handlerHour.setName("DayThread");
                     handlerDay.setUrl(url);
                     handlerDay.setIdentifier("weatherPerDay");
                     handlerDay.start();
-
+                    try {
+                        handlerDay.join();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
                     timeStep = "1h";
                     urlMitName = "http://" + getString(R.string.localeIP) + ":8080/api/weather?location=" + latitude + "," + longitude + "&startTime=" + startTime + "&endTime=" + endTime + "&timesteps=" + timeStep + "&timezone=" + timeZone;
                     url = null;
@@ -85,6 +92,7 @@ public class WetterFragment extends Fragment implements Caller{
                     } catch (MalformedURLException e){
                         e.printStackTrace();
                     }
+                    handlerHour.setName("HourThread");
                     handlerHour.setUrl(url);
                     handlerHour.setIdentifier("weatherPerHour");
                     handlerHour.start();
@@ -105,9 +113,9 @@ public class WetterFragment extends Fragment implements Caller{
     }
 
     private void gpsHolen(){
-        if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
-                ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+        if (ContextCompat.checkSelfPermission(requireActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+                ContextCompat.checkSelfPermission(requireActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(requireActivity(), new String[]{Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION}, 1);
         }
 
 
@@ -136,7 +144,11 @@ public class WetterFragment extends Fragment implements Caller{
     }
 
     private void toastMessage(String message) {
-        Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
+        Toast.makeText(requireActivity(), message, Toast.LENGTH_SHORT).show();
+    }
+
+    private void toastMessage(String message, FragmentActivity activity) {
+        Toast.makeText(activity, message, Toast.LENGTH_SHORT).show();
     }
 
     /**
@@ -145,7 +157,7 @@ public class WetterFragment extends Fragment implements Caller{
      * @return boolean, ob Internetverbindung vorhanden
      */
     private boolean isOnline() {
-        ConnectivityManager cm = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+        ConnectivityManager cm = (ConnectivityManager) requireActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
         return cm.getActiveNetworkInfo() != null && cm.getActiveNetworkInfo().isConnectedOrConnecting();
     }
 
@@ -163,23 +175,25 @@ public class WetterFragment extends Fragment implements Caller{
                 tempDay = temperatur;
                 rainDay = niederschlag;
                 windDay = wind;
-            }else if(identifier.equals("weatherPerHour")){
-                AddDataWetter(tempDay, rainDay, windDay, temperatur, niederschlag, wind);
             }else {
                 toastMessageOnUiThread("Internal Error");
             }
         }else {
             toastMessageOnUiThread(message);
         }
-        Fragment mFragment = new WetterFragment();
-        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, mFragment).commit();
+        if(identifier.equals("weatherPerHour")) {
+            AddDataWetter(tempDay, rainDay, windDay, temperatur, niederschlag, wind);
+            Fragment mFragment = new WetterFragment();
+            requireActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, mFragment).commit();
+        }
     }
 
     private void toastMessageOnUiThread(String message){
         final String m = message;
-        getActivity().runOnUiThread(new Runnable() {
+        final FragmentActivity activity = requireActivity();
+        activity.runOnUiThread(new Runnable() {
             public void run() {
-                toastMessage(m);
+                toastMessage(m,activity);
             }
         });
     }
@@ -237,12 +251,6 @@ public class WetterFragment extends Fragment implements Caller{
      */
     private void AddDataWetter(String newEntry, String newEntry2, String newEntry3, String newEntry4, String newEntry5, String newEntry6) {
         boolean insertData = DatenbankHelferWetter.getInstance(this.getContext()).addData(newEntry, newEntry2, newEntry3, newEntry4, newEntry5, newEntry6);
-
-        if (insertData) {
-            toastMessage("Daten wurden erfolgreich gespeichert!");
-        } else {
-            toastMessage("Etwas ist schief gelaufen :(");
-        }
     }
 }
 
