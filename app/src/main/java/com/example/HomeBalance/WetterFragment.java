@@ -1,7 +1,5 @@
 package com.example.HomeBalance;
 
-//TODO: Nicht genutzte Imports entfernen, auch bei anderen Klassen
-
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
