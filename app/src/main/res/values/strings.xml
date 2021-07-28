@@ -4,17 +4,13 @@
     <!-- Anpassung an lokale Rechner-IP! -->
     <string name="localeIP">192.168.178.64</string>
 
-    <!-- Strings für die Fragmente der Navigationview -->
-    <string name="first_fragment_label">First Fragment</string>
-    <string name="second_fragment_label">Second Fragment</string>
-    <string name="next">Next</string>
-    <string name="previous">Previous</string>
-
     <!-- Strings für das App Intro -->
     <string name="introTitle1">Willkommen bei Balanced!</string>
     <string name="introTitle2">Daten eingeben und Unterstützung erhalten</string>
     <string name="introDescr1">Balanced trägt zur Balance deiner Arbeits- Lebens- Schlaf- und Aktivitätszeiten bei.</string>
     <string name="introDescr2">Durch unser intelligentes System erhälst du täglich an dich angepasste Vorschläge, um deinen Alltag zu strukturieren, auszugleichen und vieles Mehr!</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
 
 
 
@@ -28,7 +24,6 @@
     <string name="schiefgelaufen">Etwas ist schief gelaufen :(</string>
     <string name="speicherung">Daten erfolgreich gespeichert!</string>
     <string name="backend">Keine Backend-Connection möglich</string>
-
 
 
 

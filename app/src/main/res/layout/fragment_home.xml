@@ -28,7 +28,7 @@
             android:layout_width="39dp"
             android:layout_height="40dp"
             android:background="@drawable/help_round"
-            android:text="?"
+            android:text="\?"
             android:textColor="#ffffff"
             android:layout_gravity="right"/>
 
