@@ -30,8 +30,9 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.TimeZone;
 
+
 /**
- * Fragment für die Abfrage und Anzeige von Wetterdaten
+ * Fragment für den Abruf und die Anzeige der Wetterdaten
  */
 public class WetterFragment extends Fragment implements Caller{
 
@@ -65,6 +66,7 @@ public class WetterFragment extends Fragment implements Caller{
                     timeStep = "1d";
 
                     urlMitName = "http://" + getString(R.string.localeIP) + ":8080/api/weather?location=" + latitude + "," + longitude + "&startTime=" + startTime + "&endTime=" + endTime + "&timesteps=" + timeStep + "&timezone=" + timeZone;
+                    toastMessage(getString(R.string.datenverarbeitung));
 
                     // Ausführung des Hintergrund-Thread mit HTTP-Request
                     URL url = null;
@@ -120,16 +122,23 @@ public class WetterFragment extends Fragment implements Caller{
 
             @Override
             public void onStatusChanged(String provider, int status, Bundle extras) {
+
             }
 
             @Override
             public void onProviderEnabled(String provider) {
+
             }
 
             @Override
             public void onProviderDisabled(String provider) {
+
             }
         });
+    }
+
+    private void toastMessage(String message) {
+        Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
     }
 
     /**
@@ -186,7 +195,7 @@ public class WetterFragment extends Fragment implements Caller{
         if (jsonString == null || jsonString.trim().length() == 0) {
 
             //Bei erhalt eines leeren Strings wird eine Fehlermeldung zurückgeliefert
-            toastMessage(getString(R.string.antwortnichtlesbar));
+            toastMessage(getString(R.string.schiefgelaufen));
             return;
         }
         //wetterdaten.setText(jsonString);
@@ -236,10 +245,6 @@ public class WetterFragment extends Fragment implements Caller{
         } else {
             toastMessage(getString(R.string.schiefgelaufen));
         }
-    }
-
-    private void toastMessage(String message) {
-        Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
     }
 }
 
