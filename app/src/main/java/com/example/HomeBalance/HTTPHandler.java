@@ -1,5 +1,7 @@
 package com.example.HomeBalance;
 
+import android.content.res.Resources;
+
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -25,18 +27,18 @@ public class HTTPHandler extends Thread{
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                 conn.setConnectTimeout(2000);
                 if (conn.getResponseCode() != HttpURLConnection.HTTP_OK) {
-                    caller.handleAnswer(null, identifier, "Verbindung nicht Ok");
+                    caller.handleAnswer(null, identifier, Resources.getSystem().getString(R.string.verbindungnichtok));
                 } else {
                     InputStream is = conn.getInputStream();
                     InputStreamReader ris = new InputStreamReader(is);
                     BufferedReader reader = new BufferedReader(ris);
-                    caller.handleAnswer(reader, identifier, "Verbindung Ok");
+                    caller.handleAnswer(reader, identifier, Resources.getSystem().getString(R.string.verbindungok));
                 }
             } catch (Exception ex) {
-                caller.handleAnswer(null, identifier, "Keine Verbindung zum Backend möglich");
+                caller.handleAnswer(null, identifier, Resources.getSystem().getString(R.string.backend));
             }
         }else {
-            caller.handleAnswer(null, identifier, "URl fehlerhaft");
+            caller.handleAnswer(null, identifier, Resources.getSystem().getString(R.string.urlfehlerhaft));
         }
     }
     public void setUrl(URL url) {

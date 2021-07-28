@@ -24,7 +24,9 @@
     <string name="schiefgelaufen">Etwas ist schief gelaufen :(</string>
     <string name="speicherung">Daten erfolgreich gespeichert!</string>
     <string name="backend">Keine Backend-Connection möglich</string>
-
+    <string name="urlfehlerhaft">Ferhlerhafte URL</string>
+    <string name="verbindungok">Verbindung in Ordnung</string>
+    <string name="verbindungnichtok">Verbindung nicht in Ordnung</string>
 
 
     <string name="credits">CREDITS: </string>
