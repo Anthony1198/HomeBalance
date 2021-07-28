@@ -19,6 +19,9 @@ import androidx.fragment.app.Fragment;
 
 import com.squareup.picasso.Picasso;
 
+/**
+ * Fragment für die Anzeige der abgerufenen Rezept-Daten
+ */
 public class RezepteAnzeigenFragment extends Fragment {
 
     TextView rezept1title, rezept2title, rezept3title;
@@ -76,14 +79,14 @@ public class RezepteAnzeigenFragment extends Fragment {
             Picasso.get().load(rezeptNr2[1]).into(rezept2bild);
             Picasso.get().load(rezeptNr3[1]).into(rezept3bild);
         } else {
-            toastMessage("Es wurden noch keine Rezepte gesucht!");
+            toastMessage(getString(R.string.keinerezepte));
         }
 
         rezept1bild.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (!isOnline()) {
-                    toastMessage("Keine Internetverbindung!");
+                    toastMessage(getString(R.string.internetverbindung));
                 } else {
                     CreditsHandler.getInstance(getContext()).addCredits(2);
                     Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(rezeptNr1[2]));
@@ -96,7 +99,7 @@ public class RezepteAnzeigenFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if (!isOnline()) {
-                    toastMessage("Keine Internetverbindung!");
+                    toastMessage(getString(R.string.internetverbindung));
                 } else {
                     CreditsHandler.getInstance(getContext()).addCredits(2);
                     Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(rezeptNr2[2]));
@@ -109,7 +112,7 @@ public class RezepteAnzeigenFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if (!isOnline()) {
-                    toastMessage("Keine Internetverbindung!");
+                    toastMessage(getString(R.string.internetverbindung));
                 } else {
                     CreditsHandler.getInstance(getContext()).addCredits(2);
                     Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(rezeptNr3[2]));

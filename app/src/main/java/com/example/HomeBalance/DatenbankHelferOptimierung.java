@@ -8,9 +8,8 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 /**
- * Datenbankklasse für die Daten der Frau
+ * Datenbankklasse für die vorgeschlagenen Optimierungsdaten der schedule-API
  */
-
 public class DatenbankHelferOptimierung extends SQLiteOpenHelper {
 
     /**

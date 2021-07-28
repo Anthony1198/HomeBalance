@@ -9,7 +9,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 /**
- * Klasse für die Hilfe-Seite
+ * Fragment für die Anzeige der Hilfe-Seite
  */
 public class HilfeFragment extends Fragment {
 

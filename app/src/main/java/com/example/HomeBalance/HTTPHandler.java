@@ -25,18 +25,18 @@ public class HTTPHandler extends Thread{
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                 conn.setConnectTimeout(2000);
                 if (conn.getResponseCode() != HttpURLConnection.HTTP_OK) {
-                    caller.handleAnswer(null, identifier, "Connection not Ok");
+                    caller.handleAnswer(null, identifier, "Verbindung nicht Ok");
                 } else {
                     InputStream is = conn.getInputStream();
                     InputStreamReader ris = new InputStreamReader(is);
                     BufferedReader reader = new BufferedReader(ris);
-                    caller.handleAnswer(reader, identifier, "Connection Ok");
+                    caller.handleAnswer(reader, identifier, "Verbindung Ok");
                 }
             } catch (Exception ex) {
-                caller.handleAnswer(null, identifier, "No connection to backend possible");
+                caller.handleAnswer(null, identifier, "Keine Verbindung zum Backend möglich");
             }
         }else {
-            caller.handleAnswer(null, identifier, "URl malformed");
+            caller.handleAnswer(null, identifier, "URl fehlerhaft");
         }
     }
     public void setUrl(URL url) {

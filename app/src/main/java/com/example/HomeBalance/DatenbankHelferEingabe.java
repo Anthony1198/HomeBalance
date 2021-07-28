@@ -8,9 +8,8 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 /**
- * Datenbankklasse für die Daten der Frau
+ * Datenbankklasse für die eingegebenen Daten des Users
  */
-
 public class DatenbankHelferEingabe extends SQLiteOpenHelper {
 
     private static DatenbankHelferEingabe eingabeDatenbankHelfer;
@@ -24,7 +23,6 @@ public class DatenbankHelferEingabe extends SQLiteOpenHelper {
     /**
      * Variablen Deklaration
      */
-
     private static final String TABLE_NAME = "Nutzerwerte";
     private static final String COL1 = "ID";
     private static final String COL2 = "vorname";
@@ -61,7 +59,6 @@ public class DatenbankHelferEingabe extends SQLiteOpenHelper {
      * Fügt die mitgegeben Daten in die Datenbank hinzu
      * @return Boolean ob Daten erfolgreich gespeichert wurden
      */
-
     public boolean addData(String item, int item2, String item3, String item4, String item5, boolean item6, boolean item7) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();

@@ -19,6 +19,9 @@ import androidx.fragment.app.Fragment;
 
 import com.squareup.picasso.Picasso;
 
+/**
+ * Fragment für die Anzeige der abgerufenen Mediations-Daten
+ */
 public class MeditationAnzeigenFragment extends Fragment {
 
     TextView meditation1title, meditation2title, meditation3title;
@@ -74,14 +77,14 @@ public class MeditationAnzeigenFragment extends Fragment {
             Picasso.get().load(meditationNr2[1]).into(mediation2bild);
             Picasso.get().load(meditationNr3[1]).into(mediation3bild);
         } else {
-            toastMessage("Es wurden noch keine Meditationen gesucht!");
+            toastMessage(getString(R.string.keinemeditation));
         }
 
         mediation1bild.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (!isOnline()) {
-                    toastMessage("Keine Internetverbindung!");
+                    toastMessage(getString(R.string.internetverbindung));
                 } else {
                     CreditsHandler.getInstance(getContext()).addCredits(3);
                     Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(meditationNr1[2]));
@@ -94,7 +97,7 @@ public class MeditationAnzeigenFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if (!isOnline()) {
-                    toastMessage("Keine Internetverbindung!");
+                    toastMessage(getString(R.string.internetverbindung));
                 } else {
                     CreditsHandler.getInstance(getContext()).addCredits(3);
                     Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(meditationNr2[2]));
@@ -107,7 +110,7 @@ public class MeditationAnzeigenFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if (!isOnline()) {
-                    toastMessage("Keine Internetverbindung!");
+                    toastMessage(getString(R.string.internetverbindung));
                 } else {
                     CreditsHandler.getInstance(getContext()).addCredits(3);
                     Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(meditationNr3[2]));

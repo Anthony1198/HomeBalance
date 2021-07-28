@@ -18,6 +18,9 @@ import java.io.BufferedReader;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+/**
+ * Fragment für die Abfrage von Rezeptdaten
+ */
 public class RezepteSucheFragment extends Fragment implements Caller{
 
     Button anzeigenNeue, anzeigenLetzte;
@@ -53,11 +56,11 @@ public class RezepteSucheFragment extends Fragment implements Caller{
             @Override
             public void onClick(View v) {
                 if (!isOnline()) {
-                    toastMessage("Keine Internetverbindung!");
+                    toastMessage(getString(R.string.internetverbindung));
                 } else {
                     urlZusammenstellung();
 
-                    toastMessage("Daten werden verarbeitet!");
+                    toastMessage(getString(R.string.datenverarbeitung));
                     URL url = null;
                     try{
                         url = new URL(urlMitName);
@@ -91,7 +94,7 @@ public class RezepteSucheFragment extends Fragment implements Caller{
                 jsonDocument = bufferedReader.readLine();
                 parseJSON(jsonDocument);
             }catch(Exception e){
-                toastMessageOnUiThread("Answer not readable");
+                toastMessageOnUiThread(getString(R.string.antwortnichtlesbar));
             }
             AddDataRezepte(rezeptNr1[0], rezeptNr1[1], rezeptNr1[2], rezeptNr2[0], rezeptNr2[1], rezeptNr2[2], rezeptNr3[0], rezeptNr3[1], rezeptNr3[2]);
             CreditsHandler.getInstance(getContext()).addCredits(1);

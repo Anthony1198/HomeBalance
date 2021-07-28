@@ -8,15 +8,13 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 /**
- * Datenbankklasse für die Daten der Frau
+ * Datenbankklasse für die Rezeptdaten der Rezept-API
  */
-
 public class DatenbankHelferRezepte extends SQLiteOpenHelper {
 
     /**
      * Variablen Deklaration
      */
-
     private static DatenbankHelferRezepte rezepteDatenbankHelfer;
 
     public static synchronized DatenbankHelferRezepte getInstance(Context context){

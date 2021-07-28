@@ -10,7 +10,9 @@ import android.view.View;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-
+/**
+ * Klasse für die Anzeige der Main-Elemente (Bottom-Navigation, Floatingbutton)
+ */
 public class MainActivity extends AppCompatActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {

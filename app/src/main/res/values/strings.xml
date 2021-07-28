@@ -1,7 +1,10 @@
 <resources>
     <string name="app_name">Balanced</string>
 
-    <!-- Strings used for fragments for navigation -->
+    <!-- Anpassung an lokale Rechner-IP! -->
+    <string name="localeIP">192.168.178.64</string>
+
+    <!-- Strings für die Fragmente der Navigationview -->
     <string name="first_fragment_label">First Fragment</string>
     <string name="second_fragment_label">Second Fragment</string>
     <string name="next">Next</string>
@@ -12,13 +15,23 @@
     <string name="introTitle2">Daten eingeben und Unterstützung erhalten</string>
     <string name="introDescr1">Balanced trägt zur Balance deiner Arbeits- Lebens- Schlaf- und Aktivitätszeiten bei.</string>
     <string name="introDescr2">Durch unser intelligentes System erhälst du täglich an dich angepasste Vorschläge, um deinen Alltag zu strukturieren, auszugleichen und vieles Mehr!</string>
-    <string name="HTTPS">HTTP Conecction funktioniert nicht!</string>
 
-    <string name="localeIP">192.168.178.64</string>
-    <string name="wetterAPIURL">HTTP Conecction funktioniert nicht!</string>
-    <string name="scheduleAPIURL">HTTP Conecction funktioniert nicht!</string>
-    <string name="rezeptAPIURL">HTTP Conecction funktioniert nicht!</string>
-    <string name="meditationAPIURL">HTTP Conecction funktioniert nicht!</string>
+
+
+    <!-- Strings für Toast-Massages -->
+    <string name="HTTPS">HTTP Conecction funktioniert nicht!</string>
+    <string name="internetverbindung">Keine Internetverbindung!</string>
+    <string name="keinemeditation">Es wurden noch keine Meditationen gesucht!</string>
+    <string name="keinerezepte">Es wurden noch keine Rezepte gesucht!</string>
+    <string name="datenverarbeitung">Daten werden verarbeitet!</string>
+    <string name="antwortnichtlesbar">Antwort ist nicht lesbar!</string>
+    <string name="schiefgelaufen">Etwas ist schief gelaufen :(</string>
+    <string name="speicherung">Daten erfolgreich gespeichert!</string>
+    <string name="backend">Keine Backend-Connection möglich</string>
+
+
+
+
     <string name="credits">CREDITS: </string>
 
     <string name="hilfeText" formatted="true"> <b> Willkommen in der Balanced App! </b> \n\n

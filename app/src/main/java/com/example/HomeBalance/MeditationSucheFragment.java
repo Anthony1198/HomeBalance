@@ -18,6 +18,9 @@ import java.io.BufferedReader;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+/**
+ * Fragment für die Abfrage von Meditationsdaten
+ */
 public class MeditationSucheFragment extends Fragment implements Caller{
 
     Button anzeigenNeue2, anzeigenLetzte2;
@@ -47,12 +50,12 @@ public class MeditationSucheFragment extends Fragment implements Caller{
             @Override
             public void onClick(View v) {
                 if (!isOnline()) {
-                    toastMessage("Keine Internetverbindung!");
+                    toastMessage(getString(R.string.internetverbindung));
                 } else {
 
                     urlZusammenstellung();
 
-                    toastMessage("Daten werden verarbeitet!");
+                    toastMessage(getString(R.string.datenverarbeitung));
 
                     // Ausführung des Hintergrund-Thread mit HTTP-Request
                     URL url = null;
@@ -111,7 +114,7 @@ public class MeditationSucheFragment extends Fragment implements Caller{
                 }
                 parseJSON(jsonDocument);
             } catch (Exception ex) {
-                toastMessageOnUiThread("Answer not readable");
+                toastMessageOnUiThread(getString(R.string.antwortnichtlesbar));
             }
             AddDataMeditation(audio1[0], audio1[1], audio1[2], audio2[0], audio2[1], audio2[2], audio3[0], audio3[1], audio3[2]);
             CreditsHandler.getInstance(getContext()).addCredits(1);
@@ -187,9 +190,9 @@ public class MeditationSucheFragment extends Fragment implements Caller{
         boolean insertData = DatenbankHelferMeditation.getInstance(this.getContext()).addData(newEntry, newEntry2, newEntry3, newEntry4, newEntry5, newEntry6, newEntry7, newEntry8, newEntry9);
 
         if (insertData) {
-            toastMessage("Daten wurden erfolgreich gespeichert!");
+            toastMessage(getString(R.string.speicherung));
         } else {
-            toastMessage("Etwas ist schief gelaufen :(");
+            toastMessage(getString(R.string.schiefgelaufen));
         }
     }
 }

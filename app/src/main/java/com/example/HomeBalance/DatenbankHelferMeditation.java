@@ -8,9 +8,8 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 /**
- * Datenbankklasse für die Daten der Frau
+ * Datenbankklasse für die Meditationsdaten der Meditations-API
  */
-
 public class DatenbankHelferMeditation extends SQLiteOpenHelper {
 
     private static DatenbankHelferMeditation meditationDatenbankHelfer;
@@ -63,7 +62,6 @@ public class DatenbankHelferMeditation extends SQLiteOpenHelper {
      * Fügt die mitgegeben Daten in die Datenbank hinzu
      * @return Boolean ob Daten erfolgreich gespeichert wurden
      */
-
     public boolean addData(String item, String item2, String item3, String item4, String item5, String item6, String item7, String item8, String item9) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();

@@ -8,9 +8,8 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 /**
- * Datenbankklasse für die Daten der Frau
+ * Datenbankklasse für die Wetterdaten der Wetter-API
  */
-
 public class DatenbankHelferWetter extends SQLiteOpenHelper {
 
     /**

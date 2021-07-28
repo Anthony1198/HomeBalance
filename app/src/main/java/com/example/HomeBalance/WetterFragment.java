@@ -30,6 +30,9 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.TimeZone;
 
+/**
+ * Fragment für die Abfrage und Anzeige von Wetterdaten
+ */
 public class WetterFragment extends Fragment implements Caller{
 
     Button anzeigen;
@@ -54,7 +57,7 @@ public class WetterFragment extends Fragment implements Caller{
             @Override
             public void onClick(View v) {
                 if (!isOnline()) {
-                    toastMessage("Keine Internetverbindung!");
+                    toastMessage(getString(R.string.internetverbindung));
                 } else {
                     CreditsHandler.getInstance(getContext()).addCredits(2);
                     getWetterDatumZeit();
@@ -62,7 +65,6 @@ public class WetterFragment extends Fragment implements Caller{
                     timeStep = "1d";
 
                     urlMitName = "http://" + getString(R.string.localeIP) + ":8080/api/weather?location=" + latitude + "," + longitude + "&startTime=" + startTime + "&endTime=" + endTime + "&timesteps=" + timeStep + "&timezone=" + timeZone;
-                    toastMessage("Daten werden verarbeitet!");
 
                     // Ausführung des Hintergrund-Thread mit HTTP-Request
                     URL url = null;
@@ -118,23 +120,16 @@ public class WetterFragment extends Fragment implements Caller{
 
             @Override
             public void onStatusChanged(String provider, int status, Bundle extras) {
-
             }
 
             @Override
             public void onProviderEnabled(String provider) {
-
             }
 
             @Override
             public void onProviderDisabled(String provider) {
-
             }
         });
-    }
-
-    private void toastMessage(String message) {
-        Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
     }
 
     /**
@@ -155,7 +150,7 @@ public class WetterFragment extends Fragment implements Caller{
                 jsonDocument = bufferedReader.readLine();
                 parseJSON(jsonDocument);
             }catch (Exception e){
-                toastMessageOnUiThread("Answer not readable");
+                toastMessageOnUiThread(getString(R.string.antwortnichtlesbar));
             }
             if(identifier.equals("weatherPerDay")){
                 tempDay = temperatur;
@@ -164,7 +159,7 @@ public class WetterFragment extends Fragment implements Caller{
             }else if(identifier.equals("weatherPerHour")){
                 AddDataWetter(tempDay, rainDay, windDay, temperatur, niederschlag, wind);
             }else {
-                toastMessageOnUiThread("Internal Error");
+                toastMessageOnUiThread(getString(R.string.schiefgelaufen));
             }
         }else {
             toastMessageOnUiThread(message);
@@ -191,7 +186,7 @@ public class WetterFragment extends Fragment implements Caller{
         if (jsonString == null || jsonString.trim().length() == 0) {
 
             //Bei erhalt eines leeren Strings wird eine Fehlermeldung zurückgeliefert
-            toastMessage("JSON ist leer!");
+            toastMessage(getString(R.string.antwortnichtlesbar));
             return;
         }
         //wetterdaten.setText(jsonString);
@@ -237,10 +232,14 @@ public class WetterFragment extends Fragment implements Caller{
         boolean insertData = DatenbankHelferWetter.getInstance(this.getContext()).addData(newEntry, newEntry2, newEntry3, newEntry4, newEntry5, newEntry6);
 
         if (insertData) {
-            toastMessage("Daten wurden erfolgreich gespeichert!");
+            toastMessage(getString(R.string.speicherung));
         } else {
-            toastMessage("Etwas ist schief gelaufen :(");
+            toastMessage(getString(R.string.schiefgelaufen));
         }
+    }
+
+    private void toastMessage(String message) {
+        Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
     }
 }
 

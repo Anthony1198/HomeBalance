@@ -8,15 +8,13 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 /**
- * Datenbankklasse für die Daten der Frau
+ * Datenbankklasse für die Anzahl der Credits
  */
-
 public class DatenbankHelferCredits extends SQLiteOpenHelper {
 
     /**
      * Variablen Deklaration
      */
-
     private static final String TABLE_NAME = "Creditwerte";
     private static final String COL1 = "credits";
 
