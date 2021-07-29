@@ -27,19 +27,19 @@ public class HTTPHandler extends Thread{
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
                 conn.setConnectTimeout(2000);
                 if (conn.getResponseCode() != HttpURLConnection.HTTP_OK) {
-                    caller.handleAnswer(null, identifier, "Resources.getSystem().getString(R.string.verbindungnichtok)");
+                    caller.handleAnswer(null, identifier, "Verbindung gestört");
                 } else {
                     InputStream is = conn.getInputStream();
                     InputStreamReader ris = new InputStreamReader(is);
                     BufferedReader reader = new BufferedReader(ris);
-                    caller.handleAnswer(reader, identifier, "Resources.getSystem().getString(R.string.verbindungok)");
+                    caller.handleAnswer(reader, identifier, "Verbindung Okay");
                 }
             } catch (Exception ex) {
                 ex.printStackTrace();
-                caller.handleAnswer(null, identifier, "Resources.getSystem().getString(R.string.backend)");
+                caller.handleAnswer(null, identifier, "Backend Verbindung gestört");
             }
         }else {
-            caller.handleAnswer(null, identifier, "Resources.getSystem().getString(R.string.urlfehlerhaft)");
+            caller.handleAnswer(null, identifier, "URL fehlerhaft");
         }
     }
     public void setUrl(URL url) {
