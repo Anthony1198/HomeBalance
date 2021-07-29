@@ -114,7 +114,7 @@ public class MeditationSucheFragment extends Fragment implements Caller{
                 }
                 parseJSON(jsonDocument);
             } catch (Exception ex) {
-                toastMessageOnUiThread(getString(R.string.antwortnichtlesbar));
+                toastMessageOnUiThread(getString(R.string.schiefgelaufen));
             }
             AddDataMeditation(audio1[0], audio1[1], audio1[2], audio2[0], audio2[1], audio2[2], audio3[0], audio3[1], audio3[2]);
             CreditsHandler.getInstance(getContext()).addCredits(1);
@@ -142,9 +142,6 @@ public class MeditationSucheFragment extends Fragment implements Caller{
 
 
         if (jsonString == null || jsonString.trim().length() == 0) {
-
-            //Bei erhalt eines leeren Strings wird eine Fehlermeldung zurückgeliefert
-            toastMessage("JSON ist leer!");
             return;
         }
 
@@ -190,9 +187,8 @@ public class MeditationSucheFragment extends Fragment implements Caller{
         boolean insertData = DatenbankHelferMeditation.getInstance(this.getContext()).addData(newEntry, newEntry2, newEntry3, newEntry4, newEntry5, newEntry6, newEntry7, newEntry8, newEntry9);
 
         if (insertData) {
-            toastMessage(getString(R.string.speicherung));
         } else {
-            toastMessage(getString(R.string.schiefgelaufen));
+            toastMessageOnUiThread(getString(R.string.schiefgelaufen));
         }
     }
 }

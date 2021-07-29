@@ -78,8 +78,8 @@ public class RezepteSucheFragment extends Fragment implements Caller{
         anzeigenLetzte.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                    Fragment mFragment = new RezepteAnzeigenFragment();
-                    getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, mFragment).commit();
+                Fragment mFragment = new RezepteAnzeigenFragment();
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, mFragment).commit();
             }
         });
 
@@ -94,7 +94,7 @@ public class RezepteSucheFragment extends Fragment implements Caller{
                 jsonDocument = bufferedReader.readLine();
                 parseJSON(jsonDocument);
             }catch(Exception e){
-                toastMessageOnUiThread(getString(R.string.antwortnichtlesbar));
+                toastMessageOnUiThread(getString(R.string.schiefgelaufen));
             }
             AddDataRezepte(rezeptNr1[0], rezeptNr1[1], rezeptNr1[2], rezeptNr2[0], rezeptNr2[1], rezeptNr2[2], rezeptNr3[0], rezeptNr3[1], rezeptNr3[2]);
             CreditsHandler.getInstance(getContext()).addCredits(1);
@@ -114,38 +114,35 @@ public class RezepteSucheFragment extends Fragment implements Caller{
         });
     }
 
-        /**
-         * String mit JSON-Inhalt wird auf Inhalte ausgelesen (Parsing) und in der dazugehörigen Datenbank abgespeichert
-         */
-        private void parseJSON(String jsonString) throws Exception {
+    /**
+     * String mit JSON-Inhalt wird auf Inhalte ausgelesen (Parsing) und in der dazugehörigen Datenbank abgespeichert
+     */
+    private void parseJSON(String jsonString) throws Exception {
 
 
-            if (jsonString == null || jsonString.trim().length() == 0) {
-
-                //Bei erhalt eines leeren Strings wird eine Fehlermeldung zurückgeliefert
-                toastMessage("JSON ist leer!");
-                return;
-            }
-
-            JSONObject jsonObject = new JSONObject(jsonString);
-            JSONArray recipes = jsonObject.getJSONArray("recipes");
-            JSONObject rezeptData1 = recipes.getJSONObject(0);
-            JSONObject rezeptData2 = recipes.getJSONObject(1);
-            JSONObject rezeptData3 = recipes.getJSONObject(2);
-
-
-            rezeptNr1[0] = rezeptData1.getString("title");
-            rezeptNr1[1] = rezeptData1.getString("image");
-            rezeptNr1[2] = rezeptData1.getString("sourceUrl");
-
-            rezeptNr2[0] = rezeptData2.getString("title");
-            rezeptNr2[1] = rezeptData2.getString("image");
-            rezeptNr2[2] = rezeptData2.getString("sourceUrl");
-
-            rezeptNr3[0] = rezeptData3.getString("title");
-            rezeptNr3[1] = rezeptData3.getString("image");
-            rezeptNr3[2] = rezeptData3.getString("sourceUrl");
+        if (jsonString == null || jsonString.trim().length() == 0) {
+            return;
         }
+
+        JSONObject jsonObject = new JSONObject(jsonString);
+        JSONArray recipes = jsonObject.getJSONArray("recipes");
+        JSONObject rezeptData1 = recipes.getJSONObject(0);
+        JSONObject rezeptData2 = recipes.getJSONObject(1);
+        JSONObject rezeptData3 = recipes.getJSONObject(2);
+
+
+        rezeptNr1[0] = rezeptData1.getString("title");
+        rezeptNr1[1] = rezeptData1.getString("image");
+        rezeptNr1[2] = rezeptData1.getString("sourceUrl");
+
+        rezeptNr2[0] = rezeptData2.getString("title");
+        rezeptNr2[1] = rezeptData2.getString("image");
+        rezeptNr2[2] = rezeptData2.getString("sourceUrl");
+
+        rezeptNr3[0] = rezeptData3.getString("title");
+        rezeptNr3[1] = rezeptData3.getString("image");
+        rezeptNr3[2] = rezeptData3.getString("sourceUrl");
+    }
 
     private void toastMessage(String message) {
         Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
@@ -209,9 +206,8 @@ public class RezepteSucheFragment extends Fragment implements Caller{
         boolean insertData = DatenbankHelferRezepte.getInstance(this.getContext()).addData(newEntry, newEntry2, newEntry3, newEntry4, newEntry5, newEntry6, newEntry7, newEntry8, newEntry9);
 
         if (insertData) {
-            toastMessage("Daten wurden erfolgreich gespeichert!");
         } else {
-            toastMessage("Etwas ist schief gelaufen :(");
+            toastMessageOnUiThread(getString(R.string.schiefgelaufen));
         }
     }
 
